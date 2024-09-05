@@ -15,7 +15,6 @@ class MyApp extends StatelessWidget {
       initialRoute: authScreenRoute,
       routes: {
         authScreenRoute: (context) => const AuthScreen(),
-        // outras rotas
       },
     );
   }

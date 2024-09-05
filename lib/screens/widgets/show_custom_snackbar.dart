@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sigma/_core/sigma_routes.dart';
 
 showCustomSnackBar({
   required BuildContext context,
@@ -16,7 +17,9 @@ showCustomSnackBar({
         ? SnackBarAction(
             label: "Tela Inicial",
             textColor: Colors.white,
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushReplacementNamed(context, SigmaRoutes.dasboard);
+            },
           )
         : null,
   );

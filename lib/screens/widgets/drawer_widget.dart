@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:sigma/screens/widgets/show_confirm_password_dialog.dart';
 
 
-class HomeDrawer extends StatelessWidget {
+class DrawerWidget extends StatelessWidget {
   final String user;
-  const HomeDrawer({super.key, required this.user});
+  const DrawerWidget({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      
       child: ListView(
         children: [
           // UserAccountsDrawerHeader(
