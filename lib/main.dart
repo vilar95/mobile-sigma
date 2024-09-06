@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sigma/screens/auth_screen.dart';
+import 'package:sigma/_core/sigma_routes.dart';
+import 'package:sigma/_core/theme/sigma_theme.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -9,15 +11,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const String authScreenRoute = '/auth';
     return MaterialApp(
+      theme: SigmaTheme.mainTheme,
       title: 'Sigma',
-      initialRoute: authScreenRoute,
-      routes: {
-        authScreenRoute: (context) => const AuthScreen(),
-      },
+      debugShowCheckedModeBanner: false,
+      initialRoute: SigmaRoutes.auth,
+      onGenerateRoute: SigmaRoutes.generateRoute,
     );
   }
 }
-
-

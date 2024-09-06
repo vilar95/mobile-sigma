@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
-class KangooListColors {
+class SigmaColors {
   static const MaterialColor green =
       MaterialColor(_greenPrimaryValue, <int, Color>{
-    50: Color(0xFFF9FCEC),
-    100: Color(0xFFF0F8D0),
-    200: Color(0xFFE6F3B1),
-    300: Color(0xFFDBEE92),
-    400: Color(0xFFD4EA7A),
+    50: Color.fromARGB(255, 174, 240, 250),
+    100: Color.fromARGB(255, 150, 227, 247),
+    200: Color.fromARGB(255, 107, 219, 247),
+    300: Color.fromARGB(255, 92, 177, 192),
+    400: Color.fromARGB(255, 68, 152, 163),
     500: Color(_greenPrimaryValue),
-    600: Color(0xFFC7E35B),
-    700: Color(0xFFC0DF51),
-    800: Color(0xFFB9DB47),
-    900: Color(0xFFADD535),
+    600: Color.fromARGB(255, 62, 145, 156),
+    700: Color.fromARGB(255, 50, 135, 138),
+    800: Color.fromARGB(255, 35, 97, 105),
+    900: Color.fromARGB(255, 18, 65, 73),
   });
   static const int _greenPrimaryValue = 0xFF009688;
 
@@ -41,59 +41,59 @@ class KangooListColors {
   static const int _purplePrimaryValue = 0xFF009688;
 
   static const MaterialColor purpleAccent =
-      MaterialColor(_purpleAccentValue, <int, Color>{
-    100: Color(0xFFC9BBFF),
-    200: Color(_purpleAccentValue),
-    400: Color(0xFF7755FF),
-    700: Color(0xFF633BFF),
+      MaterialColor(_aquaAccentValue, <int, Color>{
+    100: Color.fromARGB(255, 187, 245, 255),
+    200: Color(_aquaAccentValue),
+    400: Color.fromARGB(255, 85, 255, 246),
+    700: Color.fromARGB(255, 59, 242, 255),
   });
-  static const int _purpleAccentValue = 0xFF009688;
+  static const int _aquaAccentValue = 0xFF009688;
 
   static const MaterialColor lavandalight =
-      MaterialColor(_lavandalightPrimaryValue, <int, Color>{
+      MaterialColor(_lightPrimaryValue, <int, Color>{
     50: Color(0xFFFCFBFF),
     100: Color(0xFFF9F5FF),
     200: Color(0xFFF5EEFF),
     300: Color(0xFFF0E7FF),
     400: Color(0xFFEDE2FF),
-    500: Color(_lavandalightPrimaryValue),
+    500: Color(_lightPrimaryValue),
     600: Color(0xFFE7D9FF),
     700: Color(0xFFE4D4FF),
     800: Color(0xFFE1CFFF),
     900: Color(0xFFDBC7FF),
   });
-  static const int _lavandalightPrimaryValue = 0xFF009688;
+  static const int _lightPrimaryValue = 0xFF009688;
 
   static const MaterialColor lavandalightAccent =
-      MaterialColor(_lavandalightAccentValue, <int, Color>{
+      MaterialColor(_lightAccentValue, <int, Color>{
     100: Color(0xFFFFFFFF),
-    200: Color(_lavandalightAccentValue),
+    200: Color(_lightAccentValue),
     400: Color(0xFFFFFFFF),
     700: Color(0xFFFFFFFF),
   });
-  static const int _lavandalightAccentValue = 0xFFFFFFFF;
+  static const int _lightAccentValue = 0xFFFFFFFF;
 
-  static const MaterialColor graydark =
-      MaterialColor(_graydarkPrimaryValue, <int, Color>{
+  static const MaterialColor greydark =
+      MaterialColor(_greydarkPrimaryValue, <int, Color>{
     50: Color(0xFFE6E6E7),
     100: Color(0xFFC2C1C2),
     200: Color(0xFF99979A),
     300: Color(0xFF706D72),
     400: Color(0xFF514E53),
-    500: Color(_graydarkPrimaryValue),
+    500: Color(_greydarkPrimaryValue),
     600: Color(0xFF2D2A30),
     700: Color(0xFF262328),
     800: Color(0xFF1F1D22),
     900: Color(0xFF131216),
   });
-  static const int _graydarkPrimaryValue = 0xFF322F35;
+  static const int _greydarkPrimaryValue = 0xFF02A50;
 
   static const MaterialColor graydarkAccent =
       MaterialColor(_graydarkAccentValue, <int, Color>{
-    100: Color(0xFF955CFF),
+    100: Color.fromARGB(255, 92, 244, 255),
     200: Color(_graydarkAccentValue),
-    400: Color(0xFF5200F6),
-    700: Color(0xFF4900DC),
+    400: Color.fromARGB(255, 14, 118, 153),
+    700: Color.fromARGB(255, 11, 95, 112),
   });
-  static const int _graydarkAccentValue = 0xFF009688;
+  static const int _graydarkAccentValue = 0xFF22102109;
 }

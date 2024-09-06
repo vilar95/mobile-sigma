@@ -18,7 +18,11 @@ showCustomSnackBar({
             label: "Tela Inicial",
             textColor: Colors.white,
             onPressed: () {
-              Navigator.pushReplacementNamed(context, SigmaRoutes.dasboard);
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                SigmaRoutes.home,
+                (route) => false,
+              );
             },
           )
         : null,
