@@ -30,7 +30,10 @@ showConfirmPasswordDialog({
             onPressed: () {
               Navigator.pop(context);
             },
-            child: const Text("EXCLUIR CONTA"),
+            child: const Text(
+              "EXCLUIR CONTA",
+              style: TextStyle(color: Colors.red),
+            ),
           )
         ],
       );

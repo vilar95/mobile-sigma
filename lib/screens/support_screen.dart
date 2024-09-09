@@ -12,7 +12,7 @@ class _SupportScreenState extends State<SupportScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: SigmaColors.green,
+      backgroundColor: SigmaColors.blue.shade400,
       appBar: AppBar(
         title: const Text('Agendamento de Consulta'),
       ),
@@ -20,6 +20,7 @@ class _SupportScreenState extends State<SupportScreen> {
         child: Text(
           'Bem-vindo à tela de suporte!',
           style: TextStyle(fontSize: 24),
+          textAlign: TextAlign.center,
         ),
       ),
     );

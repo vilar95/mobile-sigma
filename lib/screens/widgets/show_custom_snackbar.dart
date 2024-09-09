@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sigma/_core/sigma_routes.dart';
+import 'package:sigma/_core/routes/sigma_routes.dart';
 
 showCustomSnackBar({
   required BuildContext context,

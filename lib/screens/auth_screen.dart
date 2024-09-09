@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sigma/_core/theme/sigma_colors.dart';
 import 'package:sigma/authentication/services/auth_service.dart';
 import 'package:sigma/screens/widgets/show_custom_snackbar.dart';
 
@@ -27,7 +28,7 @@ class _AuthScreenState extends State<AuthScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: const Color.fromARGB(255, 22, 102, 109),
+        color: SigmaColors.blue.shade400,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 32),
           child: Center(
@@ -44,10 +45,10 @@ class _AuthScreenState extends State<AuthScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      // Image.asset(
-                      //   "assets/logo_1152.png",
-                      //   height: 250,
-                      // ),
+                      Image.asset(
+                        "assets/logo_icon.png",
+                        height: 250,
+                      ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
@@ -148,7 +149,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       ElevatedButton(
                         style: const ButtonStyle(
                           backgroundColor: WidgetStatePropertyAll(
-                            Color.fromARGB(255, 22, 102, 109),
+                            Color.fromARGB(255, 25, 57, 105),
                           ),
                           foregroundColor: WidgetStatePropertyAll(Colors.white),
                         ),

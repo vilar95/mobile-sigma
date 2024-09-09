@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sigma/_core/sigma_routes.dart';
+import 'package:sigma/_core/routes/sigma_routes.dart';
 import 'package:sigma/_core/theme/sigma_theme.dart';
 
 void main() {
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       theme: SigmaTheme.mainTheme,
       title: 'Sigma',
       debugShowCheckedModeBanner: false,
-      initialRoute: SigmaRoutes.auth,
+      initialRoute: SigmaRoutes.splash,
       onGenerateRoute: SigmaRoutes.generateRoute,
     );
   }

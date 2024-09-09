@@ -7,19 +7,37 @@ class SigmaTheme {
     useMaterial3: true,
 
     // Paleta de cores principal
-    primaryColor:  const Color.fromARGB( 255, 22, 102, 109),
+    primaryColor: const Color.fromARGB(255, 25, 57, 105),
 
     // Cor de fundo em telas que usam Scaffold
     scaffoldBackgroundColor: const Color.fromARGB(255, 240, 239, 235),
 
+    // Cor do primeiro plano
+    primarySwatch: const MaterialColor(0xFF193969, {
+      50: Color(0xFF193969),
+      100: Color(0xFF193969),
+      200: Color(0xFF193969),
+      300: Color(0xFF193969),
+      400: Color(0xFF193969),
+      500: Color(0xFF193969),
+      600: Color(0xFF193969),
+      700: Color(0xFF193969),
+      800: Color(0xFF193969),
+      900: Color(0xFF193969),
+    }),
+    
+    indicatorColor: const Color.fromARGB(255, 25, 57, 105),
+    // Cor do icone principal
+    primaryIconTheme: IconThemeData(color: SigmaColors.blue.shade400),
+
     // Tema dos FloatingActionButton
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
-      backgroundColor: Color.fromARGB( 255, 22, 102, 109),
+      backgroundColor: Color.fromARGB(255, 25, 57, 105),
     ),
 
     // Temas dos ListTiles
     listTileTheme: const ListTileThemeData(
-      iconColor: SigmaColors.green,
+      iconColor: Color.fromARGB(255, 25, 57, 105),
       contentPadding: EdgeInsets.zero,
     ),
 
@@ -38,7 +56,7 @@ class SigmaTheme {
 
     // Tema dos Dividers
     dividerTheme: const DividerThemeData(
-      color: SigmaColors.green,
+      color: Color.fromARGB(255, 25, 57, 105),
     ),
 
     // Tema dos TextFormFields

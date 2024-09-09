@@ -15,7 +15,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: SigmaColors.green,
+      backgroundColor: SigmaColors.blue.shade400,
       drawer: DrawerWidget(user: widget.user),
       appBar: AppBar(
         title: const Row(
@@ -28,6 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Text(
           'Bem-vindo à tela de dashboard!',
           style: TextStyle(fontSize: 24),
+          textAlign: TextAlign.center,
         ),
       ),
     );
