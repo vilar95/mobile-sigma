@@ -28,7 +28,7 @@ class _AuthScreenState extends State<AuthScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: SigmaColors.blue.shade400,
+        color: SigmaColors.blue,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 32),
           child: Center(
@@ -53,11 +53,11 @@ class _AuthScreenState extends State<AuthScreen> {
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
                           (isAuthentication)
-                              ? "Bem vindo(a) ao SIGMA!"
+                              ? "Bem vindo(a) ao"
                               : "Vamos começar?",
                           textAlign: TextAlign.center,
                           style: const TextStyle(
-                            fontSize: 24,
+                            fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -67,6 +67,10 @@ class _AuthScreenState extends State<AuthScreen> {
                             ? 'Sistema Integrado de Gestão Médica e Atendimento'
                             : 'Faça seu cadastro: ',
                         textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       Visibility(
                         visible: !isAuthentication,
@@ -204,7 +208,7 @@ class _AuthScreenState extends State<AuthScreen> {
       context: context,
       message: "TODO: Login com e-mail e senha.",
       isError: false,
-      showContinue: true,
+      showContinue: true, duration: const Duration(seconds: 30),
     );
   }
 
@@ -218,6 +222,7 @@ class _AuthScreenState extends State<AuthScreen> {
       message: "TODO: Cadastro de nova conta.",
       isError: false,
       showContinue: true,
+      duration: const Duration(seconds: 30),
     );
   }
 
@@ -242,7 +247,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 showCustomSnackBar(
                   context: context,
                   message: "E-mail de redefinição enviado!",
-                  isError: false,
+                  isError: false, duration: const Duration(seconds: 30),
                 );
                 Navigator.pop(context);
               },

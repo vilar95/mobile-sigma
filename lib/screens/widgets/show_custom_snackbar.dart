@@ -4,6 +4,7 @@ import 'package:sigma/_core/routes/sigma_routes.dart';
 showCustomSnackBar({
   required BuildContext context,
   required String message,
+  required Duration duration,
   bool isError = true,
   bool showContinue = false,
 }) {

@@ -16,12 +16,12 @@ class DrawerWidget extends StatelessWidget {
         children: [
           UserAccountsDrawerHeader(
             decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 25, 57, 105),
+              color: SigmaColors.blue,
             ),
             currentAccountPicture: CircleAvatar(
                 backgroundImage:
                     user.photoURL != null ? AssetImage(user.photoURL!) : null,
-                backgroundColor: SigmaColors.purple),
+                backgroundColor: SigmaColors.blue),
             accountName: Text(
               user.displayName != null ? user.displayName! : "",
             ),

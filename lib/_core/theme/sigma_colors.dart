@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 
 class SigmaColors {
   static const MaterialColor blue =
-      MaterialColor(_greenPrimaryValue, <int, Color>{
+      MaterialColor(_bluePrimaryValue, <int, Color>{
     50: Color.fromARGB(255, 174, 240, 250),
     100: Color.fromARGB(255, 150, 227, 247),
     200: Color.fromARGB(255, 107, 219, 247),
     300: Color.fromARGB(255, 92, 177, 192),
     400: Color.fromARGB(255, 25, 57, 105),
-    500: Color(_greenPrimaryValue),
+    500: Color(_bluePrimaryValue),
     600: Color.fromARGB(255, 62, 145, 156),
     700: Color.fromARGB(255, 50, 135, 138),
     800: Color.fromARGB(255, 35, 97, 105),
     900: Color.fromARGB(255, 18, 65, 73),
   });
-  static const int _greenPrimaryValue = 0xFF009688;
+  static const int _bluePrimaryValue = 0xFF12486F;
 
   static const MaterialColor greenAccent =
       MaterialColor(_greenAccentValue, <int, Color>{

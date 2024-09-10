@@ -50,6 +50,8 @@ flutter:
 
   assets:
     - assets/logo_icon.png
+    - assets/logo_icon1152.png
+    - assets/semconsultas.png
 
 flutter_native_splash:
   image: "assets/logo_icon.png"

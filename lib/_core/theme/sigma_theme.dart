@@ -25,10 +25,9 @@ class SigmaTheme {
       800: Color(0xFF193969),
       900: Color(0xFF193969),
     }),
-    
     indicatorColor: const Color.fromARGB(255, 25, 57, 105),
     // Cor do icone principal
-    primaryIconTheme: IconThemeData(color: SigmaColors.blue.shade400),
+    primaryIconTheme: const IconThemeData(color: SigmaColors.blue),
 
     // Tema dos FloatingActionButton
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
@@ -56,7 +55,7 @@ class SigmaTheme {
 
     // Tema dos Dividers
     dividerTheme: const DividerThemeData(
-      color: Color.fromARGB(255, 25, 57, 105),
+      color: Color.fromARGB(255, 18, 72, 111),
     ),
 
     // Tema dos TextFormFields
@@ -64,5 +63,24 @@ class SigmaTheme {
       iconColor: Colors.black,
       labelStyle: TextStyle(color: Colors.black),
     ),
+    iconButtonTheme: IconButtonThemeData(
+      style: ButtonStyle(
+        foregroundColor: WidgetStateProperty.all(Colors.black),
+      ),
+    ),
+
+
+    colorScheme: ColorScheme.fromSwatch(primarySwatch: const MaterialColor(0xFF193969, {
+      50: Color(0xFF193969),
+      100: Color(0xFF193969),
+      200: Color(0xFF193969),
+      300: Color(0xFF193969),
+      400: Color(0xFF193969),
+      500: Color(0xFF193969),
+      600: Color(0xFF193969),
+      700: Color(0xFF193969),
+      800: Color(0xFF193969),
+      900: Color(0xFF193969),
+    })),
   );
 }

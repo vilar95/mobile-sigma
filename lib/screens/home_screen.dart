@@ -15,19 +15,22 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: SigmaColors.blue.shade400,
+      backgroundColor: SigmaColors.blue,
       drawer: DrawerWidget(user: widget.user),
       appBar: AppBar(
         title: const Row(
           children: [
-            Text('Saúde Notícias'),
+            Text(
+              'Notícias da Saúde',
+              style: TextStyle(color: Colors.black, fontSize: 28),
+            ),
           ],
         ),
       ),
       body: const Center(
         child: Text(
-          'Bem-vindo à tela de dashboard!',
-          style: TextStyle(fontSize: 24),
+          'Bem-vindo à tela de Notícias da Saúde! Não há notícias ):',
+          style: TextStyle(fontSize: 24, color: Colors.white),
           textAlign: TextAlign.center,
         ),
       ),
