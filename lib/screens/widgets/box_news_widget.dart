@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:sigma/screens/widgets/show_custom_snackbar.dart';
 
 class BoxNewsWidget extends StatefulWidget {
@@ -16,9 +17,9 @@ class BoxNewsWidget extends StatefulWidget {
 }
 
 class _BoxNewsWidgetState extends State<BoxNewsWidget> {
-
   @override
   Widget build(BuildContext context) {
+  final formattedDate = DateFormat('dd/MM/yy').format(widget.date!);  
     return GestureDetector(
       onTap: _launchURL,
       child: Container(
@@ -62,6 +63,14 @@ class _BoxNewsWidgetState extends State<BoxNewsWidget> {
                         fontWeight: FontWeight.normal,
                       ),
                     ),
+                    Text(
+                      formattedDate,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.normal,
+                      ),
+                      textAlign: TextAlign.right,
+                    ),
                   ],
                 ),
               ),
@@ -73,7 +82,7 @@ class _BoxNewsWidgetState extends State<BoxNewsWidget> {
   }
 
   void _launchURL() async {
-    final siteAddress = widget.url;
+    widget.url;
     //if (siteAddress != null && await canLaunch(siteAddress)) {
       //await url_launcher.launch(siteAddress);
     //} else {

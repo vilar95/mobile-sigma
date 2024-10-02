@@ -122,6 +122,16 @@ class DrawerWidget extends StatelessWidget {
               showConfirmLogoutDialog(context: context);
             },
           ),
+            const SizedBox(height: 220,),
+            Container(
+            alignment: Alignment.bottomCenter,
+            padding: const EdgeInsets.all(16.0),
+            child: const Text(
+              'Desenvolvido por: SIGMA\nCopyright ©. Todos os direitos reservados.',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 14, color: Colors.grey),
+            ),
+            ),
         ],
       ),
     );
