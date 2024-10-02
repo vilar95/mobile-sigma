@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class Schedule {
   String idPatient;
   String patientName;
@@ -8,32 +10,76 @@ class Schedule {
   Schedule({
     required this.idPatient,
     required this.patientName,
+    required this.addressPatient,
     required this.dateScheduled,
     required this.hourScheduled,
-    required this.addressPatient,
   });
-  Schedule.fromMap(Map<String, dynamic> map)
-      : idPatient = map['idPatient'],
-        patientName = map['patientName'],
-        addressPatient = map['addressPatient'],
-        dateScheduled = DateTime(
-          map['appointmentDate'].day,
-          map['appointmentDate'].month,
-          map['appointmentDate'].year,
-        ),
-        hourScheduled = DateTime.now();
+
+  
+
+  Schedule copyWith({
+    String? idPatient,
+    String? patientName,
+    String? addressPatient,
+    DateTime? dateScheduled,
+    DateTime? hourScheduled,
+  }) {
+    return Schedule(
+      idPatient: idPatient ?? this.idPatient,
+      patientName: patientName ?? this.patientName,
+      addressPatient: addressPatient ?? this.addressPatient,
+      dateScheduled: dateScheduled ?? this.dateScheduled,
+      hourScheduled: hourScheduled ?? this.hourScheduled,
+    );
+  }
 
   Map<String, dynamic> toMap() {
-    return {
+    return <String, dynamic>{
       'idPatient': idPatient,
       'patientName': patientName,
-      'appointmentDate': dateScheduled,
-      'appointmentHour': hourScheduled,
       'addressPatient': addressPatient,
+      'dateScheduled': dateScheduled.millisecondsSinceEpoch,
+      'hourScheduled': hourScheduled.millisecondsSinceEpoch,
     };
   }
 
-  void scheduleConsultation() {}
+  factory Schedule.fromMap(Map<String, dynamic> map) {
+    return Schedule(
+      idPatient: map['idPatient'] as String,
+      patientName: map['patientName'] as String,
+      addressPatient: map['addressPatient'] as String,
+      dateScheduled: DateTime.fromMillisecondsSinceEpoch(map['dateScheduled'] as int),
+      hourScheduled: DateTime.fromMillisecondsSinceEpoch(map['hourScheduled'] as int),
+    );
+  }
 
-  void cancelConsultation() {}
+  String toJson() => json.encode(toMap());
+
+  factory Schedule.fromJson(String source) => Schedule.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  String toString() {
+    return 'Schedule(idPatient: $idPatient, patientName: $patientName, addressPatient: $addressPatient, dateScheduled: $dateScheduled, hourScheduled: $hourScheduled)';
+  }
+
+  @override
+  bool operator ==(covariant Schedule other) {
+    if (identical(this, other)) return true;
+  
+    return 
+      other.idPatient == idPatient &&
+      other.patientName == patientName &&
+      other.addressPatient == addressPatient &&
+      other.dateScheduled == dateScheduled &&
+      other.hourScheduled == hourScheduled;
+  }
+
+  @override
+  int get hashCode {
+    return idPatient.hashCode ^
+      patientName.hashCode ^
+      addressPatient.hashCode ^
+      dateScheduled.hashCode ^
+      hourScheduled.hashCode;
+  }
 }
