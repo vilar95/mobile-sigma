@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sigma/_core/theme/sigma_colors.dart';
 import 'package:sigma/authentication/services/model/mock_user.dart';
+import 'package:sigma/screens/widgets/box_news_widget.dart';
 import 'package:sigma/screens/widgets/drawer_widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -27,11 +28,100 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-      body: const Center(
-        child: Text(
-          'Bem-vindo à tela de Notícias da Saúde! Não há notícias ):',
-          style: TextStyle(fontSize: 24, color: Colors.white),
-          textAlign: TextAlign.center,
+      body: Container(
+        margin: const EdgeInsets.all(10),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                BoxNewsWidget(
+                  title: 'Notícia da Saúde',
+                  description: 'Descrição da notícia da saúde',
+                  imageUrl: Image.asset('assets/logo_icon.png', width: 150),
+                  date: DateTime.now(),
+                  url: "https://www.google.com",
+                ),
+                BoxNewsWidget(
+                  title: 'Notícia da Saúde',
+                  description: 'Descrição da notícia da saúde',
+                  imageUrl: Image.asset('assets/logo_icon.png', width: 150),
+                  date: DateTime.now(),
+                ),
+                BoxNewsWidget(
+                  title: 'Notícia da Saúde',
+                  description: 'Descrição da notícia da saúde',
+                  imageUrl: Image.asset('assets/logo_icon.png', width: 150),
+                  date: DateTime.now(),
+                ),
+                BoxNewsWidget(
+                  title: 'Notícia da Saúde',
+                  description: 'Descrição da notícia da saúde',
+                  imageUrl: Image.asset('assets/logo_icon.png', width: 150),
+                  date: DateTime.now(),
+                ),
+                BoxNewsWidget(
+                  title: 'Notícia da Saúde',
+                  description: 'Descrição da notícia da saúde',
+                  imageUrl: Image.asset('assets/logo_icon.png', width: 150),
+                  date: DateTime.now(),
+                ),
+                BoxNewsWidget(
+                  title: 'Notícia da Saúde',
+                  description: 'Descrição da notícia da saúde',
+                  imageUrl: Image.asset('assets/logo_icon.png', width: 150),
+                  date: DateTime.now(),
+                ),
+                BoxNewsWidget(
+                  title: 'Notícia da Saúde',
+                  description: 'Descrição da notícia da saúde',
+                  imageUrl: Image.asset('assets/logo_icon.png', width: 150),
+                  date: DateTime.now(),
+                ),
+                BoxNewsWidget(
+                  title: 'Notícia da Saúde',
+                  description: 'Descrição da notícia da saúde',
+                  imageUrl: Image.asset('assets/logo_icon.png', width: 150),
+                  date: DateTime.now(),
+                ),
+                BoxNewsWidget(
+                  title: 'Notícia da Saúde',
+                  description: 'Descrição da notícia da saúde',
+                  imageUrl: Image.asset('assets/logo_icon.png', width: 150),
+                  date: DateTime.now(),
+                ),
+                BoxNewsWidget(
+                  title: 'Notícia da Saúde',
+                  description: 'Descrição da notícia da saúde',
+                  imageUrl: Image.asset('assets/logo_icon.png', width: 150),
+                  date: DateTime.now(),
+                ),
+                BoxNewsWidget(
+                  title: 'Notícia da Saúde',
+                  description: 'Descrição da notícia da saúde',
+                  imageUrl: Image.asset('assets/logo_icon.png', width: 150),
+                  date: DateTime.now(),
+                ),
+                BoxNewsWidget(
+                  title: 'Notícia da Saúde',
+                  description: 'Descrição da notícia da saúde',
+                  imageUrl: Image.asset('assets/logo_icon.png', width: 150),
+                  date: DateTime.now(),
+                ),
+                BoxNewsWidget(
+                  title: 'Notícia da Saúde',
+                  description: 'Descrição da notícia da saúde',
+                  imageUrl: Image.asset('assets/logo_icon.png', width: 150),
+                  date: DateTime.now(),
+                ),
+                BoxNewsWidget(
+                  title: 'Notícia da Saúde',
+                  description: 'Descrição da notícia da saúde',
+                  imageUrl: Image.asset('assets/logo_icon.png', width: 150),
+                  date: DateTime.now(),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
