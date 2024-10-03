@@ -67,8 +67,8 @@ class _SplashScreenState extends State<SplashScreen> {
         Navigator.of(context).pushReplacement(
           sliderRouteTransition(
             const AuthScreen(),
-            duration: const Duration(milliseconds: 1000),
-            beginPosition: const Offset(1, 0)
+            duration: const Duration(milliseconds: 500),
+            beginPosition: const Offset(0, 0)
           ),
         );
       },
