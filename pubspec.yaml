@@ -28,10 +28,12 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  brasil_fields: ^1.15.0
   flutter:
     sdk: flutter
   intl: ^0.19.0
   mobx: ^2.3.3+2
+  flutter_multi_formatter: ^2.1.0
 
 dev_dependencies:
   build_runner: ^2.4.13
