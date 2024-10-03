@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'login_controller.dart';
+part of 'auth_screen_controller.dart';
 
 // **************************************************************************
 // StoreGenerator
@@ -8,9 +8,9 @@ part of 'login_controller.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
-mixin _$LoginController on _LoginControllerBase, Store {
+mixin _$AuthScreenController on AuthScreenControllerBase, Store {
   late final _$emailAtom =
-      Atom(name: '_LoginControllerBase.email', context: context);
+      Atom(name: 'AuthScreenControllerBase.email', context: context);
 
   @override
   String get email {
@@ -26,7 +26,7 @@ mixin _$LoginController on _LoginControllerBase, Store {
   }
 
   late final _$passwordAtom =
-      Atom(name: '_LoginControllerBase.password', context: context);
+      Atom(name: 'AuthScreenControllerBase.password', context: context);
 
   @override
   String get password {
@@ -42,7 +42,7 @@ mixin _$LoginController on _LoginControllerBase, Store {
   }
 
   late final _$isLoadingAtom =
-      Atom(name: '_LoginControllerBase.isLoading', context: context);
+      Atom(name: 'AuthScreenControllerBase.isLoading', context: context);
 
   @override
   bool get isLoading {
@@ -58,7 +58,7 @@ mixin _$LoginController on _LoginControllerBase, Store {
   }
 
   late final _$errorMessageAtom =
-      Atom(name: '_LoginControllerBase.errorMessage', context: context);
+      Atom(name: 'AuthScreenControllerBase.errorMessage', context: context);
 
   @override
   String get errorMessage {
@@ -74,35 +74,35 @@ mixin _$LoginController on _LoginControllerBase, Store {
   }
 
   late final _$loginAsyncAction =
-      AsyncAction('_LoginControllerBase.login', context: context);
+      AsyncAction('AuthScreenControllerBase.login', context: context);
 
   @override
   Future<void> login() {
     return _$loginAsyncAction.run(() => super.login());
   }
 
-  late final _$_LoginControllerBaseActionController =
-      ActionController(name: '_LoginControllerBase', context: context);
+  late final _$AuthScreenControllerBaseActionController =
+      ActionController(name: 'AuthScreenControllerBase', context: context);
 
   @override
   void setEmail(String value) {
-    final _$actionInfo = _$_LoginControllerBaseActionController.startAction(
-        name: '_LoginControllerBase.setEmail');
+    final _$actionInfo = _$AuthScreenControllerBaseActionController.startAction(
+        name: 'AuthScreenControllerBase.setEmail');
     try {
       return super.setEmail(value);
     } finally {
-      _$_LoginControllerBaseActionController.endAction(_$actionInfo);
+      _$AuthScreenControllerBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void setPassword(String value) {
-    final _$actionInfo = _$_LoginControllerBaseActionController.startAction(
-        name: '_LoginControllerBase.setPassword');
+    final _$actionInfo = _$AuthScreenControllerBaseActionController.startAction(
+        name: 'AuthScreenControllerBase.setPassword');
     try {
       return super.setPassword(value);
     } finally {
-      _$_LoginControllerBaseActionController.endAction(_$actionInfo);
+      _$AuthScreenControllerBaseActionController.endAction(_$actionInfo);
     }
   }
 

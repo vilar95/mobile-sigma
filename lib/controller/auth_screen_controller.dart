@@ -1,10 +1,10 @@
 import 'package:mobx/mobx.dart';
 
-part 'login_controller.g.dart';
+part 'auth_screen_controller.g.dart';
 
-class LoginController = _LoginControllerBase with _$LoginController;
+class AuthScreenController = AuthScreenControllerBase with _$AuthScreenController;
 
-abstract class _LoginControllerBase with Store {
+abstract class AuthScreenControllerBase with Store {
   @observable
   String email = '';
 
