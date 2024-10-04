@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sigma/_core/theme/sigma_colors.dart';
-import 'package:sigma/authentication/services/model/mock_user.dart';
+import 'package:sigma/authentication/model/mock_user.dart';
 import 'package:sigma/screens/widgets/box_news_widget.dart';
 import 'package:sigma/screens/widgets/drawer_widget.dart';
 

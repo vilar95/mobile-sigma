@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sigma/authentication/services/model/mock_user.dart';
+import 'package:sigma/authentication/model/mock_user.dart';
 import 'package:sigma/screens/auth_screen.dart';
 import 'package:sigma/screens/home_screen.dart';
 import 'package:sigma/screens/my_schedule_screen.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sigma/_core/routes/sigma_routes.dart';
 import 'package:sigma/_core/theme/sigma_colors.dart';
-import 'package:sigma/authentication/services/model/mock_user.dart';
+import 'package:sigma/authentication/model/mock_user.dart';
 import 'package:sigma/screens/widgets/show_confirm_logout_dialog.dart';
 import 'package:sigma/screens/widgets/show_confirm_password_dialog.dart';
 
