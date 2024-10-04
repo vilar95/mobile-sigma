@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_formatter/formatters/masked_input_formatter.dart';
 import 'package:sigma/_core/theme/sigma_colors.dart';
+import 'package:sigma/authentication/services/api.dart';
 import 'package:sigma/authentication/services/auth_service.dart';
 import 'package:sigma/controller/auth_screen_controller.dart';
 import 'package:sigma/screens/widgets/show_confirm_register_dialog.dart';
@@ -197,11 +198,13 @@ class _AuthScreenState extends State<AuthScreen> {
                           foregroundColor: WidgetStatePropertyAll(Colors.white),
                         ),
                         onPressed: () {
-                          controller.isAuthentication
-                              ? handleSendButtonClicked()
-                              : showConfirmRegisterDialog(
-                                  context: context,
-                                  email: _emailController.text);
+                          postHttp();
+                          
+                          // controller.isAuthentication
+                          //     ? handleSendButtonClicked()
+                          //     : showConfirmRegisterDialog(
+                          //         context: context,
+                          //         email: _emailController.text);
                         },
                         child: Text(
                           controller.isAuthentication ? "Entrar" : "Cadastrar",

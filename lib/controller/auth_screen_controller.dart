@@ -17,13 +17,22 @@ abstract class AuthScreenControllerBase with Store {
   String name = '';
 
   @observable
+  String birthDate = '';
+
+  @observable
   String phone = '';
+
+  @observable
+  String gender = '';
 
   @observable
   String address = '';
 
   @observable
   String cpf = '';
+
+  @observable
+  String cidCard = '';
 
   @observable
   bool isLoading = false;
@@ -62,6 +71,22 @@ abstract class AuthScreenControllerBase with Store {
   @action
   void setCpf(String value) {
     cpf = value;
+  }
+
+  @action
+  void setBirthDate(String value) {
+    birthDate = value;
+  }
+
+  @action
+  void setGender(String value) {
+    gender = value;
+  }
+
+  @action
+
+  void setCidCard(String value) {
+    cidCard = value;
   }
 
   @action
@@ -127,4 +152,3 @@ abstract class AuthScreenControllerBase with Store {
       address.isNotEmpty &&
       cpf.isNotEmpty;
 }
-
