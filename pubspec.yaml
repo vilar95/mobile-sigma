@@ -64,6 +64,7 @@ flutter:
     - assets/logo_icon1152.png
     - assets/semconsultas.png
     - assets/profile_picture.png
+    - assets/new_hospital.png
 
 flutter_native_splash:
   image: "assets/logo_icon.png"

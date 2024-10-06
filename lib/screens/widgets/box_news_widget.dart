@@ -10,7 +10,12 @@ class BoxNewsWidget extends StatefulWidget {
   final String? url;
 
   const BoxNewsWidget(
-      {super.key, this.title, this.description, this.imageUrl, this.date, this.url});
+      {super.key,
+      this.title,
+      this.description,
+      this.imageUrl,
+      this.date,
+      this.url});
 
   @override
   State<BoxNewsWidget> createState() => _BoxNewsWidgetState();
@@ -19,7 +24,7 @@ class BoxNewsWidget extends StatefulWidget {
 class _BoxNewsWidgetState extends State<BoxNewsWidget> {
   @override
   Widget build(BuildContext context) {
-  final formattedDate = DateFormat('dd/MM/yy').format(widget.date!);  
+    final formattedDate = DateFormat('dd/MM/yy').format(widget.date!);
     return GestureDetector(
       onTap: _launchURL,
       child: Container(
@@ -42,7 +47,11 @@ class _BoxNewsWidgetState extends State<BoxNewsWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              widget.imageUrl!,
+                SizedBox(
+                width: 150,
+                height: 150,
+                child: widget.imageUrl!,
+                ),
               const SizedBox(width: 10),
               Flexible(
                 fit: FlexFit.loose,
@@ -50,6 +59,8 @@ class _BoxNewsWidgetState extends State<BoxNewsWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
                       widget.title!,
                       style: const TextStyle(
                         fontSize: 20,
@@ -58,6 +69,8 @@ class _BoxNewsWidgetState extends State<BoxNewsWidget> {
                     ),
                     Text(
                       widget.description!,
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.normal,
@@ -84,13 +97,13 @@ class _BoxNewsWidgetState extends State<BoxNewsWidget> {
   void _launchURL() async {
     widget.url;
     //if (siteAddress != null && await canLaunch(siteAddress)) {
-      //await url_launcher.launch(siteAddress);
+    //await url_launcher.launch(siteAddress);
     //} else {
-      showCustomSnackBar(
-        context: context,
-        message: 'Não foi possível abrir o site, tente mais tarde',
-        duration: const Duration(seconds: 5),
-      );
-    }
+    showCustomSnackBar(
+      context: context,
+      message: 'Não foi possível abrir o site, tente mais tarde',
+      duration: const Duration(seconds: 5),
+    );
   }
+}
 //}
