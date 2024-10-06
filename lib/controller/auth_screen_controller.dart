@@ -1,8 +1,11 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:sigma/_core/routes/sigma_routes.dart';
 import 'package:sigma/authentication/services/dio_service.dart';
+import 'package:sigma/screens/widgets/show_confirm_register_dialog.dart';
 
 part 'auth_screen_controller.g.dart';
 
@@ -27,22 +30,43 @@ abstract class AuthScreenControllerBase with Store {
   String name = '';
 
   @observable
+  String? nameError;
+
+  @observable
   String birthDate = '';
+
+  @observable
+  String? birthDateError;
 
   @observable
   String phone = '';
 
   @observable
+  String? phoneError;
+
+  @observable
   String gender = '';
+
+  @observable
+  String? genderError;
 
   @observable
   String address = '';
 
   @observable
+  String? addressError;
+
+  @observable
   String cpf = '';
 
   @observable
-  String cidCard = '';
+  String? cpfError;
+
+  @observable
+  String cidcard = '';
+
+  @observable
+  String? cidcardError;
 
   @observable
   bool isLoading = false;
@@ -51,7 +75,7 @@ abstract class AuthScreenControllerBase with Store {
   bool isAuthentication = true;
 
   @observable
-  String errorMessage = '';
+  String? errorMessage;
 
   @action
   void setEmail(String value) {
@@ -95,7 +119,7 @@ abstract class AuthScreenControllerBase with Store {
 
   @action
   void setCidCard(String value) {
-    cidCard = value;
+    cidcard = value;
   }
 
   @action
@@ -138,8 +162,8 @@ abstract class AuthScreenControllerBase with Store {
         final response = await dioService.postLogin(email, password);
         print(response);
         if (response.statusCode == 200) {
-          print('Muda de telaaaaaaaaaaaaaaaaaaaaaaaa');
           Navigator.pushNamed(context, SigmaRoutes.home);
+          
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -158,20 +182,20 @@ abstract class AuthScreenControllerBase with Store {
   @action
   void validateName(String value) {
     if (value.isEmpty) {
-      errorMessage = 'Campo obrigatório';
+      nameError = 'Campo obrigatório';
     }
     if (value.length < 3) {
-      errorMessage = 'Nome inválido';
+      nameError = 'Nome inválido';
     }
   }
 
   @action
   void validatePhone(String value) {
     if (value.isEmpty) {
-      errorMessage = 'Campo obrigatório';
+      phoneError = 'Campo obrigatório';
     }
     if (value.length < 11) {
-      errorMessage = 'Telefone inválido';
+      phoneError = 'Telefone inválido';
     }
   }
 
@@ -181,18 +205,90 @@ abstract class AuthScreenControllerBase with Store {
     if (length == 11) {
       setCpf(value);
     }
-    errorMessage = 'CPF inválido';
+    cpfError = 'CPF inválido';
   }
 
-  @computed
-  bool get isFormValid =>
-      email.isNotEmpty &&
-      password.isNotEmpty &&
-      name.isNotEmpty &&
-      phone.isNotEmpty &&
-      address.isNotEmpty &&
-      cpf.isNotEmpty;
+  @action
+  void validateCidCard(String value) {
+    if (value.isEmpty) {
+      cidcardError = 'Campo obrigatório';
+    }
+    if (value.length < 9) {
+      cidcardError = 'RG inválido';
+    }
+  }
 
-  @computed
-  bool get isValid => password != '' && email != '';
+  @action
+  void validateBirthDate(String value) {
+    if (value.isEmpty) {
+      birthDateError = 'Campo obrigatório';
+    }
+    if (value.length < 10) {
+      birthDateError = 'Data inválida';
+    }
+  }
+
+  @action
+  void validateAddress(String value) {
+    if (value.isEmpty) {
+      addressError = 'Campo obrigatório';
+    }
+    if (value.length < 10) {
+      addressError = 'Endereço inválido';
+    }
+  }
+
+  @action
+  Future<void> register(
+    BuildContext context,
+    String email,
+    String password,
+    String name,
+    String birthDate,
+    String gender,
+    String cpf,
+    String cidcard,
+    String address,
+    //String phone,
+  ) async {
+    if (isAuthentication) {
+      isLoading = true;
+      try {
+        validateEmail(email);
+        validatePassword(password);
+        validateName(name);
+        validateBirthDate(birthDate);
+        validateCidCard(cidcard);
+        validateAddress(address);
+        detectTypeDoc(cpf);
+        //validatePhone(phone);
+
+        final response = await dioService.postRegister(
+          email,
+          password,
+          name,
+          birthDate,
+          gender,
+          cpf,
+          cidcard,
+          address
+          //phone,
+        );
+        if (response.statusCode == 200) {
+          print('Cadastro realizado com sucesso');
+          showConfirmRegisterDialog(context: context, email: email);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content:
+                    Text('Erro ao fazer cadastro. Verifique suas informações.')),
+          );
+        }
+      } catch (e) {
+        errorMessage = 'Erro durante o cadastro: $e';
+      } finally {
+        isLoading = false;
+      }
+    }
+  }
 }

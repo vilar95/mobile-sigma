@@ -44,9 +44,59 @@ class DioService {
       }
     } on Exception catch (e) {
       print('Erro inesperado: $e');
-      
     }
     throw Exception('Erro ao fazer login');
+  }
+
+  Future<Response> postRegister(
+    String email,
+    String password,
+    String name,
+    String birthDate,
+    String gender,
+    String cpf,
+    String cidcard,
+    String address,
+    //String phone,
+  ) async {
+    print('${DioEndpoints.baseUrl}/cadastrar/paciente');
+    try {
+      final postApi = await _dio.post(
+        "${DioEndpoints.baseUrl}/cadastrar/paciente",
+        data: {
+          "email": email,
+          // sigma@uscs.com.br
+          "password": password,
+          // 123@Mudar
+          "name": name,
+          "data_nascimento": birthDate,
+          "genero": gender,
+          "cpf": cpf,
+          "cid_card": cidcard,
+          "endereco": address,
+          //"telefone": phone,
+        },
+      );
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('apiResponse', postApi.data.toString());
+      prefs.getString('apiResponse');
+      print('login: $email, senha: $password');
+      print('apiResponse: ${postApi.data}');
+      print('apiResponse: ${postApi.data.runtimeType}');
+
+      return postApi;
+    } on DioException catch (e) {
+      if (e.response != null) {
+        print('Dados da resposta: ${e.response!.data}');
+        print('Cabeçalhos da resposta: ${e.response!.headers}');
+        print('Status code: ${e.response!.statusCode}');
+      } else {
+        print('Erro sem resposta: ${e.requestOptions}');
+      }
+    } on Exception catch (e) {
+      print('Erro inesperado: $e');
+    }
+    throw Exception('Erro ao fazer o cadastro.');
   }
 
   // Future<String?> saveLocalToServer(AppDatabase appdatabase) async {
