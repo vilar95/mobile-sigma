@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sigma/authentication/services/dio_endpoints.dart';
-import 'package:sigma/authentication/services/dio_interceptor.dart';
-import 'package:sigma/data/database.dart';
 
 class DioService {
   final Dio _dio = Dio(
@@ -16,70 +13,102 @@ class DioService {
     ),
   );
 
-  DioService() {
-    _dio.interceptors.add(DioInterceptor());
-  }
-
-  Future<String?> saveLocalToServer(AppDatabase appdatabase) async {
-    Map<String, dynamic> localData =
-        await LocalDataHandler().localDataToMap(appdatabase: appdatabase);
+  Future<Response> postLogin(String email, String password) async {
+    print('${DioEndpoints.baseUrl}/login/paciente');
     try {
-      await _dio.put(
-        DioEndpoints.scheduleLists,
-        data: json.encode(
-          localData["scheduleLists"],
-        ),
+      final postApi = await _dio.post(
+        "${DioEndpoints.baseUrl}/login/paciente",
+        data: {
+          "email": email,
+          // sigma@uscs.com.br
+          "password": password,
+          // 123@Mudar
+        },
       );
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('apiResponse', postApi.data.toString());
+      prefs.getString('apiResponse');
+      print('login: $email, senha: $password');
+      print('apiResponse: ${postApi.data}');
+      print('apiResponse: ${postApi.data.runtimeType}');
+      print('FOOOOOOOOOOOOOOOOOOOOOOI');
+      return postApi;
     } on DioException catch (e) {
-      if (e.response != null && e.response!.data != null) {
-        return e.response!.data!.toString();
+      if (e.response != null) {
+        print('Dados da resposta: ${e.response!.data}');
+        print('Cabeçalhos da resposta: ${e.response!.headers}');
+        print('Status code: ${e.response!.statusCode}');
+        print('erroooooooooooooooooooooooooooooooooooo');
       } else {
-        return e.message;
+        print('Erro sem resposta: ${e.requestOptions}');
       }
-    } on Exception {
-      return "Um erro aconteceu!";
+    } on Exception catch (e) {
+      print('Erro inesperado: $e');
+      
     }
-    return null;
+    throw Exception('Erro ao fazer login');
   }
 
-  getDataFromServer(AppDatabase appDatabase) async {
-    Response response = await _dio.get(
-      DioEndpoints.scheduleLists,
-      queryParameters: {
-        "orderBy": '"name"',
-        "startAt": 0,
-      },
-    );
-    // print(response.statusCode);
-    // print(response.headers.toString());
-    // print(response.data);
-    // print(response.data.runtimeType);
+  // Future<String?> saveLocalToServer(AppDatabase appdatabase) async {
+  //   Map<String, dynamic> localData =
+  //       await LocalDataHandler().localDataToMap(appdatabase: appdatabase);
+  //   try {
+  //     await _dio.put(
+  //       DioEndpoints.scheduleLists,
+  //       data: json.encode(
+  //         localData["scheduleLists"],
+  //       ),
+  //     );
+  //   } on DioException catch (e) {
+  //     if (e.response != null && e.response!.data != null) {
+  //       return e.response!.data!.toString();
+  //     } else {
+  //       return e.message;
+  //     }
+  //   } on Exception {
+  //     return "Um erro aconteceu!";
+  //   }
+  //   return null;
+  // }
 
-    if (response.data != null) {
-      Map<String, dynamic> map = {};
+  // getDataFromServer(AppDatabase appDatabase) async {
+  //   Response response = await _dio.get(
+  //     DioEndpoints.scheduleLists,
+  //     queryParameters: {
+  //       "orderBy": '"name"',
+  //       "startAt": 0,
+  //     },
+  //   );
+  //   // print(response.statusCode);
+  //   // print(response.headers.toString());
+  //   // print(response.data);
+  //   // print(response.data.runtimeType);
 
-      if (response.data.runtimeType == List) {
-        if ((response.data as List<dynamic>).isNotEmpty) {
-          map["scheduleLists"] = response.data;
-        }
-      } else {
-        List<Map<String, dynamic>> tempList = [];
+  //   if (response.data != null) {
+  //     Map<String, dynamic> map = {};
 
-        for (var mapResponse in (response.data as Map).values) {
-          tempList.add(mapResponse);
-        }
-        map["scheduleLists"] = tempList;
-      }
-      await LocalDataHandler().mapToLocalData(
-        map: map,
-        appdatabase: appDatabase,
-      );
-    }
-  }
+  //     if (response.data.runtimeType == List) {
+  //       if ((response.data as List<dynamic>).isNotEmpty) {
+  //         map["scheduleLists"] = response.data;
+  //       }
+  //     } else {
+  //       List<Map<String, dynamic>> tempList = [];
 
-  Future<void> clearServerData() async {
-    await _dio.delete(
-      DioEndpoints.scheduleLists,
-    );
-  }
+  //       for (var mapResponse in (response.data as Map).values) {
+  //         tempList.add(mapResponse);
+  //       }
+  //       map["scheduleLists"] = tempList;
+  //     }
+  //     await LocalDataHandler().mapToLocalData(
+  //       map: map,
+  //       appdatabase: appDatabase,
+  //     );
+  //   }
+  // }
+
+  // Future<void> clearServerData() async {
+  //   await _dio.delete(
+  //     DioEndpoints.scheduleLists,
+  //   );
+  // }
 }

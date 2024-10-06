@@ -12,7 +12,7 @@ showConfirmRegisterDialog({
         icon: const Icon(Icons.check_circle_outline_rounded,
             color: Colors.green, size: 80),
         title: const Text(
-          'Solicitação de cadastro realizada com sucesso!',
+          'Cadastro realizado com sucesso!',
           textAlign: TextAlign.center,
         ),
         content: SizedBox(
@@ -22,7 +22,7 @@ showConfirmRegisterDialog({
               Text.rich(
                 TextSpan(
                   children: [
-                    const TextSpan(text: "Aguarde a confirmação no "),
+                    const TextSpan(text: "Faça o login com o e-mail: "),
                     TextSpan(
                       text: email,
                       style: const TextStyle(fontWeight: FontWeight.bold),

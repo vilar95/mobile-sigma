@@ -1,5 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:brasil_fields/brasil_fields.dart';
+import 'package:sigma/_core/routes/sigma_routes.dart';
+import 'package:sigma/authentication/services/dio_service.dart';
 
 part 'auth_screen_controller.g.dart';
 
@@ -7,11 +10,18 @@ class AuthScreenController = AuthScreenControllerBase
     with _$AuthScreenController;
 
 abstract class AuthScreenControllerBase with Store {
+  final dioService = DioService();
   @observable
   String email = '';
 
   @observable
+  String? emailError;
+
+  @observable
   String password = '';
+
+  @observable
+  String? passwordError;
 
   @observable
   String name = '';
@@ -84,28 +94,64 @@ abstract class AuthScreenControllerBase with Store {
   }
 
   @action
-
   void setCidCard(String value) {
     cidCard = value;
   }
 
   @action
   void validateEmail(String value) {
+    email = value;
     if (value.isEmpty) {
-      errorMessage = 'Campo obrigatório';
+      emailError = 'Campo obrigatório';
+    } else {
+      emailError = null;
     }
     if (!value.contains('@') && !value.contains('.com') && value.length < 10) {
-      errorMessage = 'Email inválido!';
+      emailError = 'Email inválido!';
+    } else {
+      emailError = null;
     }
   }
 
   @action
   void validatePassword(String value) {
-    if (!RegExp(r'^(?=.?[A-Z])(?=.?[a-z])(?=.*?[0-9])^.{6,10}$')
-        .hasMatch(value)) {
-      errorMessage =
-          'Senha deve conter entre 6 e 10 caracteres incluindo letras maiúsculas, minúsculas e números.';
-      return;
+    password = value;
+    if (value.isEmpty ||
+        !RegExp(r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,20}$')
+            .hasMatch(value)) {
+      passwordError =
+          'A senha deve ser maior que 8 caracteres incluindo letras maiúsculas, minúsculas e números.';
+    } else {
+      passwordError = null;
+    }
+  }
+
+  @action
+  Future<void> login(
+      BuildContext context, String email, String password) async {
+    if (isAuthentication) {
+      isLoading = true;
+      try {
+        validateEmail(email);
+        validatePassword(password);
+
+        final response = await dioService.postLogin(email, password);
+        print(response);
+        if (response.statusCode == 200) {
+          print('Muda de telaaaaaaaaaaaaaaaaaaaaaaaa');
+          Navigator.pushNamed(context, SigmaRoutes.home);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content:
+                    Text('Erro ao fazer login. Verifique suas credenciais.')),
+          );
+        }
+      } catch (e) {
+        errorMessage = 'Erro durante o login: $e';
+      } finally {
+        isLoading = false;
+      }
     }
   }
 
@@ -138,11 +184,6 @@ abstract class AuthScreenControllerBase with Store {
     errorMessage = 'CPF inválido';
   }
 
-  @action
-  Future<void> login() async {
-    isLoading = true;
-  }
-
   @computed
   bool get isFormValid =>
       email.isNotEmpty &&
@@ -151,4 +192,7 @@ abstract class AuthScreenControllerBase with Store {
       phone.isNotEmpty &&
       address.isNotEmpty &&
       cpf.isNotEmpty;
+
+  @computed
+  bool get isValid => password != '' && email != '';
 }

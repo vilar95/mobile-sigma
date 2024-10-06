@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_formatter/formatters/masked_input_formatter.dart';
 import 'package:sigma/_core/theme/sigma_colors.dart';
-import 'package:sigma/authentication/services/api.dart';
 import 'package:sigma/authentication/services/auth_service.dart';
 import 'package:sigma/controller/auth_screen_controller.dart';
 import 'package:sigma/screens/widgets/show_confirm_register_dialog.dart';
 import 'package:sigma/screens/widgets/show_custom_snackbar.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -17,14 +17,7 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   final AuthScreenController controller = AuthScreenController();
 
-  final TextEditingController _nomeController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _emailController =
-      TextEditingController(text: "eduardo.vilar@uscsonline.com.br");
-  final TextEditingController _senhaController =
-      TextEditingController(text: "123456");
-  final TextEditingController _confirmaController = TextEditingController();
-    bool _isPasswordVisible = true;
+  bool _isPasswordVisible = true;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -85,7 +78,6 @@ class _AuthScreenState extends State<AuthScreen> {
                         child: Column(
                           children: [
                             TextFormField(
-                              controller: _nomeController,
                               decoration: const InputDecoration(
                                 label: Text("Nome"),
                               ),
@@ -97,15 +89,12 @@ class _AuthScreenState extends State<AuthScreen> {
                               },
                             ),
                             TextFormField(
-                              controller: _phoneController,
                               decoration: const InputDecoration(
                                 label: Text("Telefone"),
-                                                                                                
                               ),
                               inputFormatters: [
                                 MaskedInputFormatter("(##) #####-####"),
                               ],
-                            
                               validator: (value) {
                                 if (value == null || value.length <= 15) {
                                   return "Insira o número de telefone.";
@@ -117,42 +106,41 @@ class _AuthScreenState extends State<AuthScreen> {
                         ),
                       ),
                       TextFormField(
-                        controller: _emailController,
-                        decoration:
-                            const InputDecoration(label: Text("E-mail")),
-                        validator: (value) {
-                          if (value == null || value == "") {
-                            return "O valor de e-mail deve ser preenchido";
-                          }
-                          if (!value.contains("@") ||
-                              !value.contains(".") ||
-                              value.length < 4) {
-                            return "O valor do e-mail deve ser válido";
-                          }
-                          return null;
-                        },
-                      ),
-                      TextFormField(
-                        controller: _senhaController,
-                        obscureText: _isPasswordVisible,
+                        onChanged: (value) => controller.email = value,
                         decoration: InputDecoration(
-                          label: const Text("Senha"),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _isPasswordVisible ? Icons.visibility_outlined : Icons.visibility_off_outlined,
-                            ),
-                            onPressed: () => setState(() {
-                              _isPasswordVisible = !_isPasswordVisible;
-                            }),
+                          label: const Text("E-mail"),
+                            errorText: controller.emailError,
+                            errorMaxLines: 3,
+                          errorStyle: const TextStyle(
+                            color: Colors.red,
                           ),
                         ),
-                        validator: (value) {
-                          if (value == null || value.length < 4) {
-                            return "Insira uma senha válida.";
-                          }
-                          return null;
-                        },
-
+                      ),
+                      Observer(
+                        builder: (_) => InkWell(
+                          child: TextFormField(
+                            onChanged: (value) => controller.password = value,
+                            obscureText: _isPasswordVisible,
+                            decoration: InputDecoration(
+                              errorText: controller.passwordError,
+                              errorMaxLines: 3,
+                              errorStyle: const TextStyle(
+                                color: Colors.red,
+                              ),
+                              label: const Text("Senha"),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  _isPasswordVisible
+                                      ? Icons.visibility_outlined
+                                      : Icons.visibility_off_outlined,
+                                ),
+                                onPressed: () => setState(() {
+                                  _isPasswordVisible = !_isPasswordVisible;
+                                }),
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
                       Visibility(
                         visible: controller.isAuthentication,
@@ -171,7 +159,6 @@ class _AuthScreenState extends State<AuthScreen> {
                         child: Column(
                           children: [
                             TextFormField(
-                              controller: _confirmaController,
                               obscureText: true,
                               decoration: const InputDecoration(
                                 label: Text("Confirme a senha"),
@@ -180,7 +167,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                 if (value == null || value.length < 4) {
                                   return "Insira uma confirmação de senha válida.";
                                 }
-                                if (value != _senhaController.text) {
+                                if (value != controller.password) {
                                   return "As senhas devem ser iguais.";
                                 }
                                 return null;
@@ -190,26 +177,37 @@ class _AuthScreenState extends State<AuthScreen> {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      ElevatedButton(
-                        style: const ButtonStyle(
-                          backgroundColor: WidgetStatePropertyAll(
-                            Color.fromARGB(255, 25, 57, 105),
-                          ),
-                          foregroundColor: WidgetStatePropertyAll(Colors.white),
-                        ),
-                        onPressed: () {
-                          postHttp();
-                          
-                          // controller.isAuthentication
-                          //     ? handleSendButtonClicked()
-                          //     : showConfirmRegisterDialog(
-                          //         context: context,
-                          //         email: _emailController.text);
-                        },
-                        child: Text(
-                          controller.isAuthentication ? "Entrar" : "Cadastrar",
-                        ),
-                      ),
+                      Observer(
+                          builder: (_) => InkWell(
+                                child: ElevatedButton(
+                                  style: const ButtonStyle(
+                                    backgroundColor: WidgetStatePropertyAll(
+                                      Color.fromARGB(255, 25, 57, 105),
+                                    ),
+                                    foregroundColor:
+                                        WidgetStatePropertyAll(Colors.white),
+                                  ),
+                                  onPressed: () {
+                                    if (controller.isAuthentication) {
+                                      controller.login(
+                                        context,
+                                        controller.email,
+                                        controller.password,
+                                      );
+                                    } else {
+                                      showConfirmRegisterDialog(
+                                        context: context,
+                                        email: controller.email,
+                                      );
+                                    }
+                                  },
+                                  child: Text(
+                                    controller.isAuthentication
+                                        ? "Entrar"
+                                        : "Cadastrar",
+                                  ),
+                                ),
+                              )),
                       TextButton(
                         onPressed: () {
                           setState(() {
@@ -236,40 +234,8 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 
-  handleSendButtonClicked() {
-    String email = _emailController.text;
-    String senha = _senhaController.text;
-    String nome = _nomeController.text;
-
-    if (_formKey.currentState!.validate()) {
-      if (controller.isAuthentication) {
-        _loginUser(email: email, senha: senha);
-      } else {
-        _createUser(email: email, senha: senha, nome: nome);
-      }
-    }
-  }
-
-  _loginUser({required String email, required String senha}) {
-    showCustomSnackBar(
-      context: context,
-      message: "TODO: Login com e-mail e senha.",
-      isError: false,
-      showContinue: true,
-      duration: const Duration(seconds: 30),
-    );
-  }
-
-  _createUser({
-    required String email,
-    required String senha,
-    required String nome,
-  }) {
-    showConfirmRegisterDialog(context: context, email: email);
-  }
-
   forgotPasswordClicked() {
-    String email = _emailController.text;
+    String email = controller.email;
     showDialog(
       context: context,
       builder: (context) {

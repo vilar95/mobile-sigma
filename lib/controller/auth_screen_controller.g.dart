@@ -16,6 +16,12 @@ mixin _$AuthScreenController on AuthScreenControllerBase, Store {
       (_$isFormValidComputed ??= Computed<bool>(() => super.isFormValid,
               name: 'AuthScreenControllerBase.isFormValid'))
           .value;
+  Computed<bool>? _$isValidComputed;
+
+  @override
+  bool get isValid => (_$isValidComputed ??= Computed<bool>(() => super.isValid,
+          name: 'AuthScreenControllerBase.isValid'))
+      .value;
 
   late final _$emailAtom =
       Atom(name: 'AuthScreenControllerBase.email', context: context);
@@ -30,6 +36,22 @@ mixin _$AuthScreenController on AuthScreenControllerBase, Store {
   set email(String value) {
     _$emailAtom.reportWrite(value, super.email, () {
       super.email = value;
+    });
+  }
+
+  late final _$emailErrorAtom =
+      Atom(name: 'AuthScreenControllerBase.emailError', context: context);
+
+  @override
+  String? get emailError {
+    _$emailErrorAtom.reportRead();
+    return super.emailError;
+  }
+
+  @override
+  set emailError(String? value) {
+    _$emailErrorAtom.reportWrite(value, super.emailError, () {
+      super.emailError = value;
     });
   }
 
@@ -49,6 +71,22 @@ mixin _$AuthScreenController on AuthScreenControllerBase, Store {
     });
   }
 
+  late final _$passwordErrorAtom =
+      Atom(name: 'AuthScreenControllerBase.passwordError', context: context);
+
+  @override
+  String? get passwordError {
+    _$passwordErrorAtom.reportRead();
+    return super.passwordError;
+  }
+
+  @override
+  set passwordError(String? value) {
+    _$passwordErrorAtom.reportWrite(value, super.passwordError, () {
+      super.passwordError = value;
+    });
+  }
+
   late final _$nameAtom =
       Atom(name: 'AuthScreenControllerBase.name', context: context);
 
@@ -65,6 +103,22 @@ mixin _$AuthScreenController on AuthScreenControllerBase, Store {
     });
   }
 
+  late final _$birthDateAtom =
+      Atom(name: 'AuthScreenControllerBase.birthDate', context: context);
+
+  @override
+  String get birthDate {
+    _$birthDateAtom.reportRead();
+    return super.birthDate;
+  }
+
+  @override
+  set birthDate(String value) {
+    _$birthDateAtom.reportWrite(value, super.birthDate, () {
+      super.birthDate = value;
+    });
+  }
+
   late final _$phoneAtom =
       Atom(name: 'AuthScreenControllerBase.phone', context: context);
 
@@ -78,6 +132,22 @@ mixin _$AuthScreenController on AuthScreenControllerBase, Store {
   set phone(String value) {
     _$phoneAtom.reportWrite(value, super.phone, () {
       super.phone = value;
+    });
+  }
+
+  late final _$genderAtom =
+      Atom(name: 'AuthScreenControllerBase.gender', context: context);
+
+  @override
+  String get gender {
+    _$genderAtom.reportRead();
+    return super.gender;
+  }
+
+  @override
+  set gender(String value) {
+    _$genderAtom.reportWrite(value, super.gender, () {
+      super.gender = value;
     });
   }
 
@@ -110,6 +180,22 @@ mixin _$AuthScreenController on AuthScreenControllerBase, Store {
   set cpf(String value) {
     _$cpfAtom.reportWrite(value, super.cpf, () {
       super.cpf = value;
+    });
+  }
+
+  late final _$cidCardAtom =
+      Atom(name: 'AuthScreenControllerBase.cidCard', context: context);
+
+  @override
+  String get cidCard {
+    _$cidCardAtom.reportRead();
+    return super.cidCard;
+  }
+
+  @override
+  set cidCard(String value) {
+    _$cidCardAtom.reportWrite(value, super.cidCard, () {
+      super.cidCard = value;
     });
   }
 
@@ -165,8 +251,8 @@ mixin _$AuthScreenController on AuthScreenControllerBase, Store {
       AsyncAction('AuthScreenControllerBase.login', context: context);
 
   @override
-  Future<void> login() {
-    return _$loginAsyncAction.run(() => super.login());
+  Future<void> login(BuildContext context, String email, String password) {
+    return _$loginAsyncAction.run(() => super.login(context, email, password));
   }
 
   late final _$AuthScreenControllerBaseActionController =
@@ -239,6 +325,39 @@ mixin _$AuthScreenController on AuthScreenControllerBase, Store {
   }
 
   @override
+  void setBirthDate(String value) {
+    final _$actionInfo = _$AuthScreenControllerBaseActionController.startAction(
+        name: 'AuthScreenControllerBase.setBirthDate');
+    try {
+      return super.setBirthDate(value);
+    } finally {
+      _$AuthScreenControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setGender(String value) {
+    final _$actionInfo = _$AuthScreenControllerBaseActionController.startAction(
+        name: 'AuthScreenControllerBase.setGender');
+    try {
+      return super.setGender(value);
+    } finally {
+      _$AuthScreenControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setCidCard(String value) {
+    final _$actionInfo = _$AuthScreenControllerBaseActionController.startAction(
+        name: 'AuthScreenControllerBase.setCidCard');
+    try {
+      return super.setCidCard(value);
+    } finally {
+      _$AuthScreenControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void validateEmail(String value) {
     final _$actionInfo = _$AuthScreenControllerBaseActionController.startAction(
         name: 'AuthScreenControllerBase.validateEmail');
@@ -297,15 +416,21 @@ mixin _$AuthScreenController on AuthScreenControllerBase, Store {
   String toString() {
     return '''
 email: ${email},
+emailError: ${emailError},
 password: ${password},
+passwordError: ${passwordError},
 name: ${name},
+birthDate: ${birthDate},
 phone: ${phone},
+gender: ${gender},
 address: ${address},
 cpf: ${cpf},
+cidCard: ${cidCard},
 isLoading: ${isLoading},
 isAuthentication: ${isAuthentication},
 errorMessage: ${errorMessage},
-isFormValid: ${isFormValid}
+isFormValid: ${isFormValid},
+isValid: ${isValid}
     ''';
   }
 }
