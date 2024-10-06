@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sigma/_core/theme/sigma_colors.dart';
-import 'package:sigma/authentication/model/mock_user.dart';
 import 'package:sigma/screens/widgets/box_news_widget.dart';
 import 'package:sigma/screens/widgets/drawer_widget.dart';
 
 class HomeScreen extends StatefulWidget {
-  final MockUser user;
-  const HomeScreen({super.key, required this.user});
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -17,7 +15,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: SigmaColors.blue,
-      drawer: DrawerWidget(user: widget.user),
+      drawer: const DrawerWidget(),
       appBar: AppBar(
         title: const Row(
           children: [

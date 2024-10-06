@@ -1,13 +1,11 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_multi_formatter/formatters/masked_input_formatter.dart';
 import 'package:sigma/_core/theme/sigma_colors.dart';
 import 'package:sigma/authentication/services/auth_service.dart';
 import 'package:sigma/controller/auth_screen_controller.dart';
-import 'package:sigma/screens/widgets/show_confirm_register_dialog.dart';
 import 'package:sigma/screens/widgets/show_custom_snackbar.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -347,7 +345,8 @@ class _AuthScreenState extends State<AuthScreen> {
                                         controller.email,
                                         controller.password,
                                       );
-                                    } if(!controller.isAuthentication) {
+                                    }
+                                    if (!controller.isAuthentication) {
                                       controller.register(
                                         context,
                                         controller.email,

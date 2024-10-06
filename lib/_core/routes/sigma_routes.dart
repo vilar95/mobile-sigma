@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sigma/authentication/model/mock_user.dart';
 import 'package:sigma/screens/auth_screen.dart';
 import 'package:sigma/screens/home_screen.dart';
 import 'package:sigma/screens/my_schedule_screen.dart';
@@ -19,7 +18,7 @@ class SigmaRoutes {
     return switch (settings.name) {
       splash => MaterialPageRoute(builder: (_) => const SplashScreen()),
       auth => MaterialPageRoute(builder: (_) => const AuthScreen()),
-      home => MaterialPageRoute(builder: (_) => HomeScreen(user: MockUser())),
+      home => MaterialPageRoute(builder: (_) => const HomeScreen()),
       schedule => MaterialPageRoute(builder: (_) => const ScheduleScreen()),
       mySchedule => MaterialPageRoute(builder: (_) => const MyScheduleScreen()),
       support => MaterialPageRoute(builder: (_) => const SupportScreen()),

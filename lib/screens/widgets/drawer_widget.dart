@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:sigma/_core/routes/sigma_routes.dart';
 import 'package:sigma/_core/theme/sigma_colors.dart';
-import 'package:sigma/authentication/model/mock_user.dart';
+import 'package:sigma/controller/auth_screen_controller.dart';
 import 'package:sigma/screens/widgets/show_confirm_logout_dialog.dart';
 import 'package:sigma/screens/widgets/show_confirm_password_dialog.dart';
 
-class DrawerWidget extends StatelessWidget {
-  final MockUser user;
-  const DrawerWidget({super.key, required this.user});
+class DrawerWidget extends StatefulWidget {
+
+  const DrawerWidget({super.key, });
+
+  @override
+  State<DrawerWidget> createState() => _DrawerWidgetState();
+}
+
+class _DrawerWidgetState extends State<DrawerWidget> {
+  final AuthScreenController controller = AuthScreenController();
+
+  String? photoURL = "assets/profile_picture.png";
 
   @override
   Widget build(BuildContext context) {
@@ -20,12 +29,20 @@ class DrawerWidget extends StatelessWidget {
             ),
             currentAccountPicture: CircleAvatar(
                 backgroundImage:
-                    user.photoURL != null ? AssetImage(user.photoURL!) : null,
-                backgroundColor: SigmaColors.blue),
-            accountName: Text(
-              user.displayName != null ? user.displayName! : "",
+                    photoURL != null ? AssetImage(photoURL!) : null,
+                backgroundColor: Colors.white),
+            accountName: const Text(
+              'controller.name',
+              style: TextStyle(
+                color: Colors.white,
+              ),
             ),
-            accountEmail: Text(user.email!),
+            accountEmail: const Text(
+              'controller.email',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
           ),
           ListTile(
             leading: const Icon(
@@ -122,8 +139,10 @@ class DrawerWidget extends StatelessWidget {
               showConfirmLogoutDialog(context: context);
             },
           ),
-            const SizedBox(height: 220,),
-            Container(
+          const SizedBox(
+            height: 220,
+          ),
+          Container(
             alignment: Alignment.bottomCenter,
             padding: const EdgeInsets.all(16.0),
             child: const Text(
@@ -131,7 +150,7 @@ class DrawerWidget extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 14, color: Colors.grey),
             ),
-            ),
+          ),
         ],
       ),
     );
