@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -108,11 +110,16 @@ class _AuthScreenState extends State<AuthScreen> {
                               ),
                               readOnly: true,
                               onTap: () async {
+                                DateTime now = DateTime.now();
+                                DateTime lastDate = DateTime.now();
+                                DateTime initialDate =
+                                    now.isAfter(lastDate) ? lastDate : now;
+
                                 DateTime? pickedDate = await showDatePicker(
                                   context: context,
-                                  initialDate: DateTime.now(),
+                                  initialDate: initialDate,
                                   firstDate: DateTime(1910, 1, 1),
-                                  lastDate: DateTime(2024, 10, 6),
+                                  lastDate: lastDate,
                                 );
                                 if (pickedDate != null) {
                                   setState(() {
@@ -166,7 +173,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                 return null;
                               },
                               onChanged: (value) {
-                                value = controller.gender;
+                                controller.gender = value!;
                               },
                             ),
                             TextFormField(
@@ -345,8 +352,33 @@ class _AuthScreenState extends State<AuthScreen> {
                                         controller.email,
                                         controller.password,
                                       );
+                                      // print('////////////////////////////////////');
+                                      // final registerResponse = DioService();
+                                      // var getResponse =
+                                      //     registerResponse.getDoctorApi();
+                                      // print('getResponse: $getResponse');
+                                      // print('////////////////////////////////////');
+                                      // var postRegister = registerResponse.postRegister(
+                                      //   controller.email, controller.password, controller.name, controller.birthDate,
+                                      //   controller.address, controller.cpf, controller.cidcard, controller.gender
+                                      //     );
+                                      // print('postRegister: $postRegister');
                                     }
                                     if (!controller.isAuthentication) {
+                                      print(
+                                          '||||||||||||||||||||||||||||||||||||||||||||||||||||');
+                                      print(
+                                          "controller.email: ${controller.email}"
+                                          " controller.password: ${controller.password}"
+                                          " controller.name: ${controller.name}"
+                                          " controller.birthDate: ${controller.birthDate}"
+                                          " controller.gender: ${controller.gender}"
+                                          " controller.cpf: ${controller.cpf}"
+                                          " controller.cidcard: ${controller.cidcard}"
+                                          " controller.address: ${controller.address}"
+                                          //" controller.phone: ${controller.phone}"
+                                          );
+
                                       controller.register(
                                         context,
                                         controller.email,

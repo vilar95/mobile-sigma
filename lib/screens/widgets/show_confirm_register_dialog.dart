@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:sigma/_core/theme/sigma_colors.dart';
+import 'package:sigma/controller/auth_screen_controller.dart';
 
 showConfirmRegisterDialog({
   required BuildContext context,
   required String email,
 }) {
+  final controller = AuthScreenController();
   showDialog(
     context: context,
     builder: (context) {
@@ -38,8 +40,9 @@ showConfirmRegisterDialog({
           TextButton(
             onPressed: () {
               Navigator.pop(context);
+              controller.isAuthentication;
             },
-            child:  Text(
+            child: Text(
               "Confirmar",
               style: TextStyle(color: SigmaColors.blue[400]),
             ),

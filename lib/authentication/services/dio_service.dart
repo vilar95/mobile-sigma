@@ -67,22 +67,33 @@ class DioService {
         "${DioEndpoints.baseUrl}/cadastrar/paciente",
         data: {
           "email": email,
-          // sigma@uscs.com.br
           "password": password,
-          // 123@Mudar
-          "name": name,
+          "name": name = "Eduardo",
           "data_nascimento": birthDate,
           "genero": gender,
           "cpf": cpf,
           "cid_card": cidcard,
           "endereco": address,
           //"telefone": phone,
+
+          // "email": email = "eduardo@uscs.com.br",
+          // "password": password = "123@Mudar",
+          // "name": name = "Eduardo",
+          // "data_nascimento": birthDate = "05/08/1995",
+          // "genero": gender = "Masculino",
+          // "cpf": cpf = "442647852-52",
+          // "cid_card": cidcard = "1344578912-21",
+          // "endereco": address = "addressaddressaddressaddressaddress",
+          //"telefone": phone,
         },
       );
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('apiResponse', postApi.data.toString());
       prefs.getString('apiResponse');
-      print('login: $email, senha: $password');
+      print(
+          '////////////////////////////////////////////////////////////////////////////////////////////////');
+      print(
+          'login: $email, senha: $password, name: $name, birthDate: $birthDate, cpf: $cpf, cidcard: $cidcard, address: $address, gender: $gender ');
       print('apiResponse: ${postApi.data}');
       print('apiResponse: ${postApi.data.runtimeType}');
 
@@ -92,13 +103,41 @@ class DioService {
         print('Dados da resposta: ${e.response!.data}');
         print('Cabeçalhos da resposta: ${e.response!.headers}');
         print('Status code: ${e.response!.statusCode}');
+        if (e.response!.statusCode == 400) {
+          print(
+              'Erro 400: A requisição contém sintaxe incorreta ou não pode ser atendida.');
+        }
       } else {
         print('Erro sem resposta: ${e.requestOptions}');
       }
+      throw Exception('Erro ao fazer o cadastro: ${e.message}');
     } on Exception catch (e) {
       print('Erro inesperado: $e');
+      throw Exception('Erro inesperado ao fazer o cadastro: $e');
     }
-    throw Exception('Erro ao fazer o cadastro.');
+  }
+
+  Future<Response> geDoctorApi() async {
+    print(DioEndpoints.baseUrl);
+    try {
+      final response = await _dio.get(DioEndpoints.baseUrl);
+      print('apiResponse: ${response.data}');
+      print('apiResponse: ${response.data.runtimeType}');
+      pragma('apiResponse: $response');
+      return response;
+    } on DioException catch (e) {
+      if (e.response != null) {
+        print('Dados da resposta: ${e.response!.data}');
+        print('Cabeçalhos da resposta: ${e.response!.headers}');
+        print('Status code: ${e.response!.statusCode}');
+      } else {
+        print('Erro sem resposta: ${e.requestOptions}');
+      }
+      throw Exception('Erro ao obter dados: ${e.message}');
+    } on Exception catch (e) {
+      print('Erro inesperado: $e');
+      throw Exception('Erro inesperado ao obter dados: $e');
+    }
   }
 
   // Future<String?> saveLocalToServer(AppDatabase appdatabase) async {

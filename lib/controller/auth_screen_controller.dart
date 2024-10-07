@@ -251,7 +251,7 @@ abstract class AuthScreenControllerBase with Store {
     String address,
     //String phone,
   ) async {
-    if (isAuthentication) {
+    if (!isAuthentication) {
       isLoading = true;
       try {
         validateEmail(email);
@@ -276,7 +276,7 @@ abstract class AuthScreenControllerBase with Store {
         );
         if (response.statusCode == 200) {
           print('Cadastro realizado com sucesso');
-          showConfirmRegisterDialog(context: context, email: email);
+          showConfirmRegisterDialog(context: context, email: email, );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
