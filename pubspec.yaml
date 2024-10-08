@@ -65,6 +65,9 @@ flutter:
     - assets/semconsultas.png
     - assets/profile_picture.png
     - assets/new_hospital.png
+    - assets/atende-facil-saude-SCS.png
+    - assets/desafio_saude.png
+    - assets/super-centro-de-saude.png
 
 flutter_native_splash:
   image: "assets/logo_icon.png"

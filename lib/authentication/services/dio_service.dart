@@ -43,6 +43,7 @@ class DioService {
         print('erroooooooooooooooooooooooooooooooooooo');
       } else {
         print('Erro sem resposta: ${e.requestOptions}');
+        print('erro: ${e.message}');
       }
     } on Exception catch (e) {
       print('Erro inesperado: $e');
@@ -68,7 +69,7 @@ class DioService {
         data: {
           "email": email,
           "password": password,
-          "name": name = "Eduardo",
+          "name": name,
           "data_nascimento": birthDate,
           "genero": gender,
           "cpf": cpf,
@@ -117,10 +118,14 @@ class DioService {
     }
   }
 
-  Future<Response> geDoctorApi() async {
+  Future<Response> getDoctorApi() async {
     print(DioEndpoints.baseUrl);
     try {
       final response = await _dio.get(DioEndpoints.baseUrl);
+
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('doctor', response.data.toString());
+      prefs.getString('doctor');
       print('apiResponse: ${response.data}');
       print('apiResponse: ${response.data.runtimeType}');
       pragma('apiResponse: $response');

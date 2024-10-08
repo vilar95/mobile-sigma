@@ -44,7 +44,7 @@ class _BoxNewsWidgetState extends State<BoxNewsWidget> {
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
                 SizedBox(
@@ -52,15 +52,16 @@ class _BoxNewsWidgetState extends State<BoxNewsWidget> {
                 height: 150,
                 child: widget.imageUrl!,
                 ),
+                
               const SizedBox(width: 10),
               Flexible(
                 fit: FlexFit.loose,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
                       maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
+                      overflow: TextOverflow.clip,
                       widget.title!,
                       style: const TextStyle(
                         fontSize: 20,
@@ -70,7 +71,7 @@ class _BoxNewsWidgetState extends State<BoxNewsWidget> {
                     Text(
                       widget.description!,
                       maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
+                      overflow: TextOverflow.clip,
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.normal,

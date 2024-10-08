@@ -31,15 +31,15 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 backgroundImage:
                     photoURL != null ? AssetImage(photoURL!) : null,
                 backgroundColor: Colors.white),
-            accountName: const Text(
-              'controller.name',
-              style: TextStyle(
+            accountName: Text(
+              controller.name,
+              style: const TextStyle(
                 color: Colors.white,
               ),
             ),
-            accountEmail: const Text(
-              'controller.email',
-              style: TextStyle(
+            accountEmail: Text(
+              controller.email,
+              style: const TextStyle(
                 color: Colors.white,
               ),
             ),
