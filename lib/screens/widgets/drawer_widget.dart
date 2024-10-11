@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sigma/_core/routes/sigma_routes.dart';
 import 'package:sigma/_core/theme/sigma_colors.dart';
 import 'package:sigma/controller/auth_screen_controller.dart';
@@ -6,8 +9,7 @@ import 'package:sigma/screens/widgets/show_confirm_logout_dialog.dart';
 import 'package:sigma/screens/widgets/show_confirm_password_dialog.dart';
 
 class DrawerWidget extends StatefulWidget {
-
-  const DrawerWidget({super.key, });
+  const DrawerWidget({super.key});
 
   @override
   State<DrawerWidget> createState() => _DrawerWidgetState();
@@ -15,6 +17,32 @@ class DrawerWidget extends StatefulWidget {
 
 class _DrawerWidgetState extends State<DrawerWidget> {
   final AuthScreenController controller = AuthScreenController();
+  Map<String, dynamic>? userData;
+
+  // Declare variáveis para armazenar o nome e email
+  String nameUser = '';
+  String emailUser = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? apiResponse = prefs.getString('apiResponse');
+
+    if (apiResponse != null) {
+      // Decodifica a resposta da API e extrai os dados do paciente
+      final decodedResponse = jsonDecode(apiResponse);
+      setState(() {
+        userData = decodedResponse;
+        nameUser = decodedResponse['patient']['name'] ?? 'Nome não disponível';
+        emailUser = decodedResponse['patient']['email'] ?? 'Email não disponível';
+      });
+    }
+  }
 
   String? photoURL = "assets/profile_picture.png";
 
@@ -28,46 +56,19 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               color: SigmaColors.blue,
             ),
             currentAccountPicture: CircleAvatar(
-                backgroundImage:
-                    photoURL != null ? AssetImage(photoURL!) : null,
-                backgroundColor: Colors.white),
-            accountName: Text(
-              controller.name,
-              style: const TextStyle(
-                color: Colors.white,
-              ),
+              backgroundImage: userData?['photoURL'] != null
+                  ? NetworkImage(userData!['photoURL'])
+                  : null,
+              child: userData?['photoURL'] == null
+                  ? const Icon(Icons.person, size: 40)
+                  : null,
             ),
-            accountEmail: Text(
-              controller.email,
-              style: const TextStyle(
-                color: Colors.white,
-              ),
-            ),
+            accountName: Text(nameUser),
+            accountEmail: Text(emailUser),
           ),
           ListTile(
-            leading: const Icon(
-              Icons.home_outlined,
-              size: 40,
-            ),
-            title: const Text(
-              "Home",
-              style: TextStyle(fontSize: 18),
-            ),
-            contentPadding: const EdgeInsets.only(left: 16),
-            dense: true,
-            onTap: () {
-              Navigator.pushNamed(context, SigmaRoutes.home);
-            },
-          ),
-          ListTile(
-            leading: const Icon(
-              Icons.calendar_month,
-              size: 40,
-            ),
-            title: const Text(
-              "Agendar Consulta",
-              style: TextStyle(fontSize: 18),
-            ),
+            leading: const Icon(Icons.calendar_month, size: 40),
+            title: const Text("Agendar Consulta", style: TextStyle(fontSize: 18)),
             contentPadding: const EdgeInsets.only(left: 16),
             dense: true,
             minVerticalPadding: 20,
@@ -76,14 +77,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             },
           ),
           ListTile(
-            leading: const Icon(
-              Icons.edit_calendar,
-              size: 40,
-            ),
-            title: const Text(
-              "Meus Agendamentos",
-              style: TextStyle(fontSize: 18),
-            ),
+            leading: const Icon(Icons.edit_calendar, size: 40),
+            title: const Text("Meus Agendamentos", style: TextStyle(fontSize: 18)),
             contentPadding: const EdgeInsets.only(left: 16),
             dense: true,
             minVerticalPadding: 20,
@@ -92,14 +87,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             },
           ),
           ListTile(
-            leading: const Icon(
-              Icons.chat_outlined,
-              size: 40,
-            ),
-            title: const Text(
-              "Suporte",
-              style: TextStyle(fontSize: 18),
-            ),
+            leading: const Icon(Icons.chat_outlined, size: 40),
+            title: const Text("Suporte", style: TextStyle(fontSize: 18)),
             contentPadding: const EdgeInsets.only(left: 16),
             dense: true,
             minVerticalPadding: 20,
@@ -108,14 +97,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             },
           ),
           ListTile(
-            leading: const Icon(
-              Icons.delete_outline_rounded,
-              size: 40,
-            ),
-            title: const Text(
-              "Remover conta",
-              style: TextStyle(fontSize: 18),
-            ),
+            leading: const Icon(Icons.delete_outline_rounded, size: 40),
+            title: const Text("Remover conta", style: TextStyle(fontSize: 18)),
             contentPadding: const EdgeInsets.only(left: 16),
             dense: true,
             minVerticalPadding: 20,
@@ -124,14 +107,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             },
           ),
           ListTile(
-            leading: const Icon(
-              Icons.exit_to_app_outlined,
-              size: 40,
-            ),
-            title: const Text(
-              "Sair",
-              style: TextStyle(fontSize: 18),
-            ),
+            leading: const Icon(Icons.exit_to_app_outlined, size: 40),
+            title: const Text("Sair", style: TextStyle(fontSize: 18)),
             contentPadding: const EdgeInsets.only(left: 16),
             dense: true,
             minVerticalPadding: 20,
@@ -139,9 +116,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               showConfirmLogoutDialog(context: context);
             },
           ),
-          const SizedBox(
-            height: 220,
-          ),
+          const SizedBox(height: 220),
           Container(
             alignment: Alignment.bottomCenter,
             padding: const EdgeInsets.all(16.0),

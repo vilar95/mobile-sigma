@@ -20,8 +20,22 @@ class Register {
     required this.password,
   });
 
+  factory Register.fromJson(Map<String, dynamic> json) {
+    return Register(
+      name: json['name'],
+      dataNascimento: json['data_nascimento'],
+      genero: json['genero'],
+      cpf: json['cpf'],
+      cidCard: json['cid_card'],
+      endereco: json['endereco'],
+      email: json['email'],
+      password: json['password'],
+    );
+  }
+
   Map<String, dynamic> toJson() {
     return {
+      
       'name': name,
       'data_nascimento': dataNascimento,
       'genero': genero,
@@ -32,6 +46,7 @@ class Register {
       'password': password,
     };
   }
+
 
   Register copyWith({
     String? name,

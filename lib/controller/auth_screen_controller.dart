@@ -1,8 +1,11 @@
 // ignore_for_file: use_build_context_synchronously, avoid_print
 
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:brasil_fields/brasil_fields.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sigma/_core/routes/sigma_routes.dart';
 import 'package:sigma/authentication/services/dio_service.dart';
 import 'package:sigma/screens/widgets/show_confirm_register_dialog.dart';
@@ -14,6 +17,10 @@ class AuthScreenController = AuthScreenControllerBase
 
 abstract class AuthScreenControllerBase with Store {
   final dioService = DioService();
+
+  @observable
+  int id = 0;
+  
   @observable
   String email = '';
 
@@ -163,7 +170,6 @@ abstract class AuthScreenControllerBase with Store {
         print(response);
         if (response.statusCode == 200) {
           Navigator.pushNamed(context, SigmaRoutes.home);
-          
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -264,24 +270,20 @@ abstract class AuthScreenControllerBase with Store {
         //validatePhone(phone);
 
         final response = await dioService.postRegister(
-          email,
-          password,
-          name,
-          birthDate,
-          gender,
-          cpf,
-          cidcard,
-          address
-          //phone,
-        );
+            email, password, name, birthDate, gender, cpf, cidcard, address
+            //phone,
+            );
         if (response.statusCode == 200) {
           print('Cadastro realizado com sucesso');
-          showConfirmRegisterDialog(context: context, email: email, );
+          showConfirmRegisterDialog(
+            context: context,
+            email: email,
+          );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-                content:
-                    Text('Erro ao fazer cadastro. Verifique suas informações.')),
+                content: Text(
+                    'Erro ao fazer cadastro. Verifique suas informações.')),
           );
         }
       } catch (e) {
@@ -291,4 +293,32 @@ abstract class AuthScreenControllerBase with Store {
       }
     }
   }
+  @action
+  Future<void> getRegistrationApi() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int? id = prefs.getInt('id');
+    String? email = prefs.getString('email');
+    String? password = prefs.getString('password');
+    String? name = prefs.getString('name');
+    String? birthDate = prefs.getString('data_nascimento');
+    String? gender = prefs.getString('genero');
+    String? cpf = prefs.getString('cpf');
+    String? cidcard = prefs.getString('cidcard');
+    String? address = prefs.getString('endereco');
+    //String? phone = prefs.getString('phone');
+    setId(id!);
+    setEmail(email!);
+    setPassword(password!);
+    setName(name!);
+    setBirthDate(birthDate!);
+    setGender(gender!);
+    setCpf(cpf!);
+    setCidCard(cidcard!);
+    setAddress(address!);
+    //setPhone(phone!);
+  }
+}
+
+void setId(int id) {
+  id = 5;
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Adicione esta linha para importar a biblioteca intl
 import 'package:sigma/_core/theme/sigma_colors.dart';
+import 'package:sigma/model/speciality_doctor.dart';
 import 'package:sigma/screens/widgets/show_custom_snackbar.dart';
 
 class ScheduleScreen extends StatefulWidget {
@@ -11,36 +12,9 @@ class ScheduleScreen extends StatefulWidget {
 }
 
 class _ScheduleScreenState extends State<ScheduleScreen> {
-  String _selectedDoctor = 'Especialidade1';
+  String? _chosenSpecialty = 'Especialidades';
   DateTime _selectedDate = DateTime.now();
   TimeOfDay _selectedTime = TimeOfDay.now();
-
-  final Map<String, String> _doctorSpecialties = const {
-    'Especialidade1': 'Alergologista',
-    'Especialidade2': 'Cardiologista',
-    'Especialidade3': 'Cirurgião',
-    'Especialidade4': 'Clínico Geral',
-    'Especialidade5': 'Dermatologista',
-    'Especialidade6': 'Endocrinologista',
-    'Especialidade7': 'Fisioterapeuta',
-    'Especialidade8': 'Gastroenterologista',
-    'Especialidade9': 'Geriatra',
-    'Especialidade10': 'Ginecologista',
-    'Especialidade11': 'Hematologista',
-    'Especialidade12': 'Infectologista',
-    'Especialidade13': 'Nefrologista',
-    'Especialidade14': 'Neurologista',
-    'Especialidade15': 'Nutricionista',
-    'Especialidade16': 'Oftalmologista',
-    'Especialidade17': 'Oncologista',
-    'Especialidade18': 'Ortopedista',
-    'Especialidade19': 'Otorrinolaringologista',
-    'Especialidade20': 'Pediatra',
-    'Especialidade21': 'Pneumologista',
-    'Especialidade22': 'Psiquiatra',
-    'Especialidade23': 'Reumatologista',
-    'Especialidade24': 'Urologista',
-  };
 
   Future<void> _selectTime(BuildContext context) async {
     final TimeOfDay? picked = await showTimePicker(
@@ -53,11 +27,13 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
       });
     }
   }
+   final List<SpecialityDoctor> _doctorSpecialties = [];
+
+
 
   void _scheduleAppointment() {
     final String formattedDate = DateFormat('dd/MM/yyyy').format(_selectedDate);
-    final String appointmentDetails =
-        'Agendado com ${_doctorSpecialties[_selectedDoctor]} em $formattedDate às ${_selectedTime.format(context)}';
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -65,7 +41,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
           icon: const Icon(Icons.check_circle_outline_rounded,
               color: Colors.green, size: 80),
           title: const Text('Agendamento Confirmado'),
-          content: Text(appointmentDetails, textAlign: TextAlign.center),
+          content: Text('appointmentDetails', textAlign: TextAlign.center),
           actions: <Widget>[
             TextButton(
               child:
@@ -109,27 +85,22 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 10),
-                  DropdownButtonFormField<String>(
-                    value: _selectedDoctor,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                          borderSide:
-                              const BorderSide(color: SigmaColors.blue)),
-                      filled: true,
-                      fillColor: Colors.white,
-                      iconColor: SigmaColors.blue,
-                    ),
-                    onChanged: (String? newValue) {
+                  DropdownButton<SpecialityDoctor>(
+                    hint: const Text('Selecione uma especialidade'),
+                    value: _chosenSpecialty != 'Especialidades'
+                        ? _doctorSpecialties.firstWhere(
+                            (specialty) => specialty.speciality == _chosenSpecialty,
+                            orElse: () => _doctorSpecialties.first)
+                        : null,
+                    onChanged: (SpecialityDoctor? newValue) {
                       setState(() {
-                        _selectedDoctor = newValue!;
+                        _chosenSpecialty = newValue?.speciality;
                       });
                     },
-                    items: _doctorSpecialties.keys
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(_doctorSpecialties[value]!),
+                    items: _doctorSpecialties.map((SpecialityDoctor specialityDoctor) {
+                      return DropdownMenuItem<SpecialityDoctor>(
+                        value: specialityDoctor,
+                        child: Text(specialityDoctor.speciality),
                       );
                     }).toList(),
                   ),

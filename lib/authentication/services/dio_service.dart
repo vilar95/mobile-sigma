@@ -3,8 +3,10 @@
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sigma/authentication/services/dio_endpoints.dart';
+import 'package:sigma/model/speciality_doctor.dart';
 
 class DioService {
+  Map<String, dynamic>? apiData;
   final Dio _dio = Dio(
     BaseOptions(
       baseUrl: DioEndpoints.baseUrl,
@@ -28,19 +30,23 @@ class DioService {
         },
       );
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('apiResponse', postApi.data.toString());
+      await prefs.setString('name', postApi.data['name'] ?? '');
+      await prefs.setString('email', postApi.data['email'] ?? '');
+
       prefs.getString('apiResponse');
-      print('login: $email, senha: $password');
-      print('apiResponse: ${postApi.data}');
-      print('apiResponse: ${postApi.data.runtimeType}');
-      print('FOOOOOOOOOOOOOOOOOOOOOOI');
+
+      apiData = postApi.data;
+
       return postApi;
     } on DioException catch (e) {
       if (e.response != null) {
         print('Dados da resposta: ${e.response!.data}');
         print('Cabeçalhos da resposta: ${e.response!.headers}');
         print('Status code: ${e.response!.statusCode}');
-        print('erroooooooooooooooooooooooooooooooooooo');
+        if (e.response!.statusCode == 400) {
+          print(
+              'Erro 400: A requisição contém sintaxe incorreta ou não pode ser atendida.');
+        }
       } else {
         print('Erro sem resposta: ${e.requestOptions}');
         print('erro: ${e.message}');
@@ -75,27 +81,11 @@ class DioService {
           "cpf": cpf,
           "cid_card": cidcard,
           "endereco": address,
-          //"telefone": phone,
-
-          // "email": email = "eduardo@uscs.com.br",
-          // "password": password = "123@Mudar",
-          // "name": name = "Eduardo",
-          // "data_nascimento": birthDate = "05/08/1995",
-          // "genero": gender = "Masculino",
-          // "cpf": cpf = "442647852-52",
-          // "cid_card": cidcard = "1344578912-21",
-          // "endereco": address = "addressaddressaddressaddressaddress",
-          //"telefone": phone,
         },
       );
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('apiResponse', postApi.data.toString());
       prefs.getString('apiResponse');
-      print(
-          '////////////////////////////////////////////////////////////////////////////////////////////////');
-      print(
-          'login: $email, senha: $password, name: $name, birthDate: $birthDate, cpf: $cpf, cidcard: $cidcard, address: $address, gender: $gender ');
-      print('apiResponse: ${postApi.data}');
       print('apiResponse: ${postApi.data.runtimeType}');
 
       return postApi;
@@ -118,18 +108,23 @@ class DioService {
     }
   }
 
-  Future<Response> getDoctorApi() async {
-    print(DioEndpoints.baseUrl);
+
+  Future<List<SpecialityDoctor>> getSpecialityDoctorApi() async {
     try {
-      final response = await _dio.get(DioEndpoints.baseUrl);
+      final response = await _dio.get('${DioEndpoints.baseUrl}/especialidades');
 
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('doctor', response.data.toString());
-      prefs.getString('doctor');
+      await prefs.setString('specialityDoctor', response.data.toString());
+      prefs.getString('specialityDoctor');
       print('apiResponse: ${response.data}');
       print('apiResponse: ${response.data.runtimeType}');
-      pragma('apiResponse: $response');
-      return response;
+
+     
+      List<SpecialityDoctor> specialityDoctors = (response.data as List)
+          .map((data) => SpecialityDoctor.fromJson(data))
+          .toList();
+
+      return specialityDoctors;
     } on DioException catch (e) {
       if (e.response != null) {
         print('Dados da resposta: ${e.response!.data}');
@@ -144,67 +139,4 @@ class DioService {
       throw Exception('Erro inesperado ao obter dados: $e');
     }
   }
-
-  // Future<String?> saveLocalToServer(AppDatabase appdatabase) async {
-  //   Map<String, dynamic> localData =
-  //       await LocalDataHandler().localDataToMap(appdatabase: appdatabase);
-  //   try {
-  //     await _dio.put(
-  //       DioEndpoints.scheduleLists,
-  //       data: json.encode(
-  //         localData["scheduleLists"],
-  //       ),
-  //     );
-  //   } on DioException catch (e) {
-  //     if (e.response != null && e.response!.data != null) {
-  //       return e.response!.data!.toString();
-  //     } else {
-  //       return e.message;
-  //     }
-  //   } on Exception {
-  //     return "Um erro aconteceu!";
-  //   }
-  //   return null;
-  // }
-
-  // getDataFromServer(AppDatabase appDatabase) async {
-  //   Response response = await _dio.get(
-  //     DioEndpoints.scheduleLists,
-  //     queryParameters: {
-  //       "orderBy": '"name"',
-  //       "startAt": 0,
-  //     },
-  //   );
-  //   // print(response.statusCode);
-  //   // print(response.headers.toString());
-  //   // print(response.data);
-  //   // print(response.data.runtimeType);
-
-  //   if (response.data != null) {
-  //     Map<String, dynamic> map = {};
-
-  //     if (response.data.runtimeType == List) {
-  //       if ((response.data as List<dynamic>).isNotEmpty) {
-  //         map["scheduleLists"] = response.data;
-  //       }
-  //     } else {
-  //       List<Map<String, dynamic>> tempList = [];
-
-  //       for (var mapResponse in (response.data as Map).values) {
-  //         tempList.add(mapResponse);
-  //       }
-  //       map["scheduleLists"] = tempList;
-  //     }
-  //     await LocalDataHandler().mapToLocalData(
-  //       map: map,
-  //       appdatabase: appDatabase,
-  //     );
-  //   }
-  // }
-
-  // Future<void> clearServerData() async {
-  //   await _dio.delete(
-  //     DioEndpoints.scheduleLists,
-  //   );
-  // }
 }
