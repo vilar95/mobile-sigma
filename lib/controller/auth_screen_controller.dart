@@ -1,14 +1,12 @@
 // ignore_for_file: use_build_context_synchronously, avoid_print
-
-import 'dart:ffi';
-
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
-import 'package:brasil_fields/brasil_fields.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sigma/_core/routes/sigma_routes.dart';
 import 'package:sigma/authentication/services/dio_service.dart';
 import 'package:sigma/screens/widgets/show_confirm_register_dialog.dart';
+import 'package:sigma/screens/widgets/show_custom_snackbar.dart';
 
 part 'auth_screen_controller.g.dart';
 
@@ -20,7 +18,7 @@ abstract class AuthScreenControllerBase with Store {
 
   @observable
   int id = 0;
-  
+
   @observable
   String email = '';
 
@@ -31,7 +29,13 @@ abstract class AuthScreenControllerBase with Store {
   String password = '';
 
   @observable
-  String? passwordError;
+  String? passwordValidationError;
+
+  @observable
+  String passwordConfirm = '';
+
+  @observable
+  String? passwordConfirmError;
 
   @observable
   String name = '';
@@ -132,11 +136,6 @@ abstract class AuthScreenControllerBase with Store {
   @action
   void validateEmail(String value) {
     email = value;
-    if (value.isEmpty) {
-      emailError = 'Campo obrigatório';
-    } else {
-      emailError = null;
-    }
     if (!value.contains('@') && !value.contains('.com') && value.length < 10) {
       emailError = 'Email inválido!';
     } else {
@@ -146,14 +145,19 @@ abstract class AuthScreenControllerBase with Store {
 
   @action
   void validatePassword(String value) {
-    password = value;
+    passwordValidationError = value;
     if (value.isEmpty ||
         !RegExp(r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,20}$')
             .hasMatch(value)) {
-      passwordError =
+      passwordValidationError =
           'A senha deve ser maior que 8 caracteres incluindo letras maiúsculas, minúsculas e números.';
-    } else {
-      passwordError = null;
+    }
+  }
+  @action
+  void validateConfirmPassword(String value) {
+    passwordConfirm = value;
+    if (value.isEmpty || value != password) {
+      passwordConfirmError = 'As senhas não são iguais.';
     }
   }
 
@@ -170,15 +174,11 @@ abstract class AuthScreenControllerBase with Store {
         print(response);
         if (response.statusCode == 200) {
           Navigator.pushNamed(context, SigmaRoutes.home);
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-                content:
-                    Text('Erro ao fazer login. Verifique suas credenciais.')),
-          );
-        }
+          print('Login realizado com sucesso');
+        } 
       } catch (e) {
         errorMessage = 'Erro durante o login: $e';
+        showCustomSnackBar(context: context, message: 'Não foi posssível realizar o login!', duration: const Duration(seconds: 5));
       } finally {
         isLoading = false;
       }
@@ -187,6 +187,7 @@ abstract class AuthScreenControllerBase with Store {
 
   @action
   void validateName(String value) {
+    nameError = value;
     if (value.isEmpty) {
       nameError = 'Campo obrigatório';
     }
@@ -197,6 +198,7 @@ abstract class AuthScreenControllerBase with Store {
 
   @action
   void validatePhone(String value) {
+    phoneError = value;
     if (value.isEmpty) {
       phoneError = 'Campo obrigatório';
     }
@@ -207,25 +209,27 @@ abstract class AuthScreenControllerBase with Store {
 
   @action
   void detectTypeDoc(String value) {
+    cpfError = value;
     final length = UtilBrasilFields.removeCaracteres(value).length;
-    if (length == 11) {
-      setCpf(value);
+    if (length != 11) {
+      cpfError = 'CPF inválido';
     }
-    cpfError = 'CPF inválido';
   }
 
   @action
   void validateCidCard(String value) {
+    cidcardError = value;
     if (value.isEmpty) {
       cidcardError = 'Campo obrigatório';
     }
     if (value.length < 9) {
-      cidcardError = 'RG inválido';
+      cidcardError = 'CidCard inválido';
     }
   }
 
   @action
   void validateBirthDate(String value) {
+    birthDateError = value;
     if (value.isEmpty) {
       birthDateError = 'Campo obrigatório';
     }
@@ -236,6 +240,7 @@ abstract class AuthScreenControllerBase with Store {
 
   @action
   void validateAddress(String value) {
+    addressError = value;
     if (value.isEmpty) {
       addressError = 'Campo obrigatório';
     }
@@ -267,6 +272,7 @@ abstract class AuthScreenControllerBase with Store {
         validateCidCard(cidcard);
         validateAddress(address);
         detectTypeDoc(cpf);
+        validateConfirmPassword(password);
         //validatePhone(phone);
 
         final response = await dioService.postRegister(
@@ -279,20 +285,16 @@ abstract class AuthScreenControllerBase with Store {
             context: context,
             email: email,
           );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-                content: Text(
-                    'Erro ao fazer cadastro. Verifique suas informações.')),
-          );
-        }
+        }        
       } catch (e) {
         errorMessage = 'Erro durante o cadastro: $e';
+        showCustomSnackBar(context: context, message: 'Não foi posssível realizar o cadastro!', duration: const Duration(seconds: 5));
       } finally {
         isLoading = false;
       }
     }
   }
+
   @action
   Future<void> getRegistrationApi() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -320,5 +322,5 @@ abstract class AuthScreenControllerBase with Store {
 }
 
 void setId(int id) {
-  id = 5;
+  id = id;
 }

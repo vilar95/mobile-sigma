@@ -1,5 +1,4 @@
-import 'dart:convert';
-
+// ignore_for_file: avoid_print
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sigma/_core/routes/sigma_routes.dart';
@@ -17,11 +16,10 @@ class DrawerWidget extends StatefulWidget {
 
 class _DrawerWidgetState extends State<DrawerWidget> {
   final AuthScreenController controller = AuthScreenController();
-  Map<String, dynamic>? userData;
 
-  // Declare variáveis para armazenar o nome e email
-  String nameUser = '';
-  String emailUser = '';
+
+  late String nameUser = '';
+  late String emailUser = '';
 
   @override
   void initState() {
@@ -30,17 +28,17 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   }
 
   Future<void> _loadUserData() async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? apiResponse = prefs.getString('apiResponse');
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final String? name = prefs.getString('name');
+      final String? email = prefs.getString('email');
 
-    if (apiResponse != null) {
-      // Decodifica a resposta da API e extrai os dados do paciente
-      final decodedResponse = jsonDecode(apiResponse);
       setState(() {
-        userData = decodedResponse;
-        nameUser = decodedResponse['patient']['name'] ?? 'Nome não disponível';
-        emailUser = decodedResponse['patient']['email'] ?? 'Email não disponível';
+        nameUser = name ?? 'Nome não disponível';
+        emailUser = email ?? 'Email não disponível';
       });
+    } catch (e) {
+      print('Erro ao carregar dados do usuário: $e');
     }
   }
 
@@ -56,12 +54,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               color: SigmaColors.blue,
             ),
             currentAccountPicture: CircleAvatar(
-              backgroundImage: userData?['photoURL'] != null
-                  ? NetworkImage(userData!['photoURL'])
-                  : null,
-              child: userData?['photoURL'] == null
-                  ? const Icon(Icons.person, size: 40)
-                  : null,
+              backgroundColor: Colors.white,
+              backgroundImage: AssetImage(photoURL!),
             ),
             accountName: Text(nameUser),
             accountEmail: Text(emailUser),

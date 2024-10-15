@@ -4,7 +4,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_multi_formatter/formatters/masked_input_formatter.dart';
 import 'package:sigma/_core/theme/sigma_colors.dart';
 import 'package:sigma/authentication/services/auth_service.dart';
-import 'package:sigma/authentication/services/dio_service.dart';
 import 'package:sigma/controller/auth_screen_controller.dart';
 import 'package:sigma/screens/widgets/show_custom_snackbar.dart';
 
@@ -141,7 +140,6 @@ class _AuthScreenState extends State<AuthScreen> {
                                 return null;
                               },
                             ),
-
                             DropdownButtonFormField<String>(
                               decoration: InputDecoration(
                                 errorText: controller.genderError,
@@ -236,21 +234,6 @@ class _AuthScreenState extends State<AuthScreen> {
                                 return null;
                               },
                             ),
-                            // TextFormField(
-                            //   decoration: const InputDecoration(
-                            //     label: Text("Telefone"),
-                            //    keyboardType: TextInputType.number,
-                            //   ),
-                            //   inputFormatters: [
-                            //     MaskedInputFormatter("(##) #####-####"),
-                            //   ],
-                            //   validator: (value) {
-                            //     if (value == null || value.length <= 15) {
-                            //       return "Insira o número de telefone.";
-                            //     }
-                            //     return null;
-                            //   },
-                            // ),
                           ],
                         ),
                       ),
@@ -271,7 +254,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             onChanged: (value) => controller.password = value,
                             obscureText: _isPasswordVisible,
                             decoration: InputDecoration(
-                              errorText: controller.passwordError,
+                              errorText: controller.passwordValidationError,
                               errorMaxLines: 3,
                               errorStyle: const TextStyle(
                                 color: Colors.red,
@@ -298,6 +281,11 @@ class _AuthScreenState extends State<AuthScreen> {
                             TextFormField(
                               obscureText: _isPasswordVisiblePasswordConfirm,
                               decoration: InputDecoration(
+                                errorText: controller.passwordConfirmError,
+                                errorMaxLines: 3,
+                                errorStyle: const TextStyle(
+                                  color: Colors.red,
+                                ),
                                 label: const Text("Confirme a senha"),
                                 suffixIcon: IconButton(
                                   icon: Icon(
@@ -314,6 +302,8 @@ class _AuthScreenState extends State<AuthScreen> {
                               validator: (value) {
                                 if (value != controller.password) {
                                   return "As senhas não coincidem.";
+                                } else if (value == null || value.isEmpty) {
+                                  return "Confirme a senha.";
                                 }
                                 return null;
                               },
@@ -351,54 +341,18 @@ class _AuthScreenState extends State<AuthScreen> {
                                         controller.email,
                                         controller.password,
                                       );
-
-                                      //  print(
-                                      //      '////////////////////////////////////');
-                                      // final registerResponse = DioService();
-                                      // final getResponse =
-                                      //     registerResponse.getSpecialityDoctorApi();
-
-                                      //     print('getResponse: $getResponse');
-                                      // var getResponse =
-                                      //     registerResponse.getRegistrationApi();
-                                      // print('getResponse: $getResponse');
-                                      // var getResponse =
-                                      //     registerResponse.getDoctorApi();
-                                      // print('getResponse: $getResponse');
-                                      // print('////////////////////////////////////');
-                                      // var postRegister = registerResponse.postRegister(
-                                      //   controller.email, controller.password, controller.name, controller.birthDate,
-                                      //   controller.address, controller.cpf, controller.cidcard, controller.gender
-                                      //     );
-                                      // print('postRegister: $postRegister');
                                     }
                                     if (!controller.isAuthentication) {
-                                      print(
-                                          '||||||||||||||||||||||||||||||||||||||||||||||||||||');
-                                      print(
-                                          "controller.email: ${controller.email}"
-                                          " controller.password: ${controller.password}"
-                                          " controller.name: ${controller.name}"
-                                          " controller.birthDate: ${controller.birthDate}"
-                                          " controller.gender: ${controller.gender}"
-                                          " controller.cpf: ${controller.cpf}"
-                                          " controller.cidcard: ${controller.cidcard}"
-                                          " controller.address: ${controller.address}"
-                                          //" controller.phone: ${controller.phone}"
-                                          );
-
                                       controller.register(
-                                        context,
-                                        controller.email,
-                                        controller.password,
-                                        controller.name,
-                                        controller.birthDate,
-                                        controller.gender,
-                                        controller.cpf,
-                                        controller.cidcard,
-                                        controller.address,
-                                        //controller.phone,
-                                      );
+                                          context,
+                                          controller.email,
+                                          controller.password,
+                                          controller.name,
+                                          controller.birthDate,
+                                          controller.gender,
+                                          controller.cpf,
+                                          controller.cidcard,
+                                          controller.address);
                                     }
                                   },
                                   child: Text(

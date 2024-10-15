@@ -9,6 +9,22 @@ part of 'auth_screen_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$AuthScreenController on AuthScreenControllerBase, Store {
+  late final _$idAtom =
+      Atom(name: 'AuthScreenControllerBase.id', context: context);
+
+  @override
+  int get id {
+    _$idAtom.reportRead();
+    return super.id;
+  }
+
+  @override
+  set id(int value) {
+    _$idAtom.reportWrite(value, super.id, () {
+      super.id = value;
+    });
+  }
+
   late final _$emailAtom =
       Atom(name: 'AuthScreenControllerBase.email', context: context);
 
@@ -61,15 +77,15 @@ mixin _$AuthScreenController on AuthScreenControllerBase, Store {
       Atom(name: 'AuthScreenControllerBase.passwordError', context: context);
 
   @override
-  String? get passwordError {
+  String? get passwordValidationError {
     _$passwordErrorAtom.reportRead();
-    return super.passwordError;
+    return super.passwordValidationError;
   }
 
   @override
-  set passwordError(String? value) {
-    _$passwordErrorAtom.reportWrite(value, super.passwordError, () {
-      super.passwordError = value;
+  set passwordValidationError(String? value) {
+    _$passwordErrorAtom.reportWrite(value, super.passwordValidationError, () {
+      super.passwordValidationError = value;
     });
   }
 
@@ -371,6 +387,16 @@ mixin _$AuthScreenController on AuthScreenControllerBase, Store {
         password, name, birthDate, gender, cpf, cidcard, address));
   }
 
+  late final _$getRegistrationApiAsyncAction = AsyncAction(
+      'AuthScreenControllerBase.getRegistrationApi',
+      context: context);
+
+  @override
+  Future<void> getRegistrationApi() {
+    return _$getRegistrationApiAsyncAction
+        .run(() => super.getRegistrationApi());
+  }
+
   late final _$AuthScreenControllerBaseActionController =
       ActionController(name: 'AuthScreenControllerBase', context: context);
 
@@ -564,10 +590,11 @@ mixin _$AuthScreenController on AuthScreenControllerBase, Store {
   @override
   String toString() {
     return '''
+id: ${id},
 email: ${email},
 emailError: ${emailError},
 password: ${password},
-passwordError: ${passwordError},
+passwordError: ${passwordValidationError},
 name: ${name},
 nameError: ${nameError},
 birthDate: ${birthDate},

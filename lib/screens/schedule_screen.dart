@@ -1,5 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart'; // Adicione esta linha para importar a biblioteca intl
+import 'package:intl/intl.dart'; 
 import 'package:sigma/_core/theme/sigma_colors.dart';
 import 'package:sigma/model/speciality_doctor.dart';
 import 'package:sigma/screens/widgets/show_custom_snackbar.dart';
@@ -22,17 +24,22 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
       initialTime: _selectedTime,
     );
     if (picked != null && picked != _selectedTime) {
-      setState(() {
-        _selectedTime = picked;
-      });
+      if (picked.hour >= 8 && picked.hour <= 18) {
+        setState(() {
+          _selectedTime = picked;
+        });
+      } else {
+        showCustomSnackBar(
+          context: context,
+          message: "Por favor, selecione um horário entre 08:00 e 18:00.",
+          duration: const Duration(seconds: 6),
+        );
+      }
     }
   }
    final List<SpecialityDoctor> _doctorSpecialties = [];
 
-
-
   void _scheduleAppointment() {
-    final String formattedDate = DateFormat('dd/MM/yyyy').format(_selectedDate);
 
     showDialog(
       context: context,
@@ -41,7 +48,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
           icon: const Icon(Icons.check_circle_outline_rounded,
               color: Colors.green, size: 80),
           title: const Text('Agendamento Confirmado'),
-          content: Text('appointmentDetails', textAlign: TextAlign.center),
+          content: const Text('appointmentDetails', textAlign: TextAlign.center),
           actions: <Widget>[
             TextButton(
               child:
@@ -131,6 +138,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       foregroundColor: Colors.white,
                       backgroundColor: SigmaColors.blue,
                     ),
+                  
                   ),
                   const SizedBox(height: 30),
                   Text(
