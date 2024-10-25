@@ -110,8 +110,8 @@ class DioService {
   Future<Response> postSchedule(
     String specialityDoctor,
     int patientId,
-    DateTime dateSchedule,
-    DateTime hourSchedule,
+    String dateSchedule,
+    String hourSchedule,
   ) async {
     const String url =
         ('${DioEndpoints.baseUrl}/consulta'); // Update with your API URL

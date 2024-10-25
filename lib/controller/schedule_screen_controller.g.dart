@@ -33,6 +33,23 @@ mixin _$ScheduleScreenController on _ScheduleScreenControllerBase, Store {
     });
   }
 
+  late final _$dateScheduleStringAtom = Atom(
+      name: '_ScheduleScreenControllerBase.dateScheduleString',
+      context: context);
+
+  @override
+  String get dateScheduleString {
+    _$dateScheduleStringAtom.reportRead();
+    return super.dateScheduleString;
+  }
+
+  @override
+  set dateScheduleString(String value) {
+    _$dateScheduleStringAtom.reportWrite(value, super.dateScheduleString, () {
+      super.dateScheduleString = value;
+    });
+  }
+
   late final _$hourScheduleAtom = Atom(
       name: '_ScheduleScreenControllerBase.hourSchedule', context: context);
 
@@ -46,6 +63,23 @@ mixin _$ScheduleScreenController on _ScheduleScreenControllerBase, Store {
   set hourSchedule(DateTime value) {
     _$hourScheduleAtom.reportWrite(value, super.hourSchedule, () {
       super.hourSchedule = value;
+    });
+  }
+
+  late final _$hourScheduleStringAtom = Atom(
+      name: '_ScheduleScreenControllerBase.hourScheduleString',
+      context: context);
+
+  @override
+  String get hourScheduleString {
+    _$hourScheduleStringAtom.reportRead();
+    return super.hourScheduleString;
+  }
+
+  @override
+  set hourScheduleString(String value) {
+    _$hourScheduleStringAtom.reportWrite(value, super.hourScheduleString, () {
+      super.hourScheduleString = value;
     });
   }
 
@@ -87,7 +121,7 @@ mixin _$ScheduleScreenController on _ScheduleScreenControllerBase, Store {
 
   @override
   Future<void> addSchedule(String specialityDoctor, int patientId,
-      DateTime dateSchedule, DateTime hourSchedule) {
+      String dateSchedule, String hourSchedule) {
     return _$addScheduleAsyncAction.run(() => super
         .addSchedule(specialityDoctor, patientId, dateSchedule, hourSchedule));
   }
@@ -110,7 +144,9 @@ mixin _$ScheduleScreenController on _ScheduleScreenControllerBase, Store {
   String toString() {
     return '''
 dateSchedule: ${dateSchedule},
+dateScheduleString: ${dateScheduleString},
 hourSchedule: ${hourSchedule},
+hourScheduleString: ${hourScheduleString},
 specialityDoctor: ${specialityDoctor},
 schedules: ${schedules},
 allSchedules: ${allSchedules}

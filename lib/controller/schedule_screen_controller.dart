@@ -15,7 +15,13 @@ abstract class _ScheduleScreenControllerBase with Store {
   DateTime dateSchedule = DateTime.now();
 
   @observable
+  String dateScheduleString = '';
+
+  @observable
   DateTime hourSchedule = DateTime.now();
+
+  @observable
+  String hourScheduleString = '';
 
   @observable
   String? specialityDoctor = '';
@@ -27,8 +33,8 @@ abstract class _ScheduleScreenControllerBase with Store {
   Future<void> addSchedule(
     String specialityDoctor, 
     int patientId,
-    DateTime dateSchedule,
-    DateTime hourSchedule,
+    String dateSchedule,
+    String hourSchedule,
   ) async {
     try {
       final response = await dioService.postSchedule(

@@ -131,6 +131,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                         setState(() {
                           selectedDate = date;
                           controller.dateSchedule = date;
+                          controller.dateScheduleString = DateFormat('dd/MM/yyyy').format(date);
                         });
                       } else {
                         showCustomSnackBar(
@@ -155,6 +156,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                             setState(() {
                               selectedTime = appointmentSlots[newValue]!;
                               controller.hourSchedule = selectedTime;
+                              controller.hourScheduleString =
+                                  DateFormat('HH:mm').format(selectedTime);
                             });
                           },
                           items: appointmentSlots.keys
@@ -194,8 +197,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       controller.addSchedule(
                         controller.specialityDoctor!,
                         1,
-                        controller.dateSchedule,
-                        controller.hourSchedule,
+                        controller.dateScheduleString,
+                        controller.hourScheduleString,
                       );
                       _scheduleAppointment();
                     },

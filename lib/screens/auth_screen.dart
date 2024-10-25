@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_multi_formatter/formatters/masked_input_formatter.dart';
 import 'package:sigma/_core/theme/sigma_colors.dart';
-import 'package:sigma/authentication/services/auth_service.dart';
+
 import 'package:sigma/controller/auth_screen_controller.dart';
 import 'package:sigma/screens/widgets/show_custom_snackbar.dart';
 
@@ -21,8 +21,6 @@ class _AuthScreenState extends State<AuthScreen> {
   bool _isPasswordVisiblePasswordConfirm = true;
 
   final _formKey = GlobalKey<FormState>();
-
-  AuthService authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
