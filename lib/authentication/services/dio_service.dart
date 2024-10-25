@@ -3,7 +3,6 @@
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sigma/authentication/services/dio_endpoints.dart';
-import 'package:sigma/model/speciality_doctor.dart';
 
 class DioService {
   Map<String, dynamic>? apiData;
@@ -108,35 +107,50 @@ class DioService {
     }
   }
 
+  Future<Response> postSchedule(
+    String specialityDoctor,
+    int patientId,
+    DateTime dateSchedule,
+    DateTime hourSchedule,
+  ) async {
+    const String url =
+        ('${DioEndpoints.baseUrl}/consulta'); // Update with your API URL
+    const String bearerToken =
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzI5ODA5OTU1LCJleHAiOjE3MzA0MTQ3NTV9.88N4jv3Bh5ki-QiUduknyuVwuUra2V_08Ra8Se0xoaI'; // Replace with your actual token
 
-  Future<List<SpecialityDoctor>> getSpecialityDoctorApi() async {
+    final Map<String, dynamic> requestData = {
+      "modalidade": specialityDoctor,
+      "paciente": patientId,
+      "data": dateSchedule,
+      "horario": hourSchedule,
+    };
+
+    final Dio dio = Dio();
+
     try {
-      final response = await _dio.get('${DioEndpoints.baseUrl}/especialidades');
+      final response = await dio.post(
+        url,
+        data: requestData,
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $bearerToken',
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
 
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('specialityDoctor', response.data.toString());
-      prefs.getString('specialityDoctor');
-      print('apiResponse: ${response.data}');
-      print('apiResponse: ${response.data.runtimeType}');
-
-     
-      List<SpecialityDoctor> specialityDoctors = (response.data as List)
-          .map((data) => SpecialityDoctor.fromJson(data))
-          .toList();
-
-      return specialityDoctors;
-    } on DioException catch (e) {
-      if (e.response != null) {
-        print('Dados da resposta: ${e.response!.data}');
-        print('Cabeçalhos da resposta: ${e.response!.headers}');
-        print('Status code: ${e.response!.statusCode}');
+      // Handle the response
+      if (response.statusCode == 200) {
+        print('Consulta created: ${response.data}');
+        return response;
       } else {
-        print('Erro sem resposta: ${e.requestOptions}');
+        print(
+            'Failed to create consulta: ${response.statusCode} - ${response.data}');
+        throw Exception('Failed to create consulta');
       }
-      throw Exception('Erro ao obter dados: ${e.message}');
-    } on Exception catch (e) {
-      print('Erro inesperado: $e');
-      throw Exception('Erro inesperado ao obter dados: $e');
+    } catch (e) {
+      print('Error occurred: $e');
+      throw Exception('Error occurred: $e');
     }
   }
 }

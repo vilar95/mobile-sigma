@@ -73,19 +73,54 @@ mixin _$AuthScreenController on AuthScreenControllerBase, Store {
     });
   }
 
-  late final _$passwordErrorAtom =
-      Atom(name: 'AuthScreenControllerBase.passwordError', context: context);
+  late final _$passwordValidationErrorAtom = Atom(
+      name: 'AuthScreenControllerBase.passwordValidationError',
+      context: context);
 
   @override
   String? get passwordValidationError {
-    _$passwordErrorAtom.reportRead();
+    _$passwordValidationErrorAtom.reportRead();
     return super.passwordValidationError;
   }
 
   @override
   set passwordValidationError(String? value) {
-    _$passwordErrorAtom.reportWrite(value, super.passwordValidationError, () {
+    _$passwordValidationErrorAtom
+        .reportWrite(value, super.passwordValidationError, () {
       super.passwordValidationError = value;
+    });
+  }
+
+  late final _$passwordConfirmAtom =
+      Atom(name: 'AuthScreenControllerBase.passwordConfirm', context: context);
+
+  @override
+  String get passwordConfirm {
+    _$passwordConfirmAtom.reportRead();
+    return super.passwordConfirm;
+  }
+
+  @override
+  set passwordConfirm(String value) {
+    _$passwordConfirmAtom.reportWrite(value, super.passwordConfirm, () {
+      super.passwordConfirm = value;
+    });
+  }
+
+  late final _$passwordConfirmErrorAtom = Atom(
+      name: 'AuthScreenControllerBase.passwordConfirmError', context: context);
+
+  @override
+  String? get passwordConfirmError {
+    _$passwordConfirmErrorAtom.reportRead();
+    return super.passwordConfirmError;
+  }
+
+  @override
+  set passwordConfirmError(String? value) {
+    _$passwordConfirmErrorAtom.reportWrite(value, super.passwordConfirmError,
+        () {
+      super.passwordConfirmError = value;
     });
   }
 
@@ -522,6 +557,17 @@ mixin _$AuthScreenController on AuthScreenControllerBase, Store {
   }
 
   @override
+  void validateConfirmPassword(String value) {
+    final _$actionInfo = _$AuthScreenControllerBaseActionController.startAction(
+        name: 'AuthScreenControllerBase.validateConfirmPassword');
+    try {
+      return super.validateConfirmPassword(value);
+    } finally {
+      _$AuthScreenControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void validateName(String value) {
     final _$actionInfo = _$AuthScreenControllerBaseActionController.startAction(
         name: 'AuthScreenControllerBase.validateName');
@@ -594,7 +640,9 @@ id: ${id},
 email: ${email},
 emailError: ${emailError},
 password: ${password},
-passwordError: ${passwordValidationError},
+passwordValidationError: ${passwordValidationError},
+passwordConfirm: ${passwordConfirm},
+passwordConfirmError: ${passwordConfirmError},
 name: ${name},
 nameError: ${nameError},
 birthDate: ${birthDate},

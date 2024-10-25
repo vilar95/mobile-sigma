@@ -334,7 +334,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                     foregroundColor:
                                         WidgetStatePropertyAll(Colors.white),
                                   ),
-                                  onPressed: () {
+                                  onPressed: () async {                               
                                     if (controller.isAuthentication) {
                                       controller.login(
                                         context,

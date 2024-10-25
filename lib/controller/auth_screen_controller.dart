@@ -145,7 +145,6 @@ abstract class AuthScreenControllerBase with Store {
 
   @action
   void validatePassword(String value) {
-    passwordValidationError = value;
     if (value.isEmpty ||
         !RegExp(r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,20}$')
             .hasMatch(value)) {
@@ -155,7 +154,6 @@ abstract class AuthScreenControllerBase with Store {
   }
   @action
   void validateConfirmPassword(String value) {
-    passwordConfirm = value;
     if (value.isEmpty || value != password) {
       passwordConfirmError = 'As senhas não são iguais.';
     }

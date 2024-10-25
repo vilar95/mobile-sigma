@@ -1,9 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart'; 
+import 'package:intl/intl.dart';
 import 'package:sigma/_core/theme/sigma_colors.dart';
-import 'package:sigma/model/speciality_doctor.dart';
+import 'package:sigma/controller/schedule_screen_controller.dart';
 import 'package:sigma/screens/widgets/show_custom_snackbar.dart';
 
 class ScheduleScreen extends StatefulWidget {
@@ -14,32 +13,14 @@ class ScheduleScreen extends StatefulWidget {
 }
 
 class _ScheduleScreenState extends State<ScheduleScreen> {
-  String? _chosenSpecialty = 'Especialidades';
-  DateTime _selectedDate = DateTime.now();
-  TimeOfDay _selectedTime = TimeOfDay.now();
-
-  Future<void> _selectTime(BuildContext context) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: _selectedTime,
-    );
-    if (picked != null && picked != _selectedTime) {
-      if (picked.hour >= 8 && picked.hour <= 18) {
-        setState(() {
-          _selectedTime = picked;
-        });
-      } else {
-        showCustomSnackBar(
-          context: context,
-          message: "Por favor, selecione um horário entre 08:00 e 18:00.",
-          duration: const Duration(seconds: 6),
-        );
-      }
-    }
-  }
-   final List<SpecialityDoctor> _doctorSpecialties = [];
+  final controller = ScheduleScreenController();
+  String? chosenSpeciality = 'Especialidades';
+  DateTime selectedDate = DateTime.now();
+  DateTime selectedTime = DateTime.now();
 
   void _scheduleAppointment() {
+    final String formattedDate = DateFormat('dd/MM/yyyy').format(selectedDate);
+    final String formattedTime = DateFormat('HH:mm').format(selectedTime);
 
     showDialog(
       context: context,
@@ -48,7 +29,17 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
           icon: const Icon(Icons.check_circle_outline_rounded,
               color: Colors.green, size: 80),
           title: const Text('Agendamento Confirmado'),
-          content: const Text('appointmentDetails', textAlign: TextAlign.center),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text('Consulta agendada com sucesso!',
+                  textAlign: TextAlign.center),
+              Text('Especialidade: ${speciality[controller.specialityDoctor]!}',
+                  textAlign: TextAlign.center),
+              Text('Data: $formattedDate', textAlign: TextAlign.center),
+              Text('Hora: $formattedTime', textAlign: TextAlign.center),
+            ],
+          ),
           actions: <Widget>[
             TextButton(
               child:
@@ -63,16 +54,38 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     );
   }
 
+  final Map<String, DateTime> appointmentSlots = {
+    '08:00': DateTime(2024, 11, 10, 8, 00),
+    '09:00': DateTime(2024, 11, 10, 9, 00),
+    '10:00': DateTime(2024, 11, 10, 10, 00),
+    '11:00': DateTime(2024, 11, 10, 11, 00),
+    '12:00': DateTime(2024, 11, 10, 12, 00),
+    '13:00': DateTime(2024, 11, 10, 13, 00),
+    '14:00': DateTime(2024, 11, 10, 14, 00),
+    '15:00': DateTime(2024, 11, 10, 15, 00),
+    '16:00': DateTime(2024, 11, 10, 16, 00),
+    '17:00': DateTime(2024, 11, 10, 17, 00),
+    '18:00': DateTime(2024, 11, 10, 18, 00),
+  };
+  final Map<String, String> speciality = {
+    '1': 'Clinico Geral',
+    '2': 'Nutricionista',
+    '3': 'Fisioterapeuta',
+    '4': 'Psicólogo',
+  };
+
   @override
   Widget build(BuildContext context) {
-    final String formattedDate = DateFormat('dd/MM/yyyy').format(_selectedDate);
+    final String formattedDate = DateFormat('dd/MM/yyyy').format(selectedDate);
+    final String formattedTime = DateFormat('HH:mm').format(selectedTime);
+
     return Scaffold(
       backgroundColor: SigmaColors.blue,
       appBar: AppBar(
-        title: const Text('Agendar Consulta',
-            style: TextStyle(
-                color: Colors.black,
-                fontSize: 28)),
+        title: const Text(
+          'Agendar Consulta',
+          style: TextStyle(color: Colors.black, fontSize: 28),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -88,38 +101,36 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   const Text(
-                    'Selecione a Especialidade',
+                    'Selecione a Especialidade:',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 10),
-                  DropdownButton<SpecialityDoctor>(
-                    hint: const Text('Selecione uma especialidade'),
-                    value: _chosenSpecialty != 'Especialidades'
-                        ? _doctorSpecialties.firstWhere(
-                            (specialty) => specialty.speciality == _chosenSpecialty,
-                            orElse: () => _doctorSpecialties.first)
-                        : null,
-                    onChanged: (SpecialityDoctor? newValue) {
+                  DropdownButton<String>(
+                    hint: const Text('Espacialidades'),
+                    value: null,
+                    onChanged: (String? newValue) {
                       setState(() {
-                        _chosenSpecialty = newValue?.speciality;
+                        chosenSpeciality = newValue;
+                        controller.specialityDoctor = newValue;
                       });
                     },
-                    items: _doctorSpecialties.map((SpecialityDoctor specialityDoctor) {
-                      return DropdownMenuItem<SpecialityDoctor>(
-                        value: specialityDoctor,
-                        child: Text(specialityDoctor.speciality),
+                    items: speciality.keys.map((String key) {
+                      return DropdownMenuItem<String>(
+                        value: key,
+                        child: Text(speciality[key]!),
                       );
                     }).toList(),
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 20),
                   CalendarDatePicker(
-                    initialDate: _selectedDate,
+                    initialDate: selectedDate,
                     firstDate: DateTime(2024),
                     lastDate: DateTime(2101),
                     onDateChanged: (DateTime date) {
                       if (date.weekday >= 1 && date.weekday <= 5) {
                         setState(() {
-                          _selectedDate = date;
+                          selectedDate = date;
+                          controller.dateSchedule = date;
                         });
                       } else {
                         showCustomSnackBar(
@@ -130,29 +141,64 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       }
                     },
                   ),
-                  ElevatedButton.icon(
-                    onPressed: () => _selectTime(context),
-                    icon: const Icon(Icons.access_time, color: Colors.white),
-                    label: const Text('Selecionar Hora'),
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: SigmaColors.blue,
+                  Center(
+                    child: Column(
+                      children: [
+                        const Text(
+                          'Selecione o horário:',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        DropdownButton<String>(
+                          hint: const Text('Horários'),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              selectedTime = appointmentSlots[newValue]!;
+                              controller.hourSchedule = selectedTime;
+                            });
+                          },
+                          items: appointmentSlots.keys
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
+                      ],
                     ),
-                  
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 20),
+                  if (chosenSpeciality != null &&
+                      chosenSpeciality != 'Especialidades') ...[
+                    const Text(
+                      "Especialidade: ",
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    Text(
+                      "${speciality[chosenSpeciality!]}",
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                  ],
                   Text(
                     "Data: $formattedDate",
                     style: const TextStyle(fontSize: 18),
                   ),
-                  const SizedBox(height: 10),
                   Text(
-                    "Hora: ${_selectedTime.format(context)}",
+                    "Hora: $formattedTime",
                     style: const TextStyle(fontSize: 18),
                   ),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: _scheduleAppointment,
+                    onPressed: () {
+                      controller.addSchedule(
+                        controller.specialityDoctor!,
+                        1,
+                        controller.dateSchedule,
+                        controller.hourSchedule,
+                      );
+                      _scheduleAppointment();
+                    },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
                       backgroundColor: SigmaColors.blue,
@@ -162,7 +208,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     ),
                     child: const Text('Agendar Consulta'),
                   ),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 20),
                 ],
               ),
             ),
