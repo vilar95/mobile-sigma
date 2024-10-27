@@ -7,12 +7,12 @@ import 'package:sigma/screens/splash_screen.dart';
 import 'package:sigma/screens/support_screen.dart';
 
 class SigmaRoutes {
-  static const String splash = "splash";
-  static const String auth = "auth";
-  static const String home = "home";
-  static const String schedule = "schedule";
-  static const String mySchedule = "mySchedule";
-  static const String support = "support";
+  static const String splash = "/splash";
+  static const String auth = "/auth";
+  static const String home = "/home";
+  static const String schedule = "/schedule";
+  static const String mySchedule = "/mySchedule";
+  static const String support = "/support";
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     return switch (settings.name) {
