@@ -121,7 +121,12 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       );
                     }).toList(),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
+                   const Text(
+                          'Selecione a data:',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
                   CalendarDatePicker(
                     initialDate: selectedDate,
                     firstDate: DateTime(2024),
@@ -171,7 +176,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
                   if (chosenSpeciality != null &&
                       chosenSpeciality != 'Especialidades') ...[
                     const Text(
@@ -191,7 +196,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     "Hora: $formattedTime",
                     style: const TextStyle(fontSize: 18),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
                   ElevatedButton(
                     onPressed: () {
                       controller.addSchedule(
@@ -211,7 +216,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     ),
                     child: const Text('Agendar Consulta'),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
                 ],
               ),
             ),

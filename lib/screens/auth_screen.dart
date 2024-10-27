@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_multi_formatter/formatters/masked_input_formatter.dart';
 import 'package:sigma/_core/theme/sigma_colors.dart';
-
 import 'package:sigma/controller/auth_screen_controller.dart';
 import 'package:sigma/screens/widgets/show_custom_snackbar.dart';
 
@@ -49,9 +48,8 @@ class _AuthScreenState extends State<AuthScreen> {
                               height: 250,
                             )
                           : const SizedBox.shrink(),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
+                      Observer(
+                        builder: (_) => Text(
                           (controller.isAuthentication)
                               ? "Bem vindo(a) ao"
                               : "Vamos começar?",
@@ -62,7 +60,8 @@ class _AuthScreenState extends State<AuthScreen> {
                           ),
                         ),
                       ),
-                      Text(
+                      Observer(
+                        builder: (_) => Text(
                         controller.isAuthentication
                             ? 'Sistema Integrado de Gestão Médica e Atendimento'
                             : 'Faça seu cadastro: ',
@@ -70,179 +69,153 @@ class _AuthScreenState extends State<AuthScreen> {
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                      Visibility(
-                        visible: !controller.isAuthentication,
-                        child: Column(
-                          children: [
-                            TextFormField(
-                              onChanged: (value) => controller.name = value,
-                              decoration: InputDecoration(
-                                errorText: controller.nameError,
-                                errorMaxLines: 3,
-                                errorStyle: const TextStyle(
-                                  color: Colors.red,
+                      Observer(
+                        builder: (_) => Visibility(
+                          visible: !controller.isAuthentication,
+                          child: Column(
+                            children: [
+                              TextFormField(
+                                onChanged: (value) => controller.name = value,
+                                decoration: InputDecoration(
+                                  errorText: controller.nameError,
+                                  errorMaxLines: 3,
+                                  errorStyle: const TextStyle(
+                                    color: Colors.red,
+                                  ),
+                                  label: const Text("Nome"),
                                 ),
-                                label: const Text("Nome"),
+                                validator: (value) {
+                                  if (value == null || value.length < 4) {
+                                    return "Insira o nome completo.";
+                                  }
+                                  return null;
+                                },
                               ),
-                              validator: (value) {
-                                if (value == null || value.length < 4) {
-                                  return "Insira o nome completo.";
-                                }
-                                return null;
-                              },
-                            ),
-                            TextFormField(
-                              onChanged: (value) =>
-                                  controller.birthDate = value,
-                              decoration: InputDecoration(
-                                errorText: controller.birthDateError,
-                                errorMaxLines: 3,
-                                errorStyle: const TextStyle(
-                                  color: Colors.red,
+                              TextFormField(
+                                onChanged: (value) =>
+                                    controller.birthDate = value,
+                                decoration: InputDecoration(
+                                  errorText: controller.birthDateError,
+                                  errorMaxLines: 3,
+                                  errorStyle: const TextStyle(
+                                    color: Colors.red,
+                                  ),
+                                  label: const Text("Data de Nascimento"),
                                 ),
-                                label: const Text("Data de Nascimento"),
-                              ),
-                              readOnly: true,
-                              onTap: () async {
-                                DateTime now = DateTime.now();
-                                DateTime lastDate = DateTime.now();
-                                DateTime initialDate =
-                                    now.isAfter(lastDate) ? lastDate : now;
+                                readOnly: true,
+                                onTap: () async {
+                                  DateTime now = DateTime.now();
+                                  DateTime lastDate = DateTime.now();
+                                  DateTime initialDate =
+                                      now.isAfter(lastDate) ? lastDate : now;
 
-                                DateTime? pickedDate = await showDatePicker(
-                                  context: context,
-                                  initialDate: initialDate,
-                                  firstDate: DateTime(1910, 1, 1),
-                                  lastDate: lastDate,
-                                );
-                                if (pickedDate != null) {
-                                  setState(() {
-                                    controller.birthDate =
-                                        pickedDate.toString();
-                                  });
-                                }
-                              },
-                              controller: TextEditingController(
-                                text: controller.birthDate.isNotEmpty
-                                    ? "${DateTime.parse(controller.birthDate).day.toString().padLeft(2, '0')}/${DateTime.parse(controller.birthDate).month.toString().padLeft(2, '0')}/${DateTime.parse(controller.birthDate).year}"
-                                    : "",
-                              ),
-                              validator: (value) {
-                                if (value == null ||
-                                    value.isEmpty ||
-                                    value.length < 10) {
-                                  return "Insira a data de nascimento.";
-                                }
-                                return null;
-                              },
-                            ),
-                            DropdownButtonFormField<String>(
-                              decoration: InputDecoration(
-                                errorText: controller.genderError,
-                                errorMaxLines: 3,
-                                errorStyle: const TextStyle(
-                                  color: Colors.red,
-                                ),
-                                label: const Text("Gênero"),
-                              ),
-                              items: const [
-                                DropdownMenuItem(
-                                  value: "Masculino",
-                                  child: Text("Masculino"),
-                                ),
-                                DropdownMenuItem(
-                                  value: "Feminino",
-                                  child: Text("Feminino"),
-                                ),
-                                DropdownMenuItem(
-                                  value: "Não informar",
-                                  child: Text("Não informar"),
-                                ),
-                              ],
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return "Selecione um gênero.";
-                                }
-                                return null;
-                              },
-                              onChanged: (value) {
-                                controller.gender = value!;
-                              },
-                            ),
-                            TextFormField(
-                              onChanged: (value) => controller.cpf = value,
-                              decoration: InputDecoration(
-                                label: const Text("CPF"),
-                                errorText: controller.cpfError,
-                                errorMaxLines: 3,
-                                errorStyle: const TextStyle(
-                                  color: Colors.red,
+                                  DateTime? pickedDate = await showDatePicker(
+                                    context: context,
+                                    initialDate: initialDate,
+                                    firstDate: DateTime(1910, 1, 1),
+                                    lastDate: lastDate,
+                                  );
+                                  if (pickedDate != null) {
+                                    setState(() {
+                                      controller.birthDate =
+                                          pickedDate.toString();
+                                    });
+                                  }
+                                },
+                                controller: TextEditingController(
+                                  text: controller.birthDate.isNotEmpty
+                                      ? "${DateTime.parse(controller.birthDate).day.toString().padLeft(2, '0')}/${DateTime.parse(controller.birthDate).month.toString().padLeft(2, '0')}/${DateTime.parse(controller.birthDate).year}"
+                                      : "",
                                 ),
                               ),
-                              keyboardType: TextInputType.number,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly,
-                                MaskedInputFormatter("###.###.###-##"),
-                              ],
-                              validator: (value) {
-                                if (value == null || value.length != 14) {
-                                  return "Insira um CPF válido.";
-                                }
-                                return null;
-                              },
-                            ),
-                            TextFormField(
-                              onChanged: (value) => controller.cidcard = value,
-                              decoration: InputDecoration(
-                                label: const Text("CidCard"),
-                                errorText: controller.cidcardError,
-                                errorMaxLines: 3,
-                                errorStyle: const TextStyle(
-                                  color: Colors.red,
+                              DropdownButtonFormField<String>(
+                                onChanged: (value) =>
+                                    controller.gender = value!,
+                                decoration: InputDecoration(
+                                  errorText: controller.genderError,
+                                  errorMaxLines: 3,
+                                  errorStyle: const TextStyle(
+                                    color: Colors.red,
+                                  ),
+                                  label: const Text("Gênero"),
+                                ),
+                                items: const [
+                                  DropdownMenuItem(
+                                    value: "Masculino",
+                                    child: Text("Masculino"),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: "Feminino",
+                                    child: Text("Feminino"),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: "Não informar",
+                                    child: Text("Não informar"),
+                                  ),
+                                ],
+                              ),
+                              TextFormField(
+                                onChanged: (value) => controller.cpf = value,
+                                decoration: InputDecoration(
+                                  label: const Text("CPF"),
+                                  errorText: controller.cpfError,
+                                  errorMaxLines: 3,
+                                  errorStyle: const TextStyle(
+                                    color: Colors.red,
+                                  ),
+                                ),
+                                keyboardType: TextInputType.number,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly,
+                                  MaskedInputFormatter("###.###.###-##"),
+                                ],
+                              ),
+                              TextFormField(
+                                onChanged: (value) =>
+                                    controller.cidcard = value,
+                                decoration: InputDecoration(
+                                  label: const Text("CidCard"),
+                                  errorText: controller.cidcardError,
+                                  errorMaxLines: 3,
+                                  errorStyle: const TextStyle(
+                                    color: Colors.red,
+                                  ),
+                                ),
+                                keyboardType: TextInputType.number,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly,
+                                  MaskedInputFormatter("#########-##"),
+                                ],
+                              ),
+                              TextFormField(
+                                onChanged: (value) =>
+                                    controller.address = value,
+                                decoration: InputDecoration(
+                                  errorText: controller.addressError,
+                                  errorMaxLines: 3,
+                                  errorStyle: const TextStyle(
+                                    color: Colors.red,
+                                  ),
+                                  label: const Text("Endereço"),
                                 ),
                               ),
-                              keyboardType: TextInputType.number,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly,
-                                MaskedInputFormatter("#########-##"),
-                              ],
-                              validator: (value) {
-                                if (value == null || value.length != 12) {
-                                  return "Insira um cidCard válido.";
-                                }
-                                return null;
-                              },
-                            ),
-                            TextFormField(
-                              onChanged: (value) => controller.address = value,
-                              decoration: InputDecoration(
-                                errorText: controller.addressError,
-                                errorMaxLines: 3,
-                                errorStyle: const TextStyle(
-                                  color: Colors.red,
-                                ),
-                                label: const Text("Endereço"),
-                              ),
-                              validator: (value) {
-                                if (value == null || value.length < 10) {
-                                  return "Insira o endereço completo.";
-                                }
-                                return null;
-                              },
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                      TextFormField(
-                        onChanged: (value) => controller.email = value,
-                        decoration: InputDecoration(
-                          label: const Text("E-mail"),
-                          errorText: controller.emailError,
-                          errorMaxLines: 3,
-                          errorStyle: const TextStyle(
-                            color: Colors.red,
+                      Observer(
+                        builder: (_) => TextFormField(
+                          onChanged: (value) => controller.email = value,
+                          decoration: InputDecoration(
+                            label: const Text("E-mail"),
+                            errorText: controller.emailError,
+                            errorMaxLines: 3,
+                            errorStyle: const TextStyle(
+                              color: Colors.red,
+                            ),
                           ),
                         ),
                       ),
@@ -272,52 +245,55 @@ class _AuthScreenState extends State<AuthScreen> {
                           ),
                         ),
                       ),
-                      Visibility(
-                        visible: !controller.isAuthentication,
-                        child: Column(
-                          children: [
-                            TextFormField(
-                              obscureText: _isPasswordVisiblePasswordConfirm,
-                              decoration: InputDecoration(
-                                errorText: controller.passwordConfirmError,
-                                errorMaxLines: 3,
-                                errorStyle: const TextStyle(
-                                  color: Colors.red,
-                                ),
-                                label: const Text("Confirme a senha"),
-                                suffixIcon: IconButton(
-                                  icon: Icon(
-                                    _isPasswordVisiblePasswordConfirm
-                                        ? Icons.visibility_outlined
-                                        : Icons.visibility_off_outlined,
+                      Observer(
+                        builder: (_) => InkWell(
+                          child: Visibility(
+                            visible: !controller.isAuthentication,
+                            child: Column(
+                              children: [
+                                TextFormField(
+                                  onChanged: (value) =>
+                                      controller.passwordConfirm = value,
+                                  obscureText:
+                                      _isPasswordVisiblePasswordConfirm,
+                                  decoration: InputDecoration(
+                                    errorText: controller.passwordConfirmError,
+                                    errorMaxLines: 3,
+                                    errorStyle: const TextStyle(
+                                      color: Colors.red,
+                                    ),
+                                    label: const Text("Confirme a senha"),
+                                    suffixIcon: IconButton(
+                                      icon: Icon(
+                                        _isPasswordVisiblePasswordConfirm
+                                            ? Icons.visibility_outlined
+                                            : Icons.visibility_off_outlined,
+                                      ),
+                                      onPressed: () => setState(() {
+                                        _isPasswordVisiblePasswordConfirm =
+                                            !_isPasswordVisiblePasswordConfirm;
+                                      }),
+                                    ),
                                   ),
-                                  onPressed: () => setState(() {
-                                    _isPasswordVisiblePasswordConfirm =
-                                        !_isPasswordVisiblePasswordConfirm;
-                                  }),
                                 ),
-                              ),
-                              validator: (value) {
-                                if (value != controller.password) {
-                                  return "As senhas não coincidem.";
-                                } else if (value == null || value.isEmpty) {
-                                  return "Confirme a senha.";
-                                }
-                                return null;
-                              },
+                              ],
                             ),
-                          ],
+                          ),
                         ),
                       ),
-                      Visibility(
-                        visible: controller.isAuthentication,
-                        child: TextButton(
-                          onPressed: () {
-                            forgotPasswordClicked();
-                          },
-                          child: const Text(
-                            "Esqueci minha senha",
-                            style: TextStyle(color: Colors.black87),
+                      Observer(
+                        builder: (_) => InkWell(
+                          child: Visibility(
+                            visible: controller.isAuthentication,
+                            child: TextButton(
+                              onPressed: () {
+                                forgotPasswordClicked();
+                              },
+                              child: const Text(
+                                "Esqueci minha senha",
+                                style: TextStyle(color: Colors.black87),
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -332,7 +308,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                     foregroundColor:
                                         WidgetStatePropertyAll(Colors.white),
                                   ),
-                                  onPressed: () async {                               
+                                  onPressed: () async {
                                     if (controller.isAuthentication) {
                                       controller.login(
                                         context,
@@ -351,6 +327,18 @@ class _AuthScreenState extends State<AuthScreen> {
                                           controller.cpf,
                                           controller.cidcard,
                                           controller.address);
+
+                                            print("Name Error: ${controller.nameError}");
+                                            print("Birth Date Error: ${controller.birthDateError}");
+                                            print("Gender Error: ${controller.genderError}");
+                                            print("CPF Error: ${controller.cpfError}");
+                                            print("CidCard Error: ${controller.cidcardError}");
+                                            print("Address Error: ${controller.addressError}");
+                                            print("Email Error: ${controller.emailError}");
+                                            print("Password Confirm Error: ${controller.passwordConfirmError}");
+                                            print("Password Error: ${controller.passwordValidationError}");
+
+
                                     }
                                   },
                                   child: Text(

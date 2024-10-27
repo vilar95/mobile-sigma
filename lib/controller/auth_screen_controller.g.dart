@@ -188,38 +188,6 @@ mixin _$AuthScreenController on AuthScreenControllerBase, Store {
     });
   }
 
-  late final _$phoneAtom =
-      Atom(name: 'AuthScreenControllerBase.phone', context: context);
-
-  @override
-  String get phone {
-    _$phoneAtom.reportRead();
-    return super.phone;
-  }
-
-  @override
-  set phone(String value) {
-    _$phoneAtom.reportWrite(value, super.phone, () {
-      super.phone = value;
-    });
-  }
-
-  late final _$phoneErrorAtom =
-      Atom(name: 'AuthScreenControllerBase.phoneError', context: context);
-
-  @override
-  String? get phoneError {
-    _$phoneErrorAtom.reportRead();
-    return super.phoneError;
-  }
-
-  @override
-  set phoneError(String? value) {
-    _$phoneErrorAtom.reportWrite(value, super.phoneError, () {
-      super.phoneError = value;
-    });
-  }
-
   late final _$genderAtom =
       Atom(name: 'AuthScreenControllerBase.gender', context: context);
 
@@ -469,17 +437,6 @@ mixin _$AuthScreenController on AuthScreenControllerBase, Store {
   }
 
   @override
-  void setPhone(String value) {
-    final _$actionInfo = _$AuthScreenControllerBaseActionController.startAction(
-        name: 'AuthScreenControllerBase.setPhone');
-    try {
-      return super.setPhone(value);
-    } finally {
-      _$AuthScreenControllerBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   void setAddress(String value) {
     final _$actionInfo = _$AuthScreenControllerBaseActionController.startAction(
         name: 'AuthScreenControllerBase.setAddress');
@@ -579,11 +536,11 @@ mixin _$AuthScreenController on AuthScreenControllerBase, Store {
   }
 
   @override
-  void validatePhone(String value) {
+  void validateGender(String value) {
     final _$actionInfo = _$AuthScreenControllerBaseActionController.startAction(
-        name: 'AuthScreenControllerBase.validatePhone');
+        name: 'AuthScreenControllerBase.validateGender');
     try {
-      return super.validatePhone(value);
+      return super.validateGender(value);
     } finally {
       _$AuthScreenControllerBaseActionController.endAction(_$actionInfo);
     }
@@ -647,8 +604,6 @@ name: ${name},
 nameError: ${nameError},
 birthDate: ${birthDate},
 birthDateError: ${birthDateError},
-phone: ${phone},
-phoneError: ${phoneError},
 gender: ${gender},
 genderError: ${genderError},
 address: ${address},
