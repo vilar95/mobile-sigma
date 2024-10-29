@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:sigma/_core/routes/sigma_routes.dart';
 import 'package:sigma/_core/theme/sigma_colors.dart';
 import 'package:sigma/services/dio_service.dart';
@@ -125,18 +126,41 @@ class _MyScheduleScreenState extends State<MyScheduleScreen> {
               ],
             ),
             child: ListTile(
-              title: Text('Especialidade: ${consultation['specialty']}'),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Médico: ${consultation['doctorName']}'),
-                  Text('Data: ${consultation['date']}'),
-                  Text('Hora: ${consultation['horario']}'),
-                ],
+              contentPadding: const EdgeInsets.all(16.0),
+              title: Text(
+                'Especialidade: ${consultation['specialty']}',
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+              ),
+              subtitle: Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Médico: ${consultation['doctorName']}',
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                        'Data: ${DateFormat('dd/MM/yyyy').format(DateTime.parse(consultation['date']))}',
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Hora: ${consultation['horario']}',
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  ],
+                ),
               ),
               trailing: IconButton(
-                icon:
-                    const Icon(Icons.delete_outline_rounded, color: SigmaColors.blue),
+                icon: const Icon(
+                  Icons.delete_outline_rounded,
+                  color: SigmaColors.blue,
+                ),
                 onPressed: () {
                   dioService.deleteConsultation(consultation['id']).then((_) {
                     setState(() {
