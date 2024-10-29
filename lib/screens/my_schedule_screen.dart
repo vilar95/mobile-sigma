@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:sigma/_core/routes/sigma_routes.dart';
 import 'package:sigma/_core/theme/sigma_colors.dart';
