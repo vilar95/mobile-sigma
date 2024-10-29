@@ -53,6 +53,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           (controller.isAuthentication)
                               ? "Bem vindo(a) ao"
                               : "Vamos começar?",
+                              key: const Key('AuthTitle'),
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                             fontSize: 20,
@@ -62,13 +63,13 @@ class _AuthScreenState extends State<AuthScreen> {
                       ),
                       Observer(
                         builder: (_) => Text(
-                        controller.isAuthentication
-                            ? 'Sistema Integrado de Gestão Médica e Atendimento'
-                            : 'Faça seu cadastro: ',
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                          controller.isAuthentication
+                              ? 'Sistema Integrado de Gestão Médica e Atendimento'
+                              : 'Faça seu cadastro: ',
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
@@ -87,12 +88,6 @@ class _AuthScreenState extends State<AuthScreen> {
                                   ),
                                   label: const Text("Nome"),
                                 ),
-                                validator: (value) {
-                                  if (value == null || value.length < 4) {
-                                    return "Insira o nome completo.";
-                                  }
-                                  return null;
-                                },
                               ),
                               TextFormField(
                                 onChanged: (value) =>
@@ -132,8 +127,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                 ),
                               ),
                               DropdownButtonFormField<String>(
-                                onChanged: (value) =>
-                                    controller.gender = value!,
+                                onChanged: (value) => controller.gender = value!,
                                 decoration: InputDecoration(
                                   errorText: controller.genderError,
                                   errorMaxLines: 3,
@@ -257,7 +251,8 @@ class _AuthScreenState extends State<AuthScreen> {
                                   obscureText:
                                       _isPasswordVisiblePasswordConfirm,
                                   decoration: InputDecoration(
-                                    errorText: controller.passwordConfirmError,
+                                    errorText:
+                                        controller.passwordValidationError,
                                     errorMaxLines: 3,
                                     errorStyle: const TextStyle(
                                       color: Colors.red,
@@ -328,20 +323,28 @@ class _AuthScreenState extends State<AuthScreen> {
                                           controller.cidcard,
                                           controller.address);
 
-                                            print("Name Error: ${controller.nameError}");
-                                            print("Birth Date Error: ${controller.birthDateError}");
-                                            print("Gender Error: ${controller.genderError}");
-                                            print("CPF Error: ${controller.cpfError}");
-                                            print("CidCard Error: ${controller.cidcardError}");
-                                            print("Address Error: ${controller.addressError}");
-                                            print("Email Error: ${controller.emailError}");
-                                            print("Password Confirm Error: ${controller.passwordConfirmError}");
-                                            print("Password Error: ${controller.passwordValidationError}");
-
-
+                                      print(
+                                          "Name Error: ${controller.nameError}");
+                                      print(
+                                          "Birth Date Error: ${controller.birthDateError}");
+                                      print(
+                                          "Gender Error: ${controller.genderError}");
+                                      print(
+                                          "CPF Error: ${controller.cpfError}");
+                                      print(
+                                          "CidCard Error: ${controller.cidcardError}");
+                                      print(
+                                          "Address Error: ${controller.addressError}");
+                                      print(
+                                          "Email Error: ${controller.emailError}");
+                                      print(
+                                          "Password Confirm Error: ${controller.passwordConfirmError}");
+                                      print(
+                                          "Password Error: ${controller.passwordValidationError}");
                                     }
                                   },
                                   child: Text(
+                                    key: const Key("button"),
                                     controller.isAuthentication
                                         ? "Entrar"
                                         : "Cadastrar",

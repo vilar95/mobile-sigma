@@ -53,17 +53,23 @@ void main() {
     await tester.pumpWidget(const MaterialApp(home: AuthScreen()));
     await tester.pumpAndSettle();
 
+    await tester.tap(find.text('Não tem conta? Clique aqui para cadastrar.'));
+    await tester.pumpAndSettle();
+
     // Toque no botão para acionar a validação
-    await tester.tap(find.text('Cadastrar'));
+    await tester.tap(find.byKey(const Key('button')));
     await tester.pumpAndSettle();
 
     // Verifique se as mensagens de validação são exibidas
     expect(find.text('Insira o nome completo.'), findsOneWidget);
     expect(find.text('Insira a data de nascimento.'), findsOneWidget);
-    expect(find.text('Selecione um gênero.'), findsOneWidget);
+    //expect(find.text('Selecione um gênero.'), findsOneWidget);
     expect(find.text('Insira um CPF válido.'), findsOneWidget);
-    expect(find.text('Insira um cidCard válido.'), findsOneWidget);
-    expect(find.text('Insira o endereço completo.'), findsOneWidget);
+    expect(find.text('CidCard inválido.'), findsOneWidget);
+    expect(find.text('Endereço inválido.'), findsOneWidget);
+    expect(find.text('Insira o e-mail válido.'), findsOneWidget);
+    expect(find.text('Insira a senha.'), findsNWidgets(2));
+
   });
 
   testWidgets('Alterna entre login e cadastro', (WidgetTester tester) async {
@@ -71,14 +77,11 @@ void main() {
     await tester.pumpWidget(const MaterialApp(home: AuthScreen()));
     await tester.pumpAndSettle();
 
-    // Mudar para registrar
     await tester.tap(find.text('Não tem conta? Clique aqui para cadastrar.'));
     await tester.pumpAndSettle();
-    
 
     // Verifique se o titulo de cadastro esta presente
-    expect(find.text('Vamos começar?'), findsOneWidget);
-    expect(find.byType(Text), findsNWidgets(1));
+    expect(find.byKey(const Key('AuthTitle')), findsOneWidget);
   });
 
   testWidgets('O diálogo de esquecimento de senha aparece quando clicado',

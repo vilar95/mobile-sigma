@@ -514,17 +514,6 @@ mixin _$AuthScreenController on AuthScreenControllerBase, Store {
   }
 
   @override
-  void validateConfirmPassword(String value) {
-    final _$actionInfo = _$AuthScreenControllerBaseActionController.startAction(
-        name: 'AuthScreenControllerBase.validateConfirmPassword');
-    try {
-      return super.validateConfirmPassword(value);
-    } finally {
-      _$AuthScreenControllerBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   void validateName(String value) {
     final _$actionInfo = _$AuthScreenControllerBaseActionController.startAction(
         name: 'AuthScreenControllerBase.validateName');
@@ -536,7 +525,7 @@ mixin _$AuthScreenController on AuthScreenControllerBase, Store {
   }
 
   @override
-  void validateGender(String value) {
+  void validateGender(String? value) {
     final _$actionInfo = _$AuthScreenControllerBaseActionController.startAction(
         name: 'AuthScreenControllerBase.validateGender');
     try {

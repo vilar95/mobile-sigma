@@ -113,13 +113,11 @@ class DioService {
     String dateSchedule,
     String hourSchedule,
   ) async {
-
     final prefs = await SharedPreferences.getInstance();
-      final int? id = prefs.getInt('id');
-      final String? token = prefs.getString('token');
-    
-    const String url =
-        ('${DioEndpoints.baseUrl}/consulta');
+    final int? id = prefs.getInt('id');
+    final String? token = prefs.getString('token');
+
+    const String url = ('${DioEndpoints.baseUrl}/consulta');
     String? bearerToken = token;
 
     final Map<String, dynamic> requestData = {
@@ -157,83 +155,87 @@ class DioService {
       throw Exception('Error occurred: $e');
     }
   }
+
   Future<List<dynamic>> getPatientConsultations() async {
-  final prefs = await SharedPreferences.getInstance();
-  final String? token = prefs.getString('token');
-  final int? id = prefs.getInt('id');
+    final prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('token');
+    final int? id = prefs.getInt('id');
 
-  // Validar token e ID
-  if (token == null || id == null) {
-    throw Exception('Token ou ID está faltando. Por favor, faça login novamente.');
-  }
+    // Validar token e ID
+    if (token == null || id == null) {
+      throw Exception(
+          'Token ou ID está faltando. Por favor, faça login novamente.');
+    }
 
-  final String url = '${DioEndpoints.baseUrl}/pacientes/$id/consultas';
+    final String url = '${DioEndpoints.baseUrl}/pacientes/$id/consultas';
 
-  try {
-    final response = await _dio.get(
-      url,
-      options: Options(
-        headers: {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json',
-        },
-      ),
-    );
+    try {
+      final response = await _dio.get(
+        url,
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
 
-    print('Response: ${response.data}');
+      print('Response: ${response.data}');
 
-    if (response.statusCode == 200) {
-      // Verifique se a resposta contém os dados esperados
-      if (response.data is Map && response.data.containsKey('dados')) {
-        List<dynamic> consultations = response.data['dados'];
-        print('Consultas recuperadas: $consultations');
-        return consultations; // Retorne a lista de consultas
+      if (response.statusCode == 200) {
+        // Verifique se a resposta contém os dados esperados
+        if (response.data is Map && response.data.containsKey('dados')) {
+          List<dynamic> consultations = response.data['dados'];
+          print('Consultas recuperadas: $consultations');
+          return consultations; // Retorne a lista de consultas
+        } else {
+          throw Exception('Formato de resposta inesperado.');
+        }
       } else {
-        throw Exception('Formato de resposta inesperado.');
+        print(
+            'Falha ao recuperar consultas: ${response.statusCode} - ${response.data}');
+        throw Exception('Falha ao recuperar consultas: ${response.statusCode}');
       }
-    } else {
-      print('Falha ao recuperar consultas: ${response.statusCode} - ${response.data}');
-      throw Exception('Falha ao recuperar consultas: ${response.statusCode}');
+    } catch (e) {
+      print('Ocorreu um erro: $e');
+      throw Exception('Ocorreu um erro: $e');
     }
-  } catch (e) {
-    print('Ocorreu um erro: $e');
-    throw Exception('Ocorreu um erro: $e');
-  }
-}
-Future<void> deleteConsultation(int consultationId) async {
-  final prefs = await SharedPreferences.getInstance();
-  final String? token = prefs.getString('token');
-  final int? id = prefs.getInt('id');
-
-  // Validar token e ID
-  if (token == null || id == null) {
-    throw Exception('Token ou ID está faltando. Por favor, faça login novamente.');
   }
 
-  final String url = '${DioEndpoints.baseUrl}/consultas/$consultationId';
+  Future<void> deleteConsultation(int consultationId) async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('token');
+    final int? id = prefs.getInt('id');
 
-  try {
-    final response = await _dio.delete(
-      url,
-      options: Options(
-        headers: {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json',
-        },
-      ),
-    );
-
-    if (response.statusCode == 200) {
-      print('Consulta deletada com sucesso.');
-    } else {
-      print('Falha ao deletar consulta: ${response.statusCode} - ${response.data}');
-      throw Exception('Falha ao deletar consulta: ${response.statusCode}');
+    // Validar token e ID
+    if (token == null || id == null) {
+      throw Exception(
+          'Token ou ID está faltando. Por favor, faça login novamente.');
     }
-  } catch (e) {
-    print('Ocorreu um erro: $e');
-    throw Exception('Ocorreu um erro: $e');
+
+    final String url = '${DioEndpoints.baseUrl}/consultas/$consultationId';
+
+    try {
+      final response = await _dio.delete(
+        url,
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        print('Consulta deletada com sucesso.');
+      } else {
+        print(
+            'Falha ao deletar consulta: ${response.statusCode} - ${response.data}');
+        throw Exception('Falha ao deletar consulta: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Ocorreu um erro: $e');
+      throw Exception('Ocorreu um erro: $e');
+    }
   }
-}
-  
-  
 }

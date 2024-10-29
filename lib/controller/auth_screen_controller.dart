@@ -141,17 +141,7 @@ abstract class AuthScreenControllerBase with Store {
     }
     if (value.isEmpty) {
       passwordValidationError = 'Insira a senha.';
-    }
-  }
-
-  @action
-  void validateConfirmPassword(String value) {
-    if (value != password) {
-      passwordConfirmError = 'As senhas não são iguais.';
-    }
-    if (value.isEmpty) {
-      passwordConfirmError = 'Campo obrigatório';
-    }
+    }  
   }
 
   @action
@@ -189,19 +179,19 @@ abstract class AuthScreenControllerBase with Store {
   }
 
   @action
-  void validateGender(String value) {
-    if (value.isEmpty) {
+  void validateGender(String? value) {
+    if (value != 'Masculino' && value != 'Feminino' && value != 'Não informar') {
       genderError = 'Selecione um gênero.';
-    }
+    } 
   }
 
   @action
   void detectTypeDoc(String value) {
-    final length = UtilBrasilFields.removeCaracteres(value).length;
-    if (length != 11) {
+    if (value.isEmpty) {
       cpfError = 'Insira um CPF válido.';
     }
-    if (value.isEmpty) {
+    final length = UtilBrasilFields.removeCaracteres(value).length;
+    if (length != 11) {
       cpfError = 'Insira um CPF válido.';
     }
   }
@@ -258,12 +248,10 @@ abstract class AuthScreenControllerBase with Store {
         validateCidCard(cidcard);
         validateAddress(address);
         detectTypeDoc(cpf);
-        validateConfirmPassword(password);
         validateGender(gender);
 
         final response = await dioService.postRegister(
             email, password, name, birthDate, gender, cpf, cidcard, address
-            //phone,
             );
         if (response.statusCode == 200) {
           print('Cadastro realizado com sucesso');
