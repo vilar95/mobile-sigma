@@ -4,12 +4,6 @@ import 'package:sigma/screens/schedule_screen.dart';
 import 'package:sigma/screens/widgets/drawer_widget.dart';
 
 void main() {
-  // Configuração inicial
-  setUp(() {
-    // Qualquer configuração necessária antes de cada teste
-  });
-
-  // Teste: Verifica se o Drawer é renderizado corretamente
   testWidgets('Verifica se o Drawer é renderizado corretamente',
       (WidgetTester tester) async {
     await tester.pumpWidget(MaterialApp(
@@ -33,7 +27,6 @@ void main() {
     expect(find.byType(Drawer), findsOneWidget);
   });
 
-  // Teste: Verifica se os itens do Drawer estão presentes
   testWidgets('Verifica se os itens do Drawer estão presentes',
       (WidgetTester tester) async {
     await tester.pumpWidget(MaterialApp(
@@ -61,7 +54,6 @@ void main() {
     expect(find.text('Sair'), findsOneWidget);
   });
 
-  // Teste: Verifica se a navegação funciona corretamente ao clicar em um item do Drawer
   testWidgets(
       'Verifica se a navegação funciona corretamente ao clicar em um item do Drawer',
       (WidgetTester tester) async {
