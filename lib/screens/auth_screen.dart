@@ -53,7 +53,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           (controller.isAuthentication)
                               ? "Bem vindo(a) ao"
                               : "Vamos começar?",
-                              key: const Key('AuthTitle'),
+                          key: const Key('AuthTitle'),
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                             fontSize: 20,
@@ -127,7 +127,8 @@ class _AuthScreenState extends State<AuthScreen> {
                                 ),
                               ),
                               DropdownButtonFormField<String>(
-                                onChanged: (value) => controller.gender = value!,
+                                onChanged: (value) =>
+                                    controller.gender = value!,
                                 decoration: InputDecoration(
                                   errorText: controller.genderError,
                                   errorMaxLines: 3,
@@ -151,7 +152,8 @@ class _AuthScreenState extends State<AuthScreen> {
                                   ),
                                 ],
                               ),
-                              TextFormField(
+                              TextField(
+                                
                                 onChanged: (value) => controller.cpf = value,
                                 decoration: InputDecoration(
                                   label: const Text("CPF"),
@@ -165,7 +167,9 @@ class _AuthScreenState extends State<AuthScreen> {
                                 inputFormatters: [
                                   FilteringTextInputFormatter.digitsOnly,
                                   MaskedInputFormatter("###.###.###-##"),
+                                  TextEditingControllerWithEndCursor(maxDigits: 14),
                                 ],
+                                
                               ),
                               TextFormField(
                                 onChanged: (value) =>
@@ -182,6 +186,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                 inputFormatters: [
                                   FilteringTextInputFormatter.digitsOnly,
                                   MaskedInputFormatter("#########-##"),
+                                  TextEditingControllerWithEndCursor(maxDigits: 14),
                                 ],
                               ),
                               TextFormField(
@@ -322,25 +327,6 @@ class _AuthScreenState extends State<AuthScreen> {
                                           controller.cpf,
                                           controller.cidcard,
                                           controller.address);
-
-                                      print(
-                                          "Name Error: ${controller.nameError}");
-                                      print(
-                                          "Birth Date Error: ${controller.birthDateError}");
-                                      print(
-                                          "Gender Error: ${controller.genderError}");
-                                      print(
-                                          "CPF Error: ${controller.cpfError}");
-                                      print(
-                                          "CidCard Error: ${controller.cidcardError}");
-                                      print(
-                                          "Address Error: ${controller.addressError}");
-                                      print(
-                                          "Email Error: ${controller.emailError}");
-                                      print(
-                                          "Password Confirm Error: ${controller.passwordConfirmError}");
-                                      print(
-                                          "Password Error: ${controller.passwordValidationError}");
                                     }
                                   },
                                   child: Text(
@@ -408,6 +394,32 @@ class _AuthScreenState extends State<AuthScreen> {
           ],
         );
       },
+    );
+  }
+}
+
+class TextEditingControllerWithEndCursor extends TextInputFormatter {
+  TextEditingControllerWithEndCursor({this.maxDigits = 14});
+  
+  final int maxDigits;
+
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    
+    if(newValue.text.length > maxDigits)return oldValue;
+
+    if(newValue.text.isEmpty)return newValue;
+    
+    String newText = newValue.text;
+    
+    if (newText.length > maxDigits) {
+      newText = oldValue.text;
+    }
+
+    return newValue.copyWith(
+      text: newText,
+      selection: TextSelection.collapsed(offset: newText.length),
     );
   }
 }
