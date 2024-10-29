@@ -200,7 +200,40 @@ class DioService {
     throw Exception('Ocorreu um erro: $e');
   }
 }
+Future<void> deleteConsultation(int consultationId) async {
+  final prefs = await SharedPreferences.getInstance();
+  final String? token = prefs.getString('token');
+  final int? id = prefs.getInt('id');
 
+  // Validar token e ID
+  if (token == null || id == null) {
+    throw Exception('Token ou ID está faltando. Por favor, faça login novamente.');
+  }
+
+  final String url = '${DioEndpoints.baseUrl}/consultas/$consultationId';
+
+  try {
+    final response = await _dio.delete(
+      url,
+      options: Options(
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      print('Consulta deletada com sucesso.');
+    } else {
+      print('Falha ao deletar consulta: ${response.statusCode} - ${response.data}');
+      throw Exception('Falha ao deletar consulta: ${response.statusCode}');
+    }
+  } catch (e) {
+    print('Ocorreu um erro: $e');
+    throw Exception('Ocorreu um erro: $e');
+  }
+}
   
   
 }

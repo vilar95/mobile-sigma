@@ -17,14 +17,15 @@ class _MyScheduleScreenState extends State<MyScheduleScreen> {
   @override
   void initState() {
     super.initState();
-    _consultationsFuture = dioService.getPatientConsultations().then((response) {
+    _consultationsFuture =
+        dioService.getPatientConsultations().then((response) {
       return response.map((consultation) {
         return {
           'id': consultation['id'],
           'doctorName': consultation['doctor']['name'],
           'specialty': consultation['doctor']['specialty']['name'],
           'date': consultation['data'],
-          'time': consultation['hora'],
+          'horario': consultation['horario'],
         };
       }).toList();
     });
@@ -130,13 +131,18 @@ class _MyScheduleScreenState extends State<MyScheduleScreen> {
                 children: [
                   Text('Médico: ${consultation['doctorName']}'),
                   Text('Data: ${consultation['date']}'),
-                  Text('Hora: ${consultation['time']}'),
+                  Text('Hora: ${consultation['horario']}'),
                 ],
               ),
               trailing: IconButton(
-                icon: const Icon(Icons.delete_outline_rounded, color: Colors.red),
+                icon:
+                    const Icon(Icons.delete_outline_rounded, color: SigmaColors.blue),
                 onPressed: () {
-                  // Implement delete functionality
+                  dioService.deleteConsultation(consultation['id']).then((_) {
+                    setState(() {
+                      consultations.removeAt(index);
+                    });
+                  });
                 },
               ),
             ),
