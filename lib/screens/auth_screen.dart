@@ -126,9 +126,9 @@ class _AuthScreenState extends State<AuthScreen> {
                                       : "",
                                 ),
                               ),
-                              DropdownButtonFormField<String>(
+                              DropdownButtonFormField(
                                 onChanged: (value) =>
-                                    controller.gender = value!,
+                                    controller.gender = value.toString(),
                                 decoration: InputDecoration(
                                   errorText: controller.genderError,
                                   errorMaxLines: 3,
