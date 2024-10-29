@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sigma/_core/routes/sigma_routes.dart';
-import 'package:sigma/authentication/services/dio_service.dart';
+import 'package:sigma/services/dio_service.dart';
 import 'package:sigma/screens/widgets/show_confirm_register_dialog.dart';
 import 'package:sigma/screens/widgets/show_custom_snackbar.dart';
 
