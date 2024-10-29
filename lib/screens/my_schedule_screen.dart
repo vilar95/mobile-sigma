@@ -109,7 +109,7 @@ class _MyScheduleScreenState extends State<MyScheduleScreen> {
     return ListView.builder(
       itemCount: consultations.length,
       itemBuilder: (context, index) {
-        final consultation = consultations[index];
+        final consultation = consultations.reversed.toList()[index];
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
           child: Container(
