@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sigma/_core/theme/sigma_colors.dart';
 import 'package:sigma/controller/schedule_screen_controller.dart';
-import 'package:sigma/screens/widgets/show_custom_snackbar.dart';
+
 
 class ScheduleScreen extends StatefulWidget {
   const ScheduleScreen({super.key});
@@ -17,42 +17,6 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   String? chosenSpeciality = 'Especialidades';
   DateTime selectedDate = DateTime.now();
   DateTime selectedTime = DateTime.now();
-
-  void _scheduleAppointment() {
-    final String formattedDate = DateFormat('dd/MM/yyyy').format(selectedDate);
-    final String formattedTime = DateFormat('HH:mm').format(selectedTime);
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          icon: const Icon(Icons.check_circle_outline_rounded,
-              color: Colors.green, size: 80),
-          title: const Text('Agendamento Confirmado'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text('Consulta agendada com sucesso!',
-                  textAlign: TextAlign.center),
-              Text('Especialidade: ${speciality[controller.specialityDoctor]!}',
-                  textAlign: TextAlign.center),
-              Text('Data: $formattedDate', textAlign: TextAlign.center),
-              Text('Hora: $formattedTime', textAlign: TextAlign.center),
-            ],
-          ),
-          actions: <Widget>[
-            TextButton(
-              child:
-                  const Text('OK', style: TextStyle(color: SigmaColors.blue)),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
 
   final Map<String, DateTime> appointmentSlots = {
     '08:00': DateTime(2024, 11, 10, 8, 00),
@@ -122,29 +86,25 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     }).toList(),
                   ),
                   const SizedBox(height: 10),
-                   const Text(
-                          'Selecione a data:',
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
+                  const Text(
+                    'Selecione a data:',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
                   CalendarDatePicker(
-                    initialDate: selectedDate,
-                    firstDate: DateTime(2024),
+                    initialDate: DateTime.now().add(const Duration(days: 1)),
+                    firstDate: DateTime.now(),
                     lastDate: DateTime(2101),
+                    selectableDayPredicate: (day) =>
+                        day.weekday >= 1 && day.weekday <= 5,
                     onDateChanged: (DateTime date) {
-                      if (date.weekday >= 1 && date.weekday <= 5) {
-                        setState(() {
+                      setState(
+                        () {
                           selectedDate = date;
                           controller.dateSchedule = date;
-                          controller.dateScheduleString = DateFormat('dd/MM/yyyy').format(date);
-                        });
-                      } else {
-                        showCustomSnackBar(
-                            context: context,
-                            message:
-                                "Apenas dias úteis são permitidos para agendamento.",
-                            duration: const Duration(seconds: 6));
-                      }
+                          controller.dateScheduleString =
+                              DateFormat('dd/MM/yyyy').format(date);
+                        },
+                      );
                     },
                   ),
                   Center(
@@ -200,12 +160,12 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   ElevatedButton(
                     onPressed: () {
                       controller.addSchedule(
+                        context,
                         controller.specialityDoctor!,
-                        1,
+                        controller.patientId!,
                         controller.dateScheduleString,
                         controller.hourScheduleString,
                       );
-                      _scheduleAppointment();
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,

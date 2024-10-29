@@ -17,6 +17,22 @@ mixin _$ScheduleScreenController on _ScheduleScreenControllerBase, Store {
               name: '_ScheduleScreenControllerBase.allSchedules'))
       .value;
 
+  late final _$patientIdAtom =
+      Atom(name: '_ScheduleScreenControllerBase.patientId', context: context);
+
+  @override
+  int? get patientId {
+    _$patientIdAtom.reportRead();
+    return super.patientId;
+  }
+
+  @override
+  set patientId(int? value) {
+    _$patientIdAtom.reportWrite(value, super.patientId, () {
+      super.patientId = value;
+    });
+  }
+
   late final _$dateScheduleAtom = Atom(
       name: '_ScheduleScreenControllerBase.dateSchedule', context: context);
 
@@ -120,10 +136,10 @@ mixin _$ScheduleScreenController on _ScheduleScreenControllerBase, Store {
       context: context);
 
   @override
-  Future<void> addSchedule(String specialityDoctor, int patientId,
-      String dateSchedule, String hourSchedule) {
-    return _$addScheduleAsyncAction.run(() => super
-        .addSchedule(specialityDoctor, patientId, dateSchedule, hourSchedule));
+  Future<void> addSchedule(BuildContext context, String specialityDoctor,
+      int patientId, String dateSchedule, String hourSchedule) {
+    return _$addScheduleAsyncAction.run(() => super.addSchedule(
+        context, specialityDoctor, patientId, dateSchedule, hourSchedule));
   }
 
   late final _$_ScheduleScreenControllerBaseActionController =
@@ -143,6 +159,7 @@ mixin _$ScheduleScreenController on _ScheduleScreenControllerBase, Store {
   @override
   String toString() {
     return '''
+patientId: ${patientId},
 dateSchedule: ${dateSchedule},
 dateScheduleString: ${dateScheduleString},
 hourSchedule: ${hourSchedule},

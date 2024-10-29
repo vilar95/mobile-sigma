@@ -1,6 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
-import 'package:sigma/authentication/services/dio_service.dart';
+import 'package:sigma/services/dio_service.dart';
 
 class SpecialityDoctor {
   final String id; 
