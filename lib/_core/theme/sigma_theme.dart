@@ -69,6 +69,10 @@ class SigmaTheme {
       ),
     ),
 
+    progressIndicatorTheme: const ProgressIndicatorThemeData(
+      color: Colors.white,
+    ),
+
 
     colorScheme: ColorScheme.fromSwatch(primarySwatch: const MaterialColor(0xFF193969, {
       50: Color(0xFF193969),
