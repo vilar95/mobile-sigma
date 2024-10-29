@@ -38,7 +38,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // Toque no botão para acionar a validação
-    await tester.tap(find.text('Entrar'));
+     await tester.tap(find.byKey(const Key('button')));
     await tester.pumpAndSettle();
 
     // Verifique se as mensagens de validação são exibidas
