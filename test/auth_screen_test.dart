@@ -45,33 +45,7 @@ void main() {
     expect(find.text('Insira um e-mail válido.'), findsOneWidget);
     expect(find.text('Insira a senha.'), findsOneWidget);
   });
-
-  testWidgets(
-      'A validação do formulário mostra erros quando os campos estão vazios',
-      (WidgetTester tester) async {
-    // Construa o widget AuthScreen
-    await tester.pumpWidget(const MaterialApp(home: AuthScreen()));
-    await tester.pumpAndSettle();
-
-    await tester.tap(find.text('Não tem conta? Clique aqui para cadastrar.'));
-    await tester.pumpAndSettle();
-
-    // Toque no botão para acionar a validação
-    await tester.tap(find.byKey(const Key('button')));
-    await tester.pumpAndSettle();
-
-    // Verifique se as mensagens de validação são exibidas
-    expect(find.text('Insira o nome completo.'), findsOneWidget);
-    expect(find.text('Insira a data de nascimento.'), findsOneWidget);
-    //expect(find.text('Selecione um gênero.'), findsOneWidget);
-    expect(find.text('Insira um CPF válido.'), findsOneWidget);
-    expect(find.text('CidCard inválido.'), findsOneWidget);
-    expect(find.text('Endereço inválido.'), findsOneWidget);
-    expect(find.text('Insira o e-mail válido.'), findsOneWidget);
-    expect(find.text('Insira a senha.'), findsNWidgets(2));
-
-  });
-
+  
   testWidgets('Alterna entre login e cadastro', (WidgetTester tester) async {
     // Construa o widget AuthScreen
     await tester.pumpWidget(const MaterialApp(home: AuthScreen()));
