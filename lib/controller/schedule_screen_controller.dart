@@ -71,7 +71,7 @@ abstract class _ScheduleScreenControllerBase with Store {
       showCustomSnackBar(
           context: context,
           message: 'Não foi possível agendar a consulta.',
-          duration: Duration(seconds: 5));
+          duration: const Duration(seconds: 5));
           
     }
   }

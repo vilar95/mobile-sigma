@@ -68,12 +68,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   imageUrl: Image.asset('assets/super-centro-de-saude.png'),
                   date: DateTime.parse('2024-03-15'),
                 ),
-                BoxNewsWidget(
-                  title: 'Notícia da Saúde',
-                  description: 'Descrição da notícia da saúde',
-                  imageUrl: Image.asset('assets/logo_icon.png'),
-                  date: DateTime.now(),
-                ),
               ],
             ),
           ),

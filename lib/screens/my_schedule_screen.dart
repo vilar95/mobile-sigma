@@ -45,8 +45,6 @@ class _MyScheduleScreenState extends State<MyScheduleScreen> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return _buildEmptyState();
           } else {
@@ -145,7 +143,7 @@ class _MyScheduleScreenState extends State<MyScheduleScreen> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                        'Data: ${DateFormat('dd/MM/yyyy').format(DateTime.parse(consultation['date']))}',
+                      'Data: ${DateFormat('dd/MM/yyyy').format(DateTime.parse(consultation['date']))}',
                       style: const TextStyle(fontSize: 16),
                     ),
                     const SizedBox(height: 4),
@@ -162,15 +160,70 @@ class _MyScheduleScreenState extends State<MyScheduleScreen> {
                   color: SigmaColors.blue,
                 ),
                 onPressed: () {
-                  dioService.deleteConsultation(consultation['id']).then((_) {
-                    setState(() {
-                      consultations.removeAt(index);
-                    });
-                  });
+                  showDeleteScheculeDialog(
+                    context: context,
+                    consultation: consultation,
+                    index: index,
+                    consultations: consultations,
+                  );
                 },
               ),
             ),
           ),
+        );
+      },
+    );
+  }
+
+  showDeleteScheculeDialog({
+    required BuildContext context,
+    required Map<String, dynamic> consultation,
+    required int index,
+    required List<dynamic> consultations,
+  }) {
+    final dioService = DioService();
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          icon: const Icon(Icons.close_rounded, color: Colors.red, size: 80),
+          title: const Text(
+            'Deseja realmente cancelar a consulta?',
+            textAlign: TextAlign.center,
+          ),
+          content: const SizedBox(
+            height: 60,
+            child: Column(
+              children: [
+                Text("Clique em sim para cancelar a consulta."),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                dioService.deleteConsultation(consultation['id']).then((_) {
+                  setState(() {
+                    consultations.removeAt(index);
+                    Navigator.pop(context);
+                  });
+                });
+              },
+              child: const Text(
+                "SIM",
+                style: TextStyle(color: Colors.green),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text(
+                "NÃO",
+                style: TextStyle(color: Colors.red),
+              ),
+            )
+          ],
         );
       },
     );

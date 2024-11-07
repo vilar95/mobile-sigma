@@ -13,6 +13,10 @@ class DioService {
       responseType: ResponseType.json,
       connectTimeout: const Duration(seconds: 5),
       receiveTimeout: const Duration(seconds: 3),
+      validateStatus: (status) {
+        return status != null &&
+            status < 500; // Permite códigos de status menores que 500
+      },
     ),
   );
 
@@ -228,6 +232,10 @@ class DioService {
 
       if (response.statusCode == 200) {
         print('Consulta deletada com sucesso.');
+      } else if (response.statusCode == 404) {
+        print(
+            'Consulta não encontrada: ${response.statusCode} - ${response.data}');
+        throw Exception('Consulta não encontrada.');
       } else {
         print(
             'Falha ao deletar consulta: ${response.statusCode} - ${response.data}');
