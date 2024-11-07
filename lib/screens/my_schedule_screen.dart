@@ -108,6 +108,10 @@ class _MyScheduleScreenState extends State<MyScheduleScreen> {
       itemCount: consultations.length,
       itemBuilder: (context, index) {
         final consultation = consultations.reversed.toList()[index];
+        final consultationDate = DateTime.parse(consultation['date']);
+        if (consultationDate.isBefore(DateTime.now().subtract(const Duration(days: 1)))) {
+          return const SizedBox.shrink();
+        }
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
           child: Container(
@@ -115,58 +119,58 @@ class _MyScheduleScreenState extends State<MyScheduleScreen> {
               color: Colors.white,
               borderRadius: BorderRadius.circular(10),
               boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.shade500,
-                  spreadRadius: 2,
-                  blurRadius: 5,
-                  offset: const Offset(0, 3),
-                ),
+          BoxShadow(
+            color: Colors.grey.shade500,
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: const Offset(0, 3),
+          ),
               ],
             ),
             child: ListTile(
               contentPadding: const EdgeInsets.all(16.0),
               title: Text(
-                'Especialidade: ${consultation['specialty']}',
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
+          'Especialidade: ${consultation['specialty']}',
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
               ),
               subtitle: Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Médico: ${consultation['doctorName']}',
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Data: ${DateFormat('dd/MM/yyyy').format(DateTime.parse(consultation['date']))}',
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Hora: ${consultation['horario']}',
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  ],
-                ),
+          padding: const EdgeInsets.only(top: 8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Médico: ${consultation['doctorName']}',
+                style: const TextStyle(fontSize: 16),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                'Data: ${DateFormat('dd/MM/yyyy').format(consultationDate)}',
+                style: const TextStyle(fontSize: 16),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                'Hora: ${consultation['horario']}',
+                style: const TextStyle(fontSize: 16),
+              ),
+            ],
+          ),
               ),
               trailing: IconButton(
-                icon: const Icon(
-                  Icons.delete_outline_rounded,
-                  color: SigmaColors.blue,
-                ),
-                onPressed: () {
-                  showDeleteScheculeDialog(
-                    context: context,
-                    consultation: consultation,
-                    index: index,
-                    consultations: consultations,
-                  );
-                },
+          icon: const Icon(
+            Icons.delete_outline_rounded,
+            color: SigmaColors.blue,
+          ),
+          onPressed: () {
+            showDeleteScheculeDialog(
+              context: context,
+              consultation: consultation,
+              index: index,
+              consultations: consultations,
+            );
+          },
               ),
             ),
           ),
