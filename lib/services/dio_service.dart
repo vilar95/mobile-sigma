@@ -21,14 +21,12 @@ class DioService {
   );
 
   Future<Response> postLogin(String email, String password) async {
-    print('${DioEndpoints.baseUrl}/login/paciente');
     try {
       final postApi = await _dio.post(
         "${DioEndpoints.baseUrl}/login/paciente",
         data: {
           "email": email,
           "password": password,
-          // 123@Mudar
         },
       );
       final prefs = await SharedPreferences.getInstance();
@@ -245,5 +243,41 @@ class DioService {
       print('Ocorreu um erro: $e');
       throw Exception('Ocorreu um erro: $e');
     }
+  }
+
+  Future<Response> postSupport(
+    String message,
+  ) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final String? name = prefs.getString('name');
+      final String? email = prefs.getString('email');
+      final postApi = await _dio.post(
+        "${DioEndpoints.baseUrl}/contato",
+        data: {
+          "email": email,
+          "name": name,
+          "message": message,
+        },
+      );
+
+      return postApi;
+    } on DioException catch (e) {
+      if (e.response != null) {
+        print('Dados da resposta: ${e.response!.data}');
+        print('Cabeçalhos da resposta: ${e.response!.headers}');
+        print('Status code: ${e.response!.statusCode}');
+        if (e.response!.statusCode == 400) {
+          print(
+              'Erro 400: A requisição contém sintaxe incorreta ou não pode ser atendida.');
+        }
+      } else {
+        print('Erro sem resposta: ${e.requestOptions}');
+        print('erro: ${e.message}');
+      }
+    } on Exception catch (e) {
+      print('Erro inesperado: $e');
+    }
+    throw Exception('Erro ao enviar mensagem');
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sigma/_core/theme/sigma_colors.dart';
-import 'package:sigma/screens/widgets/show_send_support.dart';
+import 'package:sigma/controller/auth_screen_controller.dart';
+import 'package:sigma/controller/support_screen_controller.dart';
 
 class SupportScreen extends StatefulWidget {
   const SupportScreen({super.key});
@@ -10,6 +11,9 @@ class SupportScreen extends StatefulWidget {
 }
 
 class _SupportScreenState extends State<SupportScreen> {
+  final controller = SupportScreenController();
+  final authController = AuthScreenController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,8 +21,7 @@ class _SupportScreenState extends State<SupportScreen> {
       appBar: AppBar(
         title: const Text(
           'Suporte',
-          style: TextStyle(
-              color: Colors.black, fontSize: 28),
+          style: TextStyle(color: Colors.black, fontSize: 28),
         ),
       ),
       body: Padding(
@@ -78,6 +81,7 @@ class _SupportScreenState extends State<SupportScreen> {
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: TextFormField(
+                    onChanged: (value) => controller.message = value,
                     maxLines: 12,
                     decoration: const InputDecoration(
                       enabledBorder: OutlineInputBorder(
@@ -103,7 +107,11 @@ class _SupportScreenState extends State<SupportScreen> {
                     backgroundColor: SigmaColors.blue,
                   ),
                   onPressed: () {
-                    showConfirmSendMessageSupport(context: context);
+                    controller.sendMessage(
+                      context,
+                      controller.message,
+                    );
+                    print('message: ${controller.message}');
                   },
                   child: const Text(
                     'Enviar',
