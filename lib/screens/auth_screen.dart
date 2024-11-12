@@ -152,8 +152,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                   ),
                                 ],
                               ),
-                              TextField(
-                                
+                              TextField(                                
                                 onChanged: (value) => controller.cpf = value,
                                 decoration: InputDecoration(
                                   label: const Text("CPF"),
