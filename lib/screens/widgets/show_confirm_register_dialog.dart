@@ -18,7 +18,7 @@ showConfirmRegisterDialog({
           textAlign: TextAlign.center,
         ),
         content: SizedBox(
-          height: 60,
+          height: 70,
           child: Column(
             children: [
               Text.rich(
