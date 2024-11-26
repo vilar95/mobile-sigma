@@ -33,11 +33,13 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   };
   final Map<String, String> speciality = {
     '1': 'Clinico Geral',
-    '2': 'Nutricionista',
+    '2': 'Dentista',
     '3': 'Fisioterapeuta',
-    '4': 'Psicólogo',
+    '4': 'Fonoaudiólogo',
+    '5': 'Nutricionista',
+    '6': 'Psicólogo',
   };
-
+  
   @override
   Widget build(BuildContext context) {
     final String formattedDate = DateFormat('dd/MM/yyyy').format(selectedDate);
