@@ -27,9 +27,13 @@ showConfirmLogoutDialog({
               style: TextStyle(color: Colors.green),
             ),
           ),
-          TextButton(
+            TextButton(
             onPressed: () {
-              Navigator.pushReplacementNamed(context, SigmaRoutes.auth);
+              Navigator.pushNamedAndRemoveUntil(
+              context,
+              SigmaRoutes.auth,
+              (Route<dynamic> route) => false,
+              );
             },
             child: const Text(
               "SAIR",

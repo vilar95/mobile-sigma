@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sigma/_core/theme/sigma_colors.dart';
 import 'package:sigma/controller/auth_screen_controller.dart';
 import 'package:sigma/controller/support_screen_controller.dart';
+import 'package:sigma/screens/widgets/drawer_widget.dart';
 
 class SupportScreen extends StatefulWidget {
   const SupportScreen({super.key});
@@ -17,6 +18,7 @@ class _SupportScreenState extends State<SupportScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const DrawerWidget(),
       backgroundColor: SigmaColors.blue,
       appBar: AppBar(
         title: const Text(

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sigma/_core/theme/sigma_colors.dart';
 import 'package:sigma/controller/schedule_screen_controller.dart';
+import 'package:sigma/screens/widgets/drawer_widget.dart';
 
 
 class ScheduleScreen extends StatefulWidget {
@@ -39,13 +40,14 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     '5': 'Nutricionista',
     '6': 'Psicólogo',
   };
-  
+
   @override
   Widget build(BuildContext context) {
     final String formattedDate = DateFormat('dd/MM/yyyy').format(selectedDate);
     final String formattedTime = DateFormat('HH:mm').format(selectedTime);
 
     return Scaffold(
+      drawer: const DrawerWidget(),
       backgroundColor: SigmaColors.blue,
       appBar: AppBar(
         title: const Text(

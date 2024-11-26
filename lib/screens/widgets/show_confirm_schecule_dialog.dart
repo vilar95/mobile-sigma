@@ -15,7 +15,7 @@ showConfirmScheculeDialog({
           textAlign: TextAlign.center,
         ),
         content: const SizedBox(
-          height: 60,
+          height: 70,
           child: Column(
             children: [
               Text("Clique em OK para retornar."),

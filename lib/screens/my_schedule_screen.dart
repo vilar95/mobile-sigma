@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sigma/_core/routes/sigma_routes.dart';
 import 'package:sigma/_core/theme/sigma_colors.dart';
+import 'package:sigma/screens/widgets/drawer_widget.dart';
 import 'package:sigma/services/dio_service.dart';
 
 class MyScheduleScreen extends StatefulWidget {
@@ -35,6 +36,7 @@ class _MyScheduleScreenState extends State<MyScheduleScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const DrawerWidget(),
       backgroundColor: SigmaColors.blue,
       appBar: AppBar(
         title: const Text('Meus Agendamentos',
