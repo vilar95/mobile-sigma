@@ -212,6 +212,17 @@ class _MyScheduleScreenState extends State<MyScheduleScreen> {
                 dioService.deleteConsultation(consultation['id']).then((_) {
                   setState(() {
                     consultations.removeAt(index);
+                    _consultationsFuture = dioService.getPatientConsultations().then((response) {
+                      return response.map((consultation) {
+                        return {
+                          'id': consultation['id'],
+                          'doctorName': consultation['doctor']['name'],
+                          'specialty': consultation['doctor']['specialty']['name'],
+                          'date': consultation['data'],
+                          'horario': consultation['horario'],
+                        };
+                      }).toList();
+                    });
                     Navigator.pop(context);
                   });
                 });
