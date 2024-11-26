@@ -108,6 +108,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                       now.isAfter(lastDate) ? lastDate : now;
 
                                   DateTime? pickedDate = await showDatePicker(
+                                    locale: const Locale("pt", "BR"),
                                     context: context,
                                     initialDate: initialDate,
                                     firstDate: DateTime(1910, 1, 1),

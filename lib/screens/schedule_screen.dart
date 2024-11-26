@@ -97,7 +97,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   CalendarDatePicker(
                     initialDate: DateTime.now().add(const Duration(days: 1)),
                     firstDate: DateTime.now(),
-                    lastDate: DateTime(2101),
+                    lastDate: DateTime.now().add(const Duration(days: 90)),
                     selectableDayPredicate: (day) =>
                         day.weekday >= 1 && day.weekday <= 5,
                     onDateChanged: (DateTime date) {
