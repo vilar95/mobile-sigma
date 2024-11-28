@@ -74,7 +74,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   ),
                   const SizedBox(height: 10),
                   DropdownButton<String>(
-                    hint: const Text('Espacialidades'),
+                    hint: const Text('Especialidades'),
                     value: null,
                     onChanged: (String? newValue) {
                       setState(() {
