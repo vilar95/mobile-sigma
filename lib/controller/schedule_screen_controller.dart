@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api, unused_local_variable
 
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
@@ -7,7 +7,6 @@ import 'package:sigma/screens/widgets/show_confirm_schecule_dialog.dart';
 import 'package:sigma/screens/widgets/show_custom_snackbar.dart';
 import 'package:sigma/services/dio_service.dart';
 
-// Inclua a linha abaixo para gerar o código MobX
 part 'schedule_screen_controller.g.dart';
 
 class ScheduleScreenController = _ScheduleScreenControllerBase
@@ -61,13 +60,8 @@ abstract class _ScheduleScreenControllerBase with Store {
         dateSchedule,
         hourSchedule,
       );
-      print(response.data);
       showConfirmScheculeDialog(context: context);
     } catch (e) {
-      print('Especialidade: $specialityDoctor');
-      print('Data: $dateSchedule');
-      print('Hora: $hourSchedule');
-      print('id: $patientId');
       showCustomSnackBar(
           context: context,
           message: 'Não foi possível agendar a consulta.',

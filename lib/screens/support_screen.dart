@@ -113,7 +113,6 @@ class _SupportScreenState extends State<SupportScreen> {
                       context,
                       controller.message,
                     );
-                    print('message: ${controller.message}');
                   },
                   child: const Text(
                     'Enviar',

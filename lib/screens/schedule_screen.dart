@@ -5,7 +5,6 @@ import 'package:sigma/_core/theme/sigma_colors.dart';
 import 'package:sigma/controller/schedule_screen_controller.dart';
 import 'package:sigma/screens/widgets/drawer_widget.dart';
 
-
 class ScheduleScreen extends StatefulWidget {
   const ScheduleScreen({super.key});
 
@@ -67,7 +66,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
             child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
+                children: [
                   const Text(
                     'Selecione a Especialidade:',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
