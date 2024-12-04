@@ -119,7 +119,7 @@ class _MyScheduleScreenState extends State<MyScheduleScreen> {
           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
           child: Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Colors.grey.shade100,
               borderRadius: BorderRadius.circular(10),
               boxShadow: [
                 BoxShadow(
@@ -132,48 +132,98 @@ class _MyScheduleScreenState extends State<MyScheduleScreen> {
             ),
             child: ListTile(
               contentPadding: const EdgeInsets.all(16.0),
-              title: Text(
-                'Especialidade: ${consultation['specialty']}',
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
+              title: Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade50,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.shade300,
+                      spreadRadius: 1,
+                      blurRadius: 1,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    textAlign: TextAlign.center,
+                    '${consultation['specialty']}',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: SigmaColors.blue,
+                    ),
+                  ),
                 ),
               ),
               subtitle: Padding(
                 padding: const EdgeInsets.only(top: 8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Médico: ${consultation['doctorName']}',
-                      style: const TextStyle(fontSize: 16),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade50,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.shade300,
+                        spreadRadius: 1,
+                        blurRadius: 1,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Nome do Médico: ${consultation['doctorName']}',
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'Data: ${DateFormat('dd/MM/yyyy').format(consultationDate)}',
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'Hora: ${consultation['horario']}',
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Data: ${DateFormat('dd/MM/yyyy').format(consultationDate)}',
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Hora: ${consultation['horario']}',
-                      style: const TextStyle(fontSize: 16),
+                  ),
+                ),
+              ),
+              trailing: Container(
+                decoration: BoxDecoration(
+                  color: SigmaColors.blue,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.shade500,
+                      spreadRadius: 1,
+                      blurRadius: 1,
+                      offset: const Offset(0, 1),
                     ),
                   ],
                 ),
-              ),
-              trailing: IconButton(
-                icon: const Icon(
-                  Icons.delete_outline_rounded,
-                  color: SigmaColors.blue,
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.delete_outline_rounded,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    showDeleteScheculeDialog(
+                      context: context,
+                      consultation: consultation,
+                      index: index,
+                      consultations: consultations,
+                    );
+                  },
                 ),
-                onPressed: () {
-                  showDeleteScheculeDialog(
-                    context: context,
-                    consultation: consultation,
-                    index: index,
-                    consultations: consultations,
-                  );
-                },
               ),
             ),
           ),
@@ -212,12 +262,14 @@ class _MyScheduleScreenState extends State<MyScheduleScreen> {
                 dioService.deleteConsultation(consultation['id']).then((_) {
                   setState(() {
                     consultations.removeAt(index);
-                    _consultationsFuture = dioService.getPatientConsultations().then((response) {
+                    _consultationsFuture =
+                        dioService.getPatientConsultations().then((response) {
                       return response.map((consultation) {
                         return {
                           'id': consultation['id'],
                           'doctorName': consultation['doctor']['name'],
-                          'specialty': consultation['doctor']['specialty']['name'],
+                          'specialty': consultation['doctor']['specialty']
+                              ['name'],
                           'date': consultation['data'],
                           'horario': consultation['horario'],
                         };
