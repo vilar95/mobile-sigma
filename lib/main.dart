@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sigma/_core/routes/sigma_routes.dart';
 import 'package:sigma/_core/theme/sigma_theme.dart';
-import 'package:sigma/screens/home_screen.dart';
+import 'package:sigma/screens/auth_screen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: SigmaRoutes.splash,
       onGenerateRoute: SigmaRoutes.generateRoute,
-      home: const HomeScreen(),
+      home: const AuthScreen(),
     );
   }
 }
