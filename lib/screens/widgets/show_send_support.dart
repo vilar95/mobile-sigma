@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sigma/_core/theme/sigma_colors.dart';
 import 'package:sigma/controller/auth_screen_controller.dart';
+import 'package:sigma/screens/support_screen.dart';
 
 void showConfirmSendMessageSupport({required BuildContext context}) {
   final AuthScreenController controller = AuthScreenController();
@@ -19,6 +20,9 @@ void showConfirmSendMessageSupport({required BuildContext context}) {
             child: const Text('OK', style: TextStyle(color: SigmaColors.blue)),
             onPressed: () {
               Navigator.of(context).pop();
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => const SupportScreen()),
+              );
             },
           ),
         ],
