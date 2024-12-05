@@ -250,6 +250,22 @@ abstract class AuthScreenControllerBase with Store {
         detectTypeDoc(cpf);
         validateGender(gender);
 
+        if (emailError != null ||
+            passwordValidationError != null ||
+            nameError != null ||
+            birthDateError != null ||
+            cidcardError != null ||
+            addressError != null ||
+            cpfError != null ||
+            genderError != null) {
+          showCustomSnackBar(
+              context: context,
+              message: 'Por favor, corrija os erros antes de continuar.',
+              duration: const Duration(seconds: 5));
+          isLoading = false;
+          return;
+        }
+
         final response = await dioService.postRegister(
             email, password, name, birthDate, gender, cpf, cidcard, address
             );
