@@ -15,8 +15,6 @@ class ScheduleScreenController = _ScheduleScreenControllerBase
 abstract class _ScheduleScreenControllerBase with Store {
   final dioService = DioService();
 
-
-
   _ScheduleScreenControllerBase() {
     final prefs = SharedPreferences.getInstance();
     prefs.then((value) {
@@ -62,11 +60,34 @@ abstract class _ScheduleScreenControllerBase with Store {
       );
       showConfirmScheculeDialog(context: context);
     } catch (e) {
-      showCustomSnackBar(
-          context: context,
-          message: 'Não foi possível agendar a consulta.',
-          duration: const Duration(seconds: 5));
-          
+      if (specialityDoctor == '' || dateSchedule == '' || hourSchedule == '') {
+        showCustomSnackBar(
+            context: context,
+            message:
+                'Selecione uma especialidade, uma data e um horário para agendar!',
+            duration: const Duration(seconds: 5));
+      } else if (specialityDoctor == '') {
+        showCustomSnackBar(
+            context: context,
+            message: 'Selecione uma especialidade para agendar!',
+            duration: const Duration(seconds: 5));
+      } else if (dateSchedule == '') {
+        showCustomSnackBar(
+            context: context,
+            message: 'Selecione uma data para agendar!',
+            duration: const Duration(seconds: 5));
+      } else if (hourSchedule == '') {
+        showCustomSnackBar(
+            context: context,
+            message: 'Selecione um horário para agendar!',
+            duration: const Duration(seconds: 5));
+      } else {
+        showCustomSnackBar(
+            context: context,
+            message:
+                'Não foi possível agendar a consulta, tente novamente mais tarde!',
+            duration: const Duration(seconds: 5));
+      }
     }
   }
 

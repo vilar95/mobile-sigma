@@ -14,7 +14,7 @@ class ScheduleScreen extends StatefulWidget {
 
 class _ScheduleScreenState extends State<ScheduleScreen> {
   final controller = ScheduleScreenController();
-  String? chosenSpeciality = 'Especialidades';
+  String? chosenSpeciality;
   DateTime selectedDate = DateTime.now();
   DateTime selectedTime = DateTime.now();
 
@@ -51,14 +51,14 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
       appBar: AppBar(
         title: const Text(
           'Agendar Consulta',
-          style: TextStyle(color: Colors.black, fontSize: 28),
+          style: TextStyle(color: SigmaColors.blue, fontSize: 28),
         ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Colors.grey.shade100,
             borderRadius: BorderRadius.circular(30),
           ),
           child: Padding(
@@ -71,45 +71,85 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     'Selecione a Especialidade:',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(height: 10),
-                  DropdownButton<String>(
-                    hint: const Text('Especialidades'),
-                    value: null,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        chosenSpeciality = newValue;
-                        controller.specialityDoctor = newValue;
-                      });
-                    },
-                    items: speciality.keys.map((String key) {
-                      return DropdownMenuItem<String>(
-                        value: key,
-                        child: Text(speciality[key]!),
-                      );
-                    }).toList(),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: DropdownButton<String>(
+                      isExpanded: true,
+                      icon: const Icon(
+                        Icons.arrow_drop_down,
+                        color: SigmaColors.blue,
+                      ),
+                      iconSize: 24,
+                      elevation: 16,
+                      style: const TextStyle(
+                          color: SigmaColors.blue, fontSize: 18),
+                      underline: Container(
+                        height: 2,
+                        color: SigmaColors.blue,
+                      ),
+                      hint: const Text('Especialidades'),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          chosenSpeciality = newValue;
+                          controller.specialityDoctor = newValue;
+                        });
+                      },
+                      items: speciality.keys.map((String key) {
+                        return DropdownMenuItem<String>(
+                          value: key,
+                          child: Text(speciality[key]!),
+                        );
+                      }).toList(),
+                      value: null,
+                    ),
+                  ),
+                  Column(
+                    children: [
+                      const Text(
+                        'Selecione a data:',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 10),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade50,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.shade300,
+                              spreadRadius: 1,
+                              blurRadius: 1,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: CalendarDatePicker(
+                            initialDate:
+                                DateTime.now().add(const Duration(days: 1)),
+                            firstDate: DateTime.now(),
+                            lastDate:
+                                DateTime.now().add(const Duration(days: 90)),
+                            selectableDayPredicate: (day) =>
+                                day.weekday >= 1 && day.weekday <= 5,
+                            onDateChanged: (DateTime date) {
+                              setState(
+                                () {
+                                  selectedDate = date;
+                                  controller.dateSchedule = date;
+                                  controller.dateScheduleString =
+                                      DateFormat('dd/MM/yyyy').format(date);
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 10),
-                  const Text(
-                    'Selecione a data:',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  CalendarDatePicker(
-                    initialDate: DateTime.now().add(const Duration(days: 1)),
-                    firstDate: DateTime.now(),
-                    lastDate: DateTime.now().add(const Duration(days: 90)),
-                    selectableDayPredicate: (day) =>
-                        day.weekday >= 1 && day.weekday <= 5,
-                    onDateChanged: (DateTime date) {
-                      setState(
-                        () {
-                          selectedDate = date;
-                          controller.dateSchedule = date;
-                          controller.dateScheduleString =
-                              DateFormat('dd/MM/yyyy').format(date);
-                        },
-                      );
-                    },
-                  ),
                   Center(
                     child: Column(
                       children: [
@@ -118,48 +158,56 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
                         ),
-                        DropdownButton<String>(
-                          hint: const Text('Horários'),
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              selectedTime = appointmentSlots[newValue]!;
-                              controller.hourSchedule = selectedTime;
-                              controller.hourScheduleString =
-                                  DateFormat('HH:mm').format(selectedTime);
-                            });
-                          },
-                          items: appointmentSlots.keys
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(24.0, 0.0, 24.0, 0.0),
+                          child: DropdownButton<String>(
+                            isExpanded: true,
+                            icon: const Icon(
+                              Icons.arrow_drop_down,
+                              color: SigmaColors.blue,
+                            ),
+                            iconSize: 24,
+                            elevation: 16,
+                            style: const TextStyle(
+                                color: SigmaColors.blue, fontSize: 18),
+                            underline: Container(
+                              height: 2,
+                              color: SigmaColors.blue,
+                            ),
+                            hint: const Text('Horários'),
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                selectedTime = appointmentSlots[newValue]!;
+                                controller.hourSchedule = selectedTime;
+                                controller.hourScheduleString =
+                                    DateFormat('HH:mm').format(selectedTime);
+                              });
+                            },
+                            items: appointmentSlots.keys
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                          ),
                         ),
                       ],
                     ),
                   ),
                   const SizedBox(height: 10),
-                  if (chosenSpeciality != null &&
-                      chosenSpeciality != 'Especialidades') ...[
-                    const Text(
-                      "Especialidade: ",
-                      style: TextStyle(fontSize: 18),
-                    ),
+                  if (chosenSpeciality != null) ...[
                     Text(
-                      "${speciality[chosenSpeciality!]}",
-                      style: const TextStyle(fontSize: 18),
+                      "Especialidade: ${speciality[chosenSpeciality!]}",
+                      style: const TextStyle(fontSize: 16),
                     ),
                   ],
+                  const SizedBox(height: 4),
                   Text(
-                    "Data: $formattedDate",
-                    style: const TextStyle(fontSize: 18),
+                    "Data: $formattedDate  Hora: $formattedTime",
+                    style: const TextStyle(fontSize: 16),
                   ),
-                  Text(
-                    "Hora: $formattedTime",
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
                       controller.addSchedule(
