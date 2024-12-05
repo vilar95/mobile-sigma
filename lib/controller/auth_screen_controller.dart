@@ -126,7 +126,7 @@ abstract class AuthScreenControllerBase with Store {
   void validateEmail(String value) {
     if (!value.contains('@') && !value.contains('.com') && value.length < 10) {
       emailError = 'Email inválido!';
-    } 
+    }
     if (value.isEmpty) {
       emailError = 'Insira um e-mail válido.';
     }
@@ -137,11 +137,11 @@ abstract class AuthScreenControllerBase with Store {
     if (!RegExp(r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,20}$')
         .hasMatch(value)) {
       passwordValidationError =
-          'A senha deve ser maior que 8 caracteres incluindo letras maiúsculas, minúsculas e números.';
+          'A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número e ter entre 8 a 20 caracteres.';
     }
     if (value.isEmpty) {
       passwordValidationError = 'Insira a senha.';
-    }  
+    }
   }
 
   @action
@@ -180,9 +180,11 @@ abstract class AuthScreenControllerBase with Store {
 
   @action
   void validateGender(String? value) {
-    if (value != 'Masculino' && value != 'Feminino' && value != 'Não informar') {
+    if (value != 'Masculino' &&
+        value != 'Feminino' &&
+        value != 'Não informar') {
       genderError = 'Selecione um gênero.';
-    } 
+    }
   }
 
   @action
@@ -241,6 +243,15 @@ abstract class AuthScreenControllerBase with Store {
     if (!isAuthentication) {
       isLoading = true;
       try {
+        emailError = null;
+        passwordValidationError = null;
+        nameError = null;
+        birthDateError = null;
+        cidcardError = null;
+        addressError = null;
+        cpfError = null;
+        genderError = null;
+
         validateEmail(email);
         validatePassword(password);
         validateName(name);
@@ -262,13 +273,11 @@ abstract class AuthScreenControllerBase with Store {
               context: context,
               message: 'Por favor, corrija os erros antes de continuar.',
               duration: const Duration(seconds: 5));
-          isLoading = false;
           return;
         }
 
         final response = await dioService.postRegister(
-            email, password, name, birthDate, gender, cpf, cidcard, address
-            );
+            email, password, name, birthDate, gender, cpf, cidcard, address);
         if (response.statusCode == 200) {
           print('Cadastro realizado com sucesso');
           showConfirmRegisterDialog(
@@ -310,7 +319,6 @@ abstract class AuthScreenControllerBase with Store {
     setCpf(cpf!);
     setCidCard(cidcard!);
     setAddress(address!);
-
   }
 }
 
